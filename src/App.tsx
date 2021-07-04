@@ -11,11 +11,6 @@ import ExtrinsicDetail from 'views/Extrinsics/ExtrinsicDetail';
 import Extrinsics from 'views/Extrinsics';
 import { useEffect } from 'react';
 
-const originClient = new ApolloClient({
-  uri: 'http://35.194.154.65:3001',
-  cache: new InMemoryCache()
-});
-
 function App() {
   const [appchainInfo, setAppchainInfo] = useState<any>();
   const [client, setClient] = useState<any>();
@@ -52,11 +47,9 @@ function App() {
 
   }, [appchainInfo]);
 
-  console.log(appchain, client, appchainInfo);
-
   return (
     client ? 
-    <ApolloProvider client={originClient}>
+    <ApolloProvider client={client}>
       <ChakraProvider>
         <Router>
           <Routes>
