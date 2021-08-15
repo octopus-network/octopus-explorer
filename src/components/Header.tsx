@@ -35,14 +35,14 @@ const Header = () => {
                 _hover={{ background: 'transparent' }} rightIcon={<ExternalLinkIcon />}
                 _active={{ background: 'transparent', color: 'white' }}>Testnet</Button>
             </Link>
-            <Menu placement="bottom-end" offset={[0, 20]}>
+            {/* <Menu placement="bottom-end" offset={[0, 20]}>
               <MenuButton colorScheme="white" color="whiteAlpha.700" as={Button} rightIcon={<ChevronDownIcon />}>
                 Appchains
               </MenuButton>
               <MenuList>
                 <MenuItem>Easydeal</MenuItem>
               </MenuList>
-            </Menu>
+            </Menu> */}
           </HStack>
           <Box display={{ md: 'block', lg: 'none' }}>
           <Menu>
