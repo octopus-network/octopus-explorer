@@ -1,6 +1,6 @@
 import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useState } from 'react';
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider, Center, Spinner } from '@chakra-ui/react';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
 import Root from 'views/Root';
@@ -29,6 +29,7 @@ function App() {
       console.log(info);
       setAppchainInfo(info);
     }).catch(err => {
+      console.log(err);
       setAppchainInfo(null);
     });
   }, [appchain]);
@@ -48,24 +49,35 @@ function App() {
   }, [appchainInfo]);
 
   return (
-    client ? 
-    <ApolloProvider client={client}>
-      <ChakraProvider>
-        <Router>
-          <Routes>
-            <Route path='/' element={<Root />}>
-              <Route path='' element={<Navigate to='home' />} />
-              <Route path='home' element={<Home />} />
-              <Route path='blocks' element={<Blocks />} />
-              <Route path='blocks/:id' element={<BlockDetail />} />
-              <Route path='extrinsics' element={<Extrinsics />} />
-              <Route path='extrinsics/:id' element={<ExtrinsicDetail />} />
-            </Route>
-          </Routes>
-        </Router>
-      </ChakraProvider>
-    </ApolloProvider> :
-    <div>Loading...</div>
+    
+    <ChakraProvider>
+      {
+        client ? 
+        <ApolloProvider client={client}>
+          <Router>
+            <Routes>
+              <Route path='/' element={<Root />}>
+                <Route path='' element={<Navigate to='home' />} />
+                <Route path='home' element={<Home />} />
+                <Route path='blocks' element={<Blocks />} />
+                <Route path='blocks/:id' element={<BlockDetail />} />
+                <Route path='extrinsics' element={<Extrinsics />} />
+                <Route path='extrinsics/:id' element={<ExtrinsicDetail />} />
+              </Route>
+            </Routes>
+          </Router>
+        </ApolloProvider> :
+        <Center h="100vh">
+          <Spinner
+            thickness="4px"
+            speed="0.65s"
+            emptyColor="gray.200"
+            color="gray.500"
+            size="lg"
+          />
+        </Center>
+      }
+    </ChakraProvider>
   );
 }
 
