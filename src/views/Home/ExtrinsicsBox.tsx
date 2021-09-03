@@ -37,7 +37,7 @@ const ExtrinsicsBox = () => {
         <Box p={10} display="flex" alignItems="center" justifyContent="center">
           <Spinner />
         </Box> :
-        data.extrinsics?.nodes.map(({ section, id, method, timestamp, blockId }, idx) => (
+        data?.extrinsics?.nodes.map(({ section, id, method, timestamp, blockId }, idx) => (
           <Flex key={`block-${id}`} alignItems="center" borderBottom="1px solid #eee"
             justify="space-between" pt={4} pb={4}>
             <Box>
