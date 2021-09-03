@@ -20,7 +20,7 @@ const nearConfig = {
   walletUrl: `https://wallet.${NETWORK}.near.org`,
   helperUrl: `https://helper.${NETWORK}.near.org`,
   explorerUrl: `https://explorer.${NETWORK}.near.org`,
-  tokenDecimal: 24
+  tokenDecimal: 18
 }
 
 const initNear = async () => {
