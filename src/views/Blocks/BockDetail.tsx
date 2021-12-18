@@ -17,7 +17,6 @@ const BLOCK_DETAIL_QUERY_BY_NUMBER = gql`
         parentHash
         specVersion
         timestamp
-        updatedAt
         extrinsics {
           nodes {
             section
@@ -46,7 +45,6 @@ const BLOCK_DETAIL_QUERY_BY_HASH = gql`
       parentHash
       specVersion
       timestamp
-      updatedAt
       extrinsics {
         nodes {
           section
