@@ -2,5 +2,7 @@
 
 interface Window {
   walletConnection: any;
-  contract: any;
-} 
+  registry: any;
+  anchor: any;
+  getAppchainInfo: any;
+}
