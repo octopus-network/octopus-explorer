@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/static/css/main.148564b7.chunk.css",
+    "main.js": "/static/js/main.e859dc03.chunk.js",
+    "main.js.map": "/static/js/main.e859dc03.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.d536d561.js",
+    "runtime-main.js.map": "/static/js/runtime-main.d536d561.js.map",
+    "static/js/2.47359a79.chunk.js": "/static/js/2.47359a79.chunk.js",
+    "static/js/2.47359a79.chunk.js.map": "/static/js/2.47359a79.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/main.148564b7.chunk.css.map": "/static/css/main.148564b7.chunk.css.map",
+    "static/js/2.47359a79.chunk.js.LICENSE.txt": "/static/js/2.47359a79.chunk.js.LICENSE.txt",
+    "static/media/background.f2028ec3.svg": "/static/media/background.f2028ec3.svg",
+    "static/media/octopus_logo_white.dc543f3b.png": "/static/media/octopus_logo_white.dc543f3b.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.d536d561.js",
+    "static/js/2.47359a79.chunk.js",
+    "static/css/main.148564b7.chunk.css",
+    "static/js/main.e859dc03.chunk.js"
+  ]
+}
