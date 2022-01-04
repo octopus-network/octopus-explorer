@@ -58,7 +58,8 @@ const initNear = async () => {
         changeMethods: [],
       }
     );
-    const appchainInfo = await window.anchor.get_appchain_settings({});
+    let appchainInfo = await window.anchor.get_appchain_settings({});
+    appchainInfo = { ...appchainInfo, ...appchainStatus };
     console.log("appchainInfo", appchainInfo);
     return appchainInfo;
   };

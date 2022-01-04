@@ -21,7 +21,6 @@ import {
   HStack,
   IconButton,
   Heading,
-  Tag,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useQuery, gql } from "@apollo/client";
@@ -35,21 +34,19 @@ import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { useEffect } from "react";
 import SearchBox from "../../components/SearchBox";
+import { getAmountHuman } from "libs/polkadotApi";
+import CopyButton from "../../components/CopyButton";
 
-const EXTRINSICS_QUERY = gql`
-  query QueryExtrinsics($offset: Int!, $pageSize: Int!) {
-    extrinsics(offset: $offset, first: $pageSize, orderBy: TIMESTAMP_DESC) {
+const ACCOUNT_QUERY = gql`
+  query QueryAccounts($offset: Int!, $pageSize: Int!) {
+    systemTokenTransfers(offset: $offset, first: $pageSize, orderBy: ID_ASC) {
       nodes {
         id
-        section
-        method
+        fromId
+        toId
+        amount
         timestamp
-        events {
-          totalCount
-        }
-        block {
-          number
-        }
+        extrinsicId
       }
       totalCount
     }
@@ -58,26 +55,21 @@ const EXTRINSICS_QUERY = gql`
 
 const PAGE_SIZE = 20;
 
-const Extrinsics = () => {
+const Transfers = () => {
   const [page, setPage] = useState(0);
   const [isOnTable, setIsOnTable] = useState(false);
 
-  const { loading, data, stopPolling, startPolling } = useQuery(
-    EXTRINSICS_QUERY,
-    {
-      variables: {
-        offset: page * PAGE_SIZE,
-        pageSize: PAGE_SIZE,
-      },
-    }
-  );
+  const { loading, data, stopPolling, startPolling } = useQuery(ACCOUNT_QUERY, {
+    variables: {
+      offset: page * PAGE_SIZE,
+      pageSize: PAGE_SIZE,
+    },
+  });
 
   useEffect(() => {
-    startPolling(1000);
+    startPolling(15 * 1000);
     return () => stopPolling();
   }, [startPolling, stopPolling]);
-
-  console.log(data);
 
   return (
     <div>
@@ -100,24 +92,52 @@ const Extrinsics = () => {
           >
             <Thead>
               <Tr>
-                <Th>Hash</Th>
-                <Th>Timestamp</Th>
-                <Th>Section</Th>
-                <Th>Method</Th>
-                <Th>Block</Th>
+                <Th>ID</Th>
+                <Th>From</Th>
+                <Th>To</Th>
+                <Th>Amount</Th>
+                <Th>Extrinsic</Th>
               </Tr>
             </Thead>
             <Tbody>
-              {data?.extrinsics.nodes.map(
-                ({ id, timestamp, events, section, method, block }) => (
-                  <Tr key={`extrinsic-${id}`}>
+              {data?.systemTokenTransfers.nodes.map(
+                ({ id, fromId, toId, amount, extrinsicId, timestamp }) => (
+                  <Tr key={`transfer-${id}`}>
                     <Td>
                       <Link
                         as={RouterLink}
-                        to={`/extrinsics/${id}`}
+                        to={`/transfers/${id}`}
                         color="blue.600"
                       >
-                        {id.substr(32)}...
+                        {id}
+                      </Link>
+                    </Td>
+                    <Td>
+                      <Link
+                        as={RouterLink}
+                        to={`/accounts/${fromId}`}
+                        color="blue.600"
+                      >
+                        {fromId.substr(0, 10)}...
+                      </Link>
+                    </Td>
+                    <Td>
+                      <Link
+                        as={RouterLink}
+                        to={`/accounts/${toId}`}
+                        color="blue.600"
+                      >
+                        {toId.substr(0, 10)}...
+                      </Link>
+                    </Td>
+                    <Td>{getAmountHuman(amount)}</Td>
+                    <Td>
+                      <Link
+                        as={RouterLink}
+                        to={`/extrinsics/${extrinsicId}`}
+                        color="blue.600"
+                      >
+                        {extrinsicId.substr(0, 10)}...
                       </Link>
                     </Td>
                     <Td>
@@ -125,34 +145,13 @@ const Extrinsics = () => {
                         <Icon
                           as={TimeIcon}
                           ml={3}
-                          boxSize={4}
+                          boxSize={3}
                           color="yellow.600"
                         />
-                        <Text color="grey" fontSize="md">
+                        <Text color="grey" fontSize="sm">
                           {dayjs(timestamp).add(8, "hours").toNow(true)}
                         </Text>
                       </HStack>
-                    </Td>
-                    <Td>
-                      <Tag size="sm" colorScheme="cyan">
-                        {section}
-                      </Tag>
-                    </Td>
-                    <Td>
-                      <Tag size="sm" colorScheme="cyan" variant="outline">
-                        {method}
-                      </Tag>
-                    </Td>
-                    <Td>
-                      <Link
-                        as={RouterLink}
-                        to={`/blocks/${block.number}`}
-                        color="blue.600"
-                      >
-                        <Heading as="h6" size="sm">
-                          #{block.number}
-                        </Heading>
-                      </Link>
                     </Td>
                   </Tr>
                 )
@@ -172,11 +171,14 @@ const Extrinsics = () => {
           />
           <Box>
             {page + 1} of{" "}
-            {data ? Math.ceil(data?.extrinsics.totalCount / PAGE_SIZE) : 1}
+            {data
+              ? Math.ceil(data?.systemTokenTransfers.totalCount / PAGE_SIZE)
+              : 1}
           </Box>
           <IconButton
             disabled={
-              page >= Math.ceil(data?.extrinsics.totalCount / PAGE_SIZE)
+              page >=
+              Math.ceil(data?.systemTokenTransfers.totalCount / PAGE_SIZE)
             }
             aria-label="left"
             icon={<ChevronRightIcon />}
@@ -188,4 +190,4 @@ const Extrinsics = () => {
   );
 };
 
-export default Extrinsics;
+export default Transfers;

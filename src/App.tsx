@@ -7,11 +7,16 @@ import {
 import { useState } from "react";
 import { ChakraProvider, Center, Spinner } from "@chakra-ui/react";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { initPolkaApi, getBalanceOf } from "./libs/polkadotApi";
 
 import Root from "views/Root";
 import Home from "views/Home";
 import Blocks from "views/Blocks";
-import BlockDetail from "views/Blocks/BockDetail";
+import BlockDetail from "views/Blocks/BlockDetail";
+import Accounts from "views/Accounts";
+import AccountDetail from "views/Accounts/AccountDetail";
+import Transfers from "views/Transfers";
+import TransferDetail from "views/Transfers/TransferDetail";
 import ExtrinsicDetail from "views/Extrinsics/ExtrinsicDetail";
 import Extrinsics from "views/Extrinsics";
 import { useEffect } from "react";
@@ -24,29 +29,26 @@ function App() {
   const appchain = urlParams.get("appchain");
 
   useEffect(() => {
-    if (!appchain) {
-      setAppchainInfo(null);
-      return;
-    }
-    window
-      .getAppchainInfo(appchain)
-      .then((info) => {
-        console.log("info", info);
+    (async () => {
+      try {
+        if (!appchain) {
+          setAppchainInfo(null);
+          return;
+        }
+        const info = await window.getAppchainInfo(appchain);
+        await initPolkaApi(info);
         setAppchainInfo(info);
-      })
-      .catch((err) => {
+      } catch (err) {
         console.log(err);
         setAppchainInfo(null);
-      });
+      }
+    })();
   }, [appchain]);
 
   useEffect(() => {
     if (!appchainInfo) {
       return;
     }
-
-    console.log("appchainInfo", appchainInfo);
-
     setClient(
       new ApolloClient({
         uri: appchainInfo.subql_endpoint,
@@ -66,6 +68,10 @@ function App() {
                 <Route path="home" element={<Home />} />
                 <Route path="blocks" element={<Blocks />} />
                 <Route path="blocks/:id" element={<BlockDetail />} />
+                <Route path="accounts" element={<Accounts />} />
+                <Route path="accounts/:id" element={<AccountDetail />} />
+                <Route path="transfers" element={<Transfers />} />
+                <Route path="transfers/:id" element={<TransferDetail />} />
                 <Route path="extrinsics" element={<Extrinsics />} />
                 <Route path="extrinsics/:id" element={<ExtrinsicDetail />} />
               </Route>

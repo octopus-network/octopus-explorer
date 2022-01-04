@@ -1,10 +1,27 @@
-import { Flex, Grid, GridItem, Button, Heading, HStack, Box, Text, Divider, Icon, Link } from '@chakra-ui/react';
-import { MdApps, MdSwapHoriz, MdAccountCircle, MdTrendingUp } from 'react-icons/md';
-import { Link as RouterLink } from 'react-router-dom';
-import ExtrinsicsBox from './ExtrinsicsBox';
-import BlocksBox from './BlocksBox';
-import { useQuery, gql } from '@apollo/client';
-import { useEffect } from 'react';
+import {
+  Flex,
+  Grid,
+  GridItem,
+  Button,
+  Heading,
+  HStack,
+  Box,
+  Text,
+  Divider,
+  Icon,
+  Link,
+} from "@chakra-ui/react";
+import {
+  MdApps,
+  MdSwapHoriz,
+  MdAccountCircle,
+  MdTrendingUp,
+} from "react-icons/md";
+import { Link as RouterLink } from "react-router-dom";
+import ExtrinsicsBox from "./ExtrinsicsBox";
+import BlocksBox from "./BlocksBox";
+import { useQuery, gql } from "@apollo/client";
+import { useEffect } from "react";
 
 const GLOBAL_DATA_QUERY = gql`
   query QueryGlobalData {
@@ -17,7 +34,7 @@ const GLOBAL_DATA_QUERY = gql`
     accounts {
       totalCount
     }
-    transfers {
+    systemTokenTransfers {
       totalCount
     }
   }
@@ -30,15 +47,20 @@ const StateBox = ({ label, value, icon }) => {
         <Icon as={icon} boxSize={6} color="teal" />
       </Box>
       <Flex ml={4} align="center" justify="space-between" flex={1}>
-        <Text fontSize="sm" textColor="grey">{label}</Text>
-        <Heading as="h6" size="sm">{value}</Heading>
+        <Text fontSize="sm" textColor="grey">
+          {label}
+        </Text>
+        <Heading as="h6" size="sm">
+          {value}
+        </Heading>
       </Flex>
     </Flex>
   );
-}
+};
 
 const Home = () => {
-  const { loading, data, startPolling, stopPolling } = useQuery(GLOBAL_DATA_QUERY);
+  const { loading, data, startPolling, stopPolling } =
+    useQuery(GLOBAL_DATA_QUERY);
 
   useEffect(() => {
     startPolling(1000);
@@ -52,15 +74,21 @@ const Home = () => {
           <GridItem colSpan={24}>
             <Grid templateRows="repeat(13, 1fr)" h="120px">
               <GridItem rowSpan={6}>
-                <StateBox label="Blocks" icon={MdApps} 
-                  value={data?.blocks.totalCount} />
+                <StateBox
+                  label="Blocks"
+                  icon={MdApps}
+                  value={data?.blocks.totalCount}
+                />
               </GridItem>
               <GridItem rowSpan={1} display="flex" alignItems="center">
-                <Divider orientation="horizontal" /> 
+                <Divider orientation="horizontal" />
               </GridItem>
               <GridItem rowSpan={6}>
-                <StateBox label="Accounts" icon={MdAccountCircle} 
-                  value={data?.accounts.totalCount} />
+                <StateBox
+                  label="Accounts"
+                  icon={MdAccountCircle}
+                  value={data?.accounts.totalCount}
+                />
               </GridItem>
             </Grid>
           </GridItem>
@@ -70,15 +98,21 @@ const Home = () => {
           <GridItem colSpan={24}>
             <Grid templateRows="repeat(13, 1fr)" h="120px">
               <GridItem rowSpan={6}>
-                <StateBox label="Extrinsics" icon={MdTrendingUp} 
-                  value={data?.extrinsics.totalCount} />
+                <StateBox
+                  label="Extrinsics"
+                  icon={MdTrendingUp}
+                  value={data?.extrinsics.totalCount}
+                />
               </GridItem>
               <GridItem rowSpan={1} display="flex" alignItems="center">
-                <Divider orientation="horizontal" /> 
+                <Divider orientation="horizontal" />
               </GridItem>
               <GridItem rowSpan={6}>
-                <StateBox label="Transfers" icon={MdSwapHoriz} 
-                  value={data?.transfers.totalCount} />
+                <StateBox
+                  label="Transfers"
+                  icon={MdSwapHoriz}
+                  value={data?.systemTokenTransfers.totalCount}
+                />
               </GridItem>
             </Grid>
           </GridItem>
@@ -89,10 +123,14 @@ const Home = () => {
           <Flex align="center" justify="space-between" pt={3} pb={4}>
             <HStack>
               <MdApps />
-              <Heading as="h6" size="xs">Latest Blocks</Heading>
+              <Heading as="h6" size="xs">
+                Latest Blocks
+              </Heading>
             </HStack>
             <Link as={RouterLink} to={`/blocks`}>
-              <Button colorScheme="teal" size="sm">All</Button>
+              <Button colorScheme="teal" size="sm">
+                All
+              </Button>
             </Link>
           </Flex>
           <BlocksBox />
@@ -101,10 +139,14 @@ const Home = () => {
           <Flex align="center" justify="space-between" pt={3} pb={4}>
             <HStack>
               <MdTrendingUp />
-              <Heading as="h6" size="xs">Latest Extrinsics</Heading>
+              <Heading as="h6" size="xs">
+                Latest Extrinsics
+              </Heading>
             </HStack>
             <Link as={RouterLink} to={`/extrinsics`}>
-              <Button colorScheme="teal" size="sm">All</Button>
+              <Button colorScheme="teal" size="sm">
+                All
+              </Button>
             </Link>
           </Flex>
           <ExtrinsicsBox />
@@ -112,6 +154,6 @@ const Home = () => {
       </Grid>
     </div>
   );
-}
+};
 
 export default Home;
