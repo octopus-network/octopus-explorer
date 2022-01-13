@@ -23,6 +23,7 @@ import { useEffect } from "react";
 
 function App() {
   const [appchainInfo, setAppchainInfo] = useState<any>();
+  const [appchains, setAppchains] = useState<any[]>();
   const [client, setClient] = useState<any>();
 
   const urlParams = new URLSearchParams(window.location.search);
@@ -38,6 +39,9 @@ function App() {
         const info = await window.getAppchainInfo(appchain);
         await initPolkaApi(info);
         setAppchainInfo(info);
+
+        const appchains = await window.getAppchains();
+        setAppchains(appchains);
       } catch (err) {
         console.log(err);
         setAppchainInfo(null);
@@ -63,7 +67,12 @@ function App() {
         <ApolloProvider client={client}>
           <Router>
             <Routes>
-              <Route path="/" element={<Root />}>
+              <Route
+                path="/"
+                element={
+                  <Root appchains={appchains} appchainInfo={appchainInfo} />
+                }
+              >
                 <Route path="" element={<Navigate to="home" />} />
                 <Route path="home" element={<Home />} />
                 <Route path="blocks" element={<Blocks />} />

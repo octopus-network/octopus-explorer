@@ -25,6 +25,8 @@ const nearConfig = {
   tokenDecimal: 18,
 };
 
+const pageSize = 10;
+
 const initNear = async () => {
   const near = await connect(
     Object.assign(
@@ -39,7 +41,11 @@ const initNear = async () => {
     window.walletConnection.account(),
     REGISTRY,
     {
-      viewMethods: ["get_appchain_status_of"],
+      viewMethods: [
+        "get_appchain_status_of",
+        "get_appchains_count_of",
+        "get_appchains_with_state_of",
+      ],
       changeMethods: [],
     }
   );
@@ -62,6 +68,31 @@ const initNear = async () => {
     appchainInfo = { ...appchainInfo, ...appchainStatus };
     console.log("appchainInfo", appchainInfo);
     return appchainInfo;
+  };
+
+  window.getAppchains = async () => {
+    console.log("getAppchains");
+    const appchainCount = await window.registry.get_appchains_count_of({
+      appchain_state: "Active",
+    });
+    const promises = new Array(Math.ceil(appchainCount / pageSize))
+      .fill("")
+      .map(async ($_, index) => {
+        const appchains = await window.registry.get_appchains_with_state_of({
+          appchain_state: ["Active"],
+          page_number: index + 1,
+          page_size: pageSize,
+          sorting_field: "RegisteredTime",
+          sorting_order: "Ascending",
+        });
+        return appchains;
+      });
+
+    const totalAppchains: any = (await Promise.all(promises)).reduce(
+      (total, slice) => [...total, ...slice],
+      []
+    );
+    return totalAppchains;
   };
 };
 

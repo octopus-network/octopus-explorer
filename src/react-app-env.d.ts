@@ -5,4 +5,5 @@ interface Window {
   registry: any;
   anchor: any;
   getAppchainInfo: any;
+  getAppchains: any
 }

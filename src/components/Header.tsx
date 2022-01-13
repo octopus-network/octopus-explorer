@@ -39,8 +39,14 @@ const NavLink = ({ title, to }) => {
   );
 };
 
-const Header = () => {
-  return (
+const Header = ({
+  appchains,
+  appchainInfo,
+}: {
+  appchains: any[];
+  appchainInfo: any;
+}) => {
+  return appchains && appchains.length > 0 ? (
     <div style={{ background: "#26262f" }}>
       <Container maxW="container.xl" h="88px">
         <Flex align="center" justify="center" h="100%">
@@ -57,7 +63,51 @@ const Header = () => {
             <NavLink title="Accounts" to="/accounts" />
             <NavLink title="Transfers" to="/transfers" />
             <NavLink title="Extrinsics" to="/extrinsics" />
-            <Link href="https://testnet.oct.network" target="_blank">
+            <Menu>
+              <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+                <Box>
+                  <Image
+                    boxSize="2rem"
+                    style={{ display: "inline-block" }}
+                    borderRadius="full"
+                    src={
+                      appchainInfo.appchain_metadata.fungible_token_metadata
+                        .icon
+                    }
+                    alt={appchainInfo.appchain_id}
+                    mr="12px"
+                  />
+                  <span>{appchainInfo.appchain_id}</span>
+                </Box>
+              </MenuButton>
+              <MenuList>
+                {appchains.map((appchain) => (
+                  <Link
+                    href={`/?appchain=${appchain.appchain_id}`}
+                    key={appchain.appchain_id}
+                  >
+                    <MenuItem
+                      isChecked={
+                        appchain.appchain_id == appchainInfo.appchain_id
+                      }
+                    >
+                      <Image
+                        boxSize="2rem"
+                        borderRadius="full"
+                        src={
+                          appchain.appchain_metadata.fungible_token_metadata
+                            .icon
+                        }
+                        alt={appchain.appchain_id}
+                        mr="12px"
+                      />
+                      <span>{appchain.appchain_id}</span>
+                    </MenuItem>
+                  </Link>
+                ))}
+              </MenuList>
+            </Menu>
+            {/* <Link href="https://testnet.oct.network" target="_blank">
               <Button
                 background="transparent"
                 color="whiteAlpha.700"
@@ -67,7 +117,7 @@ const Header = () => {
               >
                 Testnet
               </Button>
-            </Link>
+            </Link> */}
             {/* <Menu placement="bottom-end" offset={[0, 20]}>
               <MenuButton colorScheme="white" color="whiteAlpha.700" as={Button} rightIcon={<ChevronDownIcon />}>
                 Appchains
@@ -106,7 +156,7 @@ const Header = () => {
         </Flex>
       </Container>
     </div>
-  );
+  ) : null;
 };
 
 export default Header;
