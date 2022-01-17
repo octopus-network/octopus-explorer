@@ -91,19 +91,18 @@ async function checkKeywordType(keyword, appoloClient) {
     if (blockResult) {
       return "blockNumber";
     }
-  } else if (isValidAddress(keyword)) {
-    console.log("here");
-    const accountResult = await fetchAccountByHash(keyword, appoloClient);
+  } else {
+    const [accountResult, tranResult, blockResult] = await Promise.all([
+      await fetchAccountByHash(keyword, appoloClient),
+      await fetchTxByHash(keyword, appoloClient),
+      await fetchBlockByHash(keyword, appoloClient)
+    ])
     if (accountResult) {
-      console.log("accountResult", accountResult);
       return "accountId";
     }
-  } else if (/^0x[0-9a-f]+$/.test(keyword)) {
-    const tranResult = await fetchTxByHash(keyword, appoloClient);
     if (tranResult) {
       return "transaction";
     }
-    const blockResult = await fetchBlockByHash(keyword, appoloClient);
     if (blockResult) {
       return "blockHash";
     }
@@ -113,6 +112,7 @@ async function checkKeywordType(keyword, appoloClient) {
 
 export async function getLinkFromSearch(keyword, appoloClient) {
   const type = await checkKeywordType(keyword, appoloClient);
+  console.log("type", type);
   let link = "";
   if (type == "blockNumber" || type == "blockHash") {
     link = `/blocks/${keyword}`;

@@ -86,11 +86,7 @@ const Header = ({
                     href={`/?appchain=${appchain.appchain_id}`}
                     key={appchain.appchain_id}
                   >
-                    <MenuItem
-                      isChecked={
-                        appchain.appchain_id == appchainInfo.appchain_id
-                      }
-                    >
+                    <MenuItem>
                       <Image
                         boxSize="2rem"
                         borderRadius="full"
