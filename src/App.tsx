@@ -5,7 +5,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import { useState } from "react";
-import { ChakraProvider, Center, Spinner } from "@chakra-ui/react";
+import { ChakraProvider, Center, Spinner, extendTheme } from "@chakra-ui/react";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { initPolkaApi, getBalanceOf } from "./libs/polkadotApi";
 
@@ -20,6 +20,7 @@ import TransferDetail from "views/Transfers/TransferDetail";
 import ExtrinsicDetail from "views/Extrinsics/ExtrinsicDetail";
 import Extrinsics from "views/Extrinsics";
 import { useEffect } from "react";
+import { getAppchainTheme } from "./libs/appchainThemes";
 
 function App() {
   const [appchainInfo, setAppchainInfo] = useState<any>();
@@ -28,6 +29,8 @@ function App() {
 
   const urlParams = new URLSearchParams(window.location.search);
   const appchain = urlParams.get("appchain");
+  const appchainTheme = getAppchainTheme(appchain);
+  const theme = extendTheme(appchainTheme);
 
   useEffect(() => {
     (async () => {
@@ -62,7 +65,7 @@ function App() {
   }, [appchainInfo]);
 
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       {client ? (
         <ApolloProvider client={client}>
           <Router>

@@ -44,7 +44,7 @@ const StateBox = ({ label, value, icon }) => {
   return (
     <Flex align="center" height="100%">
       <Box>
-        <Icon as={icon} boxSize={6} color="teal" />
+        <Icon as={icon} boxSize={6} color="primary.600" />
       </Box>
       <Flex ml={4} align="center" justify="space-between" flex={1}>
         <Text fontSize="sm" textColor="grey">
@@ -127,8 +127,12 @@ const Home = () => {
                 Latest Blocks
               </Heading>
             </HStack>
-            <Link as={RouterLink} to={`/blocks`}>
-              <Button colorScheme="teal" size="sm">
+            <Link
+              as={RouterLink}
+              to={`/blocks`}
+              _hover={{ textDecoration: "none" }}
+            >
+              <Button colorScheme="primary" size="sm">
                 All
               </Button>
             </Link>
@@ -143,8 +147,12 @@ const Home = () => {
                 Latest Extrinsics
               </Heading>
             </HStack>
-            <Link as={RouterLink} to={`/extrinsics`}>
-              <Button colorScheme="teal" size="sm">
+            <Link
+              as={RouterLink}
+              to={`/extrinsics`}
+              _hover={{ textDecoration: "none" }}
+            >
+              <Button colorScheme="primary" size="sm">
                 All
               </Button>
             </Link>

@@ -253,7 +253,7 @@ const BlockDetail = () => {
                   <Link
                     as={RouterLink}
                     to={`/blocks/${detail.parentHash}`}
-                    color="blue.600"
+                    color="primary.600"
                   >
                     {detail.parentHash}
                   </Link>
@@ -305,7 +305,7 @@ const BlockDetail = () => {
                 </Box>
               ) : (
                 <Table>
-                  <Thead background="teal.50">
+                  <Thead background="primary.50">
                     <Tr>
                       <Th></Th>
                       <Th>Hash</Th>
@@ -322,13 +322,13 @@ const BlockDetail = () => {
                             <Link
                               as={RouterLink}
                               to={`/extrinsics/${id}`}
-                              color="blue.600"
+                              color="primary.600"
                             >
                               {id.substr(0, 32)}...
                             </Link>
                           </Td>
                           <Td>
-                            <Tag size="sm" colorScheme="cyan">
+                            <Tag size="sm" colorScheme="secondary">
                               {section}.{method}
                             </Tag>
                           </Td>
@@ -364,7 +364,7 @@ const BlockDetail = () => {
                 </Box>
               ) : (
                 <Table>
-                  <Thead background="teal.50">
+                  <Thead background="primary.50">
                     <Tr>
                       <Th></Th>
                       <Th>Method</Th>
@@ -377,7 +377,7 @@ const BlockDetail = () => {
                         <Tr key={`extrinsic-${id}`}>
                           <Td>{idx}</Td>
                           <Td>
-                            <Tag size="sm" colorScheme="cyan">
+                            <Tag size="sm" colorScheme="secondary">
                               {section}.{method}
                             </Tag>
                           </Td>

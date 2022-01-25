@@ -132,7 +132,7 @@ const Accounts = () => {
                         <Link
                           as={RouterLink}
                           to={`/accounts/${id}`}
-                          color="blue.600"
+                          color="primary.600"
                         >
                           <Heading size="sm" as="h6">
                             {id.slice(0, 18)}...

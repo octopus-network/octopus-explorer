@@ -38,7 +38,7 @@ const SearchBox = () => {
         borderRightRadius="0"
       />
       <Button
-        colorScheme="teal"
+        colorScheme="primary"
         size="lg"
         borderLeftRadius="0"
         onClick={onSearch}

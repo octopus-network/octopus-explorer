@@ -58,7 +58,11 @@ const BlocksBox = () => {
               pb={4}
             >
               <Box>
-                <Link color="blue.600" as={RouterLink} to={`/blocks/${number}`}>
+                <Link
+                  color="primary.600"
+                  as={RouterLink}
+                  to={`/blocks/${number}`}
+                >
                   <Heading as="h6" size="sm">
                     #{number}
                   </Heading>

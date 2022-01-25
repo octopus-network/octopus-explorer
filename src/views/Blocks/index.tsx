@@ -110,7 +110,7 @@ const Blocks = () => {
                       <Link
                         as={RouterLink}
                         to={`/blocks/${number}`}
-                        color="blue.600"
+                        color="primary.600"
                       >
                         <Heading size="sm" as="h6">
                           #{number}
@@ -136,7 +136,7 @@ const Blocks = () => {
                       <Link
                         as={RouterLink}
                         to={`/blocks/${id}`}
-                        color="blue.600"
+                        color="primary.600"
                       >
                         {id.substr(32)}...
                       </Link>

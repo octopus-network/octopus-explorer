@@ -12,6 +12,7 @@ import {
   Link,
   IconButton,
   MenuIcon,
+  Text,
 } from "@chakra-ui/react";
 import {
   ChevronDownIcon,
@@ -51,7 +52,25 @@ const Header = ({
       <Container maxW="container.xl" h="88px">
         <Flex align="center" justify="center" h="100%">
           <Box p="2" pl="0">
-            <Image src={logo} htmlWidth={140} alt="logo" />
+            <Flex justify="space-between" align="center">
+              <Image
+                style={{ display: "inline-block" }}
+                boxSize="2.2rem"
+                src={
+                  appchainInfo.appchain_metadata.fungible_token_metadata.icon
+                }
+                mr="10px"
+                htmlWidth={140}
+                alt="logo"
+              />
+              <Text
+                fontSize="lg"
+                color="gray.50"
+                style={{ textTransform: "capitalize", fontWeight: "bolder" }}
+              >
+                {appchainInfo.appchain_id}
+              </Text>
+            </Flex>
           </Box>
           <Spacer />
           <HStack
@@ -64,29 +83,23 @@ const Header = ({
             <NavLink title="Transfers" to="/transfers" />
             <NavLink title="Extrinsics" to="/extrinsics" />
             <Menu>
-              <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+              <MenuButton
+                as={Button}
+                rightIcon={<ChevronDownIcon />}
+                colorScheme="Black"
+              >
                 <Box>
-                  <Image
-                    boxSize="2rem"
-                    style={{ display: "inline-block" }}
-                    borderRadius="full"
-                    src={
-                      appchainInfo.appchain_metadata.fungible_token_metadata
-                        .icon
-                    }
-                    alt={appchainInfo.appchain_id}
-                    mr="12px"
-                  />
                   <span>{appchainInfo.appchain_id}</span>
                 </Box>
               </MenuButton>
-              <MenuList>
+              <MenuList bg="#262636" border="none">
                 {appchains.map((appchain) => (
                   <Link
                     href={`/?appchain=${appchain.appchain_id}`}
                     key={appchain.appchain_id}
+                    _hover={{ textDecoration: "none" }}
                   >
-                    <MenuItem>
+                    <MenuItem color="#fff" _focus={{ background: "#555" }}>
                       <Image
                         boxSize="2rem"
                         borderRadius="full"
@@ -103,25 +116,6 @@ const Header = ({
                 ))}
               </MenuList>
             </Menu>
-            {/* <Link href="https://testnet.oct.network" target="_blank">
-              <Button
-                background="transparent"
-                color="whiteAlpha.700"
-                _hover={{ background: "transparent" }}
-                rightIcon={<ExternalLinkIcon />}
-                _active={{ background: "transparent", color: "white" }}
-              >
-                Testnet
-              </Button>
-            </Link> */}
-            {/* <Menu placement="bottom-end" offset={[0, 20]}>
-              <MenuButton colorScheme="white" color="whiteAlpha.700" as={Button} rightIcon={<ChevronDownIcon />}>
-                Appchains
-              </MenuButton>
-              <MenuList>
-                <MenuItem>Easydeal</MenuItem>
-              </MenuList>
-            </Menu> */}
           </HStack>
           <Box display={{ md: "block", lg: "none" }}>
             <Menu>

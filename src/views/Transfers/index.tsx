@@ -107,7 +107,7 @@ const Transfers = () => {
                       <Link
                         as={RouterLink}
                         to={`/transfers/${id}`}
-                        color="blue.600"
+                        color="primary.600"
                       >
                         {id}
                       </Link>
@@ -116,7 +116,7 @@ const Transfers = () => {
                       <Link
                         as={RouterLink}
                         to={`/accounts/${fromId}`}
-                        color="blue.600"
+                        color="primary.600"
                       >
                         {fromId.substr(0, 10)}...
                       </Link>
@@ -125,7 +125,7 @@ const Transfers = () => {
                       <Link
                         as={RouterLink}
                         to={`/accounts/${toId}`}
-                        color="blue.600"
+                        color="primary.600"
                       >
                         {toId.substr(0, 10)}...
                       </Link>
@@ -135,7 +135,7 @@ const Transfers = () => {
                       <Link
                         as={RouterLink}
                         to={`/extrinsics/${extrinsicId}`}
-                        color="blue.600"
+                        color="primary.600"
                       >
                         {extrinsicId.substr(0, 10)}...
                       </Link>

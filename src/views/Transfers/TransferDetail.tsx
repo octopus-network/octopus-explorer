@@ -166,7 +166,7 @@ const TransferDetail = () => {
                     <Link
                       as={RouterLink}
                       to={`/accounts/${detail.fromId}`}
-                      color="blue.600"
+                      color="primary.600"
                     >
                       {detail.fromId}
                     </Link>
@@ -185,7 +185,7 @@ const TransferDetail = () => {
                     <Link
                       as={RouterLink}
                       to={`/accounts/${detail.toId}`}
-                      color="blue.600"
+                      color="primary.600"
                     >
                       {detail.toId}
                     </Link>
@@ -212,7 +212,7 @@ const TransferDetail = () => {
                     <Link
                       as={RouterLink}
                       to={`/blocks/${detail.extrinsic.block.id}`}
-                      color="blue.600"
+                      color="primary.600"
                     >
                       {detail.extrinsic.block.id}
                     </Link>

@@ -115,7 +115,7 @@ const Extrinsics = () => {
                       <Link
                         as={RouterLink}
                         to={`/extrinsics/${id}`}
-                        color="blue.600"
+                        color="primary.600"
                       >
                         {id.substr(32)}...
                       </Link>
@@ -134,12 +134,12 @@ const Extrinsics = () => {
                       </HStack>
                     </Td>
                     <Td>
-                      <Tag size="sm" colorScheme="cyan">
+                      <Tag size="sm" colorScheme="secondary">
                         {section}
                       </Tag>
                     </Td>
                     <Td>
-                      <Tag size="sm" colorScheme="cyan" variant="outline">
+                      <Tag size="sm" colorScheme="secondary" variant="outline">
                         {method}
                       </Tag>
                     </Td>
@@ -147,7 +147,7 @@ const Extrinsics = () => {
                       <Link
                         as={RouterLink}
                         to={`/blocks/${block.number}`}
-                        color="blue.600"
+                        color="primary.600"
                       >
                         <Heading as="h6" size="sm">
                           #{block.number}

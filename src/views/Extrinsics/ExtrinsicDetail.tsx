@@ -129,7 +129,7 @@ const ExtrinsicDetail = () => {
                   <Link
                     as={RouterLink}
                     to={`/blocks/${detail.block.number}`}
-                    color="blue.600"
+                    color="primary.600"
                   >
                     <Heading as="h6" size="sm">
                       #{detail.block.number}
@@ -152,7 +152,7 @@ const ExtrinsicDetail = () => {
                   </Heading>
                 </Td>
                 <Td>
-                  <Tag size="sm" colorScheme="cyan">
+                  <Tag size="sm" colorScheme="secondary">
                     {detail.section}
                   </Tag>
                 </Td>
@@ -164,7 +164,7 @@ const ExtrinsicDetail = () => {
                   </Heading>
                 </Td>
                 <Td>
-                  <Tag size="sm" variant="outline" colorScheme="cyan">
+                  <Tag size="sm" variant="outline" colorScheme="secondary">
                     {detail.method}
                   </Tag>
                 </Td>
@@ -179,7 +179,7 @@ const ExtrinsicDetail = () => {
                   <Link
                     as={RouterLink}
                     to={`/accounts/${detail.signer.id}`}
-                    color="blue.600"
+                    color="primary.600"
                   >
                     <Text>{detail.signer.id}</Text>
                   </Link>
@@ -229,7 +229,7 @@ const ExtrinsicDetail = () => {
                 </Box>
               ) : (
                 <Table>
-                  <Thead background="teal.50">
+                  <Thead background="primary.50">
                     <Tr>
                       <Th></Th>
                       <Th>Method</Th>
@@ -242,7 +242,7 @@ const ExtrinsicDetail = () => {
                         <Tr key={`extrinsic-${id}`}>
                           <Td>{idx}</Td>
                           <Td>
-                            <Tag size="sm" colorScheme="cyan">
+                            <Tag size="sm" colorScheme="secondary">
                               {section}.{method}
                             </Tag>
                           </Td>

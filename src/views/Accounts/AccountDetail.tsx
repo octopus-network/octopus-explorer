@@ -226,7 +226,7 @@ const AccountDetail = () => {
                 </Box>
               ) : (
                 <Table>
-                  <Thead background="teal.50">
+                  <Thead background="primary.50">
                     <Tr>
                       <Th>ID</Th>
                       <Th>Method</Th>
@@ -256,7 +256,7 @@ const AccountDetail = () => {
                             </Flex>
                           </Td>
                           <Td>
-                            <Tag size="sm" colorScheme="cyan">
+                            <Tag size="sm" colorScheme="secondary">
                               {section}.{method}
                             </Tag>
                           </Td>
@@ -264,7 +264,7 @@ const AccountDetail = () => {
                             <Link
                               as={RouterLink}
                               to={`/accounts/${signerId}`}
-                              color="blue.600"
+                              color="primary.600"
                             >
                               {signerId.substr(0, 10)}...
                             </Link>
@@ -273,7 +273,7 @@ const AccountDetail = () => {
                             <Link
                               as={RouterLink}
                               to={`/extrinsics/${extrinsicId}`}
-                              color="blue.600"
+                              color="primary.600"
                             >
                               {extrinsicId.substr(0, 10)}...
                             </Link>
@@ -336,7 +336,7 @@ const AccountDetail = () => {
                 </Box>
               ) : (
                 <Table>
-                  <Thead background="teal.50">
+                  <Thead background="primary.50">
                     <Tr>
                       <Th>ID</Th>
                       <Th>From</Th>
@@ -357,7 +357,7 @@ const AccountDetail = () => {
                             <Link
                               as={RouterLink}
                               to={`/transfers/${id}`}
-                              color="blue.600"
+                              color="primary.600"
                             >
                               {id}
                             </Link>
@@ -366,7 +366,7 @@ const AccountDetail = () => {
                             <Link
                               as={RouterLink}
                               to={`/accounts/${fromId}`}
-                              color="blue.600"
+                              color="primary.600"
                             >
                               {fromId.substr(0, 10)}...
                             </Link>
@@ -375,7 +375,7 @@ const AccountDetail = () => {
                             <Link
                               as={RouterLink}
                               to={`/accounts/${toId}`}
-                              color="blue.600"
+                              color="primary.600"
                             >
                               {toId.substr(0, 10)}...
                             </Link>
@@ -385,7 +385,7 @@ const AccountDetail = () => {
                             <Link
                               as={RouterLink}
                               to={`/extrinsics/${extrinsicId}`}
-                              color="blue.600"
+                              color="primary.600"
                             >
                               {extrinsicId.substr(0, 10)}...
                             </Link>
@@ -454,7 +454,7 @@ const AccountDetail = () => {
                 </Box>
               ) : (
                 <Table>
-                  <Thead background="teal.50">
+                  <Thead background="primary.50">
                     <Tr>
                       <Th>ID</Th>
                       <Th>From</Th>
@@ -475,7 +475,7 @@ const AccountDetail = () => {
                             <Link
                               as={RouterLink}
                               to={`/transfers/${id}`}
-                              color="blue.600"
+                              color="primary.600"
                             >
                               {id}
                             </Link>
@@ -484,7 +484,7 @@ const AccountDetail = () => {
                             <Link
                               as={RouterLink}
                               to={`/accounts/${fromId}`}
-                              color="blue.600"
+                              color="primary.600"
                             >
                               {fromId.substr(0, 10)}...
                             </Link>
@@ -493,7 +493,7 @@ const AccountDetail = () => {
                             <Link
                               as={RouterLink}
                               to={`/accounts/${toId}`}
-                              color="blue.600"
+                              color="primary.600"
                             >
                               {toId.substr(0, 10)}...
                             </Link>
@@ -503,7 +503,7 @@ const AccountDetail = () => {
                             <Link
                               as={RouterLink}
                               to={`/extrinsics/${extrinsicId}`}
-                              color="blue.600"
+                              color="primary.600"
                             >
                               {extrinsicId.substr(0, 10)}...
                             </Link>
