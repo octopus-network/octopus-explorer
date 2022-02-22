@@ -34,17 +34,18 @@ function App() {
 
   useEffect(() => {
     (async () => {
+      const appchains = await window.getAppchains();
+      setAppchains(appchains);
       try {
         if (!appchain) {
-          setAppchainInfo(null);
-          return;
+          const defaultAppchain = appchains[appchains.length - 1];
+          window.location.replace(
+            `/?appchain=${defaultAppchain.appchain_id}#/home`
+          );
         }
         const info = await window.getAppchainInfo(appchain);
         await initPolkaApi(info);
         setAppchainInfo(info);
-
-        const appchains = await window.getAppchains();
-        setAppchains(appchains);
       } catch (err) {
         console.log(err);
         setAppchainInfo(null);

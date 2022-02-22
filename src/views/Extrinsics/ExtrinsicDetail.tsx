@@ -34,6 +34,7 @@ import {
   TimeIcon,
   CheckIcon,
 } from "@chakra-ui/icons";
+import { getBlock, getEvents, getAmountHuman } from "../../libs/polkadotApi";
 import { useQuery, gql } from "@apollo/client";
 import { useParams, Link as RouterLink, useNavigate } from "react-router-dom";
 import SearchBox from "../../components/SearchBox";
@@ -49,6 +50,7 @@ const EXTRINSIC_DETAIL_QUERY = gql`
       }
       nonce
       block {
+        id
         number
       }
       section
@@ -79,11 +81,36 @@ const ExtrinsicDetail = () => {
   }, []);
 
   useEffect(() => {
-    if (data) {
-      setDetail(data.extrinsic);
-    } else {
-      setDetail(null);
-    }
+    (async () => {
+      if (data) {
+        const [blockInfo, allRecords] = await Promise.all([
+          await getBlock(data.extrinsic.block.id),
+          await getEvents(data.extrinsic.block.id),
+        ]);
+        const extrinsicIndex = blockInfo.block.extrinsics.findIndex(
+          (e) => e.hash.toString() === data.extrinsic.id
+        );
+        const events = allRecords.filter(
+          ({ phase }) =>
+            phase.isApplyExtrinsic && phase.asApplyExtrinsic.eq(extrinsicIndex)
+        );
+        console.log("events", events);
+        const transfers = events
+          .filter(
+            ({ event }) =>
+              event.section.toString() === "balances" &&
+              event.method.toString() === "Transfer"
+          )
+          .map(({ event: { data } }) => ({
+            fromId: data[0].toString(),
+            toId: data[1].toString(),
+            amount: data[2],
+          }));
+        setDetail({ ...data.extrinsic, transfers });
+      } else {
+        setDetail(null);
+      }
+    })();
   }, [data]);
 
   return (
@@ -214,9 +241,57 @@ const ExtrinsicDetail = () => {
       <Box mt={5} p={4} background="white" boxShadow="sm" borderRadius="lg">
         <Tabs>
           <TabList>
+            <Tab>Transfers</Tab>
             <Tab>Logs</Tab>
           </TabList>
           <TabPanels>
+            <TabPanel>
+              {!detail ? (
+                <Box
+                  p={10}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <Spinner />
+                </Box>
+              ) : (
+                <Table>
+                  <Thead background="primary.50">
+                    <Tr>
+                      <Th>From</Th>
+                      <Th>To</Th>
+                      <Th>Amount</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {detail.transfers.map(({ fromId, toId, amount }, idx) => (
+                      <Tr key={`extrinsic-${idx}`}>
+                        <Td>
+                          <Link
+                            as={RouterLink}
+                            to={`/accounts/${fromId}`}
+                            color="primary.600"
+                          >
+                            {fromId.substr(0, 10)}...
+                          </Link>
+                        </Td>
+                        <Td>
+                          <Link
+                            as={RouterLink}
+                            to={`/accounts/${toId}`}
+                            color="primary.600"
+                          >
+                            {toId.substr(0, 10)}...
+                          </Link>
+                        </Td>
+                        <Td>{getAmountHuman(amount)}</Td>
+                      </Tr>
+                    ))}
+                  </Tbody>
+                </Table>
+              )}
+            </TabPanel>
             <TabPanel>
               {!detail ? (
                 <Box

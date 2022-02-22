@@ -31,3 +31,15 @@ export async function getBalanceOf(accountId: string) {
     return amountToHuman(account.data.free.toString(), decimals);
   }
 }
+
+export async function getBlock(blockhash: string) {
+  if (appchainApi) {
+    return await appchainApi.rpc.chain.getBlock(blockhash);
+  }
+}
+
+export async function getEvents(blockhash: string) {
+  if (appchainApi) {
+    return await appchainApi.query.system.events.at(blockhash);
+  }
+}
