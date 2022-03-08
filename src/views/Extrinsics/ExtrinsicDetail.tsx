@@ -90,23 +90,27 @@ const ExtrinsicDetail = () => {
         const extrinsicIndex = blockInfo.block.extrinsics.findIndex(
           (e) => e.hash.toString() === data.extrinsic.id
         );
-        const events = allRecords.filter(
+        const records = allRecords.filter(
           ({ phase }) =>
             phase.isApplyExtrinsic && phase.asApplyExtrinsic.eq(extrinsicIndex)
         );
-        console.log("events", events);
+        const events = records.map(({ event }) => event);
+        console.log(
+          "events",
+          events.map((e) => e.toHuman())
+        );
         const transfers = events
           .filter(
-            ({ event }) =>
+            (event) =>
               event.section.toString() === "balances" &&
               event.method.toString() === "Transfer"
           )
-          .map(({ event: { data } }) => ({
+          .map(({ data }) => ({
             fromId: data[0].toString(),
             toId: data[1].toString(),
             amount: data[2],
           }));
-        setDetail({ ...data.extrinsic, transfers });
+        setDetail({ ...data.extrinsic, transfers, events });
       } else {
         setDetail(null);
       }
@@ -242,7 +246,7 @@ const ExtrinsicDetail = () => {
         <Tabs>
           <TabList>
             <Tab>Transfers</Tab>
-            <Tab>Logs</Tab>
+            <Tab>Events</Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
@@ -266,7 +270,7 @@ const ExtrinsicDetail = () => {
                   </Thead>
                   <Tbody>
                     {detail.transfers.map(({ fromId, toId, amount }, idx) => (
-                      <Tr key={`extrinsic-${idx}`}>
+                      <Tr key={`transfers-${idx}`}>
                         <Td>
                           <Link
                             as={RouterLink}
@@ -306,25 +310,29 @@ const ExtrinsicDetail = () => {
                 <Table>
                   <Thead background="primary.50">
                     <Tr>
-                      <Th></Th>
+                      <Th>Index</Th>
                       <Th>Method</Th>
                       <Th>Data</Th>
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {detail.events.nodes.map(
-                      ({ section, method, data }, idx) => (
-                        <Tr key={`extrinsic-${id}`}>
-                          <Td>{idx}</Td>
-                          <Td>
-                            <Tag size="sm" colorScheme="secondary">
-                              {section}.{method}
-                            </Tag>
-                          </Td>
-                          <Td>{data}</Td>
-                        </Tr>
-                      )
-                    )}
+                    {detail.events.map(({ index, section, method, data }) => (
+                      <Tr key={`events-${index}`}>
+                        <Td>{index}</Td>
+                        <Td>
+                          <Tag size="sm" colorScheme="secondary">
+                            {section}.{method}
+                          </Tag>
+                        </Td>
+                        <Td maxWidth="400px">
+                          {data.map((d, idx) => (
+                            <div key={`${index}-data-${idx}`}>
+                              {d.toString()}
+                            </div>
+                          ))}
+                        </Td>
+                      </Tr>
+                    ))}
                   </Tbody>
                 </Table>
               )}

@@ -1,19 +1,10 @@
-import React from "react";
-import ReactDOM from "react-dom";
 import { connect, keyStores, WalletConnection, Contract } from "near-api-js";
-import relativeTime from "dayjs/plugin/relativeTime";
-import dayjs from "dayjs";
-
-dayjs.extend(relativeTime);
-
-import "./index.css";
-
-import App from "./App";
 
 const NETWORK = process.env.REACT_APP_OCT_NETWORK || "testnet";
 const REGISTRY =
   process.env.REACT_APP_OCT_REGISTRY_CONTRACT_NAME ||
   "registry.test_oct.testnet";
+
 
 const nearConfig = {
   networkId: NETWORK,
@@ -60,7 +51,7 @@ const initNear = async () => {
       window.walletConnection.account(),
       appchainAnchor,
       {
-        viewMethods: ["get_appchain_settings", "get_anchor_event_history"],
+        viewMethods: ["get_appchain_settings"],
         changeMethods: [],
       }
     );
@@ -94,20 +85,4 @@ const initNear = async () => {
     );
     return totalAppchains;
   };
-
-  window.getAnchorEventHistory = async (index: number) => {
-    const historiy = await window.anchor.get_anchor_event_history({
-      index: index.toString(),
-    });
-    return historiy;
-  };
 };
-
-initNear().then(() => {
-  ReactDOM.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>,
-    document.getElementById("root")
-  );
-});

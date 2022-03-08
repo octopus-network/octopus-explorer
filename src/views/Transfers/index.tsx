@@ -39,7 +39,11 @@ import CopyButton from "../../components/CopyButton";
 
 const ACCOUNT_QUERY = gql`
   query QueryAccounts($offset: Int!, $pageSize: Int!) {
-    systemTokenTransfers(offset: $offset, first: $pageSize, orderBy: ID_ASC) {
+    systemTokenTransfers(
+      offset: $offset
+      first: $pageSize
+      orderBy: TIMESTAMP_DESC
+    ) {
       nodes {
         id
         fromId

@@ -43,3 +43,11 @@ export async function getEvents(blockhash: string) {
     return await appchainApi.query.system.events.at(blockhash);
   }
 }
+
+export async function getNextNotificationId() {
+  if (appchainApi) {
+    const nextNotificationIndex = (await appchainApi.query.octopusAppchain.nextNotificationId()).toJSON();
+    return nextNotificationIndex;
+  }
+}
+
