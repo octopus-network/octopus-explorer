@@ -1,16 +1,10 @@
 import {
-  IconButton,
   Flex,
-  HStack,
-  Icon,
   Heading,
-  Input,
-  Button,
   Box,
   Tab,
   Link,
   Text,
-  CircularProgress,
   Table,
   Thead,
   Tbody,
@@ -23,17 +17,9 @@ import {
   TabPanels,
   TabPanel,
   Tag,
-  CircularProgressLabel,
 } from "@chakra-ui/react";
-import Hash from "components/Hash";
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  TimeIcon,
-  CheckIcon,
-} from "@chakra-ui/icons";
 import { getBlock, getEvents, getAmountHuman } from "../../libs/polkadotApi";
 import { useQuery, gql } from "@apollo/client";
 import { useParams, Link as RouterLink, useNavigate } from "react-router-dom";

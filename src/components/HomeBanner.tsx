@@ -1,17 +1,13 @@
 import {
-  Box,
   Flex,
   Input,
-  IconButton,
   Button,
   Center,
   Text,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import headerBg from "assets/background.svg";
-import { SearchIcon } from "@chakra-ui/icons";
-import { Container } from "react-dom";
-import { gql, useApolloClient } from "@apollo/client";
+import { useApolloClient } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import { getLinkFromSearch } from "../libs/searchFuncs";
 

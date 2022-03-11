@@ -1,5 +1,4 @@
-import { Container, Center } from "@chakra-ui/layout";
-import { Box, Image } from "@chakra-ui/react";
+import { Container } from "@chakra-ui/layout";
 import { useLocation } from "react-router-dom";
 import Header from "components/Header";
 import Footer from "components/Footer";

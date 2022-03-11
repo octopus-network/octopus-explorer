@@ -1,39 +1,24 @@
 import {
-  IconButton,
   Flex,
   HStack,
   Icon,
   Heading,
-  Input,
-  Button,
   Box,
-  Tab,
   Link,
   Text,
   CircularProgress,
-  useClipboard,
   Table,
-  Thead,
   Tbody,
   Tr,
-  Th,
   Td,
   Spinner,
-  Tabs,
-  TabList,
-  TabPanels,
-  TabPanel,
-  Tag,
   CircularProgressLabel,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
   TimeIcon,
   CheckIcon,
-  CopyIcon,
 } from "@chakra-ui/icons";
 import { useQuery, gql } from "@apollo/client";
 import { useParams, Link as RouterLink, useNavigate } from "react-router-dom";
@@ -65,9 +50,9 @@ const TransferDetail = () => {
   const [detail, setDetail] = useState<any>();
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [secondsPast, setSecondsPast] = useState(0);
-  const navigate = useNavigate();
 
-  const { loading, data, startPolling, stopPolling } = useQuery(
+
+  const { data, startPolling, stopPolling } = useQuery(
     BLOCK_DETAIL_QUERY_BY_HASH,
     { variables: { id } }
   );
