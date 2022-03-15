@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useQuery, gql } from "@apollo/client";
 import {
   Text,

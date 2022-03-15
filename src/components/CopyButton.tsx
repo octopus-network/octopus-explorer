@@ -1,4 +1,4 @@
-import { IconButton, Flex, Icon, Text, useClipboard } from "@chakra-ui/react";
+import { IconButton, Icon, useClipboard } from "@chakra-ui/react";
 import { CheckIcon, CopyIcon } from "@chakra-ui/icons";
 const CopyButton = ({ value }) => {
   const { hasCopied, onCopy } = useClipboard(value);

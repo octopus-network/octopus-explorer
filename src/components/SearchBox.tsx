@@ -1,14 +1,10 @@
 import {
-  Box,
   Flex,
   Input,
-  IconButton,
   Button,
-  Center,
-  Text,
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
-import { gql, useApolloClient } from "@apollo/client";
+import { useState } from "react";
+import { useApolloClient } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import { getLinkFromSearch } from "../libs/searchFuncs";
 

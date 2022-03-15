@@ -18,7 +18,7 @@ const nearConfig = {
 
 const pageSize = 10;
 
-const initNear = async () => {
+export const initNear = async () => {
   const near = await connect(
     Object.assign(
       { deps: { keyStore: new keyStores.BrowserLocalStorageKeyStore() } },

@@ -59,7 +59,7 @@ const StateBox = ({ label, value, icon }) => {
 };
 
 const Home = () => {
-  const { loading, data, startPolling, stopPolling } =
+  const { data, startPolling, stopPolling } =
     useQuery(GLOBAL_DATA_QUERY);
 
   useEffect(() => {

@@ -1,19 +1,10 @@
 import {
   Flex,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  Button,
-  Input,
   Box,
-  Text,
   Link,
-  Icon,
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
@@ -22,11 +13,8 @@ import {
   IconButton,
   Heading,
 } from "@chakra-ui/react";
-import dayjs from "dayjs";
 import { useQuery, gql } from "@apollo/client";
 import {
-  ChevronDownIcon,
-  TimeIcon,
   ChevronRightIcon,
   ChevronLeftIcon,
 } from "@chakra-ui/icons";
