@@ -10,18 +10,19 @@ import {
   Divider,
   Icon,
   Link,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 import {
   MdApps,
   MdSwapHoriz,
   MdAccountCircle,
   MdTrendingUp,
-} from "react-icons/md";
-import { Link as RouterLink } from "react-router-dom";
-import ExtrinsicsBox from "./ExtrinsicsBox";
-import BlocksBox from "./BlocksBox";
-import { useQuery, gql } from "@apollo/client";
-import { useEffect } from "react";
+} from 'react-icons/md';
+import { Link as RouterLink } from 'react-router-dom';
+import ExtrinsicsBox from './ExtrinsicsBox';
+import BlocksBox from './BlocksBox';
+import { useQuery, gql } from '@apollo/client';
+import { useEffect } from 'react';
+import { isMobile } from 'react-device-detect';
 
 const GLOBAL_DATA_QUERY = gql`
   query QueryGlobalData {
@@ -46,7 +47,13 @@ const StateBox = ({ label, value, icon }) => {
       <Box>
         <Icon as={icon} boxSize={6} color="primary.600" />
       </Box>
-      <Flex ml={4} align="center" justify="space-between" flex={1}>
+      <Flex
+        ml={4}
+        direction={isMobile ? 'column' : 'row'}
+        align={isMobile ? 'flex-start' : 'center'}
+        justify="space-between"
+        flex={1}
+      >
         <Text fontSize="sm" textColor="grey">
           {label}
         </Text>
@@ -59,13 +66,14 @@ const StateBox = ({ label, value, icon }) => {
 };
 
 const Home = () => {
-  const { data, startPolling, stopPolling } =
-    useQuery(GLOBAL_DATA_QUERY);
+  const { data, startPolling, stopPolling } = useQuery(GLOBAL_DATA_QUERY);
 
   useEffect(() => {
     startPolling(1000);
     return () => stopPolling();
   }, [startPolling, stopPolling]);
+
+  console.log(isMobile);
 
   return (
     <div>
@@ -119,7 +127,7 @@ const Home = () => {
         </Grid>
       </Box>
       <Grid gap={6} templateColumns="repeat(6, 1fr)" mt={4}>
-        <GridItem colSpan={3}>
+        <GridItem colSpan={isMobile ? 6 : 3}>
           <Flex align="center" justify="space-between" pt={3} pb={4}>
             <HStack>
               <MdApps />
@@ -130,7 +138,7 @@ const Home = () => {
             <Link
               as={RouterLink}
               to={`/blocks`}
-              _hover={{ textDecoration: "none" }}
+              _hover={{ textDecoration: 'none' }}
             >
               <Button colorScheme="primary" size="sm">
                 All
@@ -139,7 +147,7 @@ const Home = () => {
           </Flex>
           <BlocksBox />
         </GridItem>
-        <GridItem colSpan={3}>
+        <GridItem colSpan={isMobile ? 6 : 3}>
           <Flex align="center" justify="space-between" pt={3} pb={4}>
             <HStack>
               <MdTrendingUp />
@@ -150,7 +158,7 @@ const Home = () => {
             <Link
               as={RouterLink}
               to={`/extrinsics`}
-              _hover={{ textDecoration: "none" }}
+              _hover={{ textDecoration: 'none' }}
             >
               <Button colorScheme="primary" size="sm">
                 All

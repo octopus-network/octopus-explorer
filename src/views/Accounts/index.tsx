@@ -12,18 +12,15 @@ import {
   HStack,
   IconButton,
   Heading,
-} from "@chakra-ui/react";
-import { useQuery, gql } from "@apollo/client";
-import {
-  ChevronRightIcon,
-  ChevronLeftIcon,
-} from "@chakra-ui/icons";
-import { useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
-import { useEffect } from "react";
-import SearchBox from "../../components/SearchBox";
-import { getBalanceOf } from "libs/polkadotApi";
-import CopyButton from "../../components/CopyButton";
+} from '@chakra-ui/react';
+import { useQuery, gql } from '@apollo/client';
+import { ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
+import { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
+import { useEffect } from 'react';
+import SearchBox from '../../components/SearchBox';
+import { getBalanceOf } from 'libs/polkadotApi';
+import CopyButton from '../../components/CopyButton';
 
 const ACCOUNT_QUERY = gql`
   query QueryAccounts($offset: Int!, $pageSize: Int!) {
@@ -50,7 +47,6 @@ const PAGE_SIZE = 20;
 const Accounts = () => {
   const [page, setPage] = useState(0);
   const [accounts, setAccounts] = useState<any[]>([]);
-  const [isOnTable, setIsOnTable] = useState(false);
 
   const { loading, data, stopPolling, startPolling } = useQuery(ACCOUNT_QUERY, {
     variables: {
@@ -81,7 +77,14 @@ const Accounts = () => {
   return (
     <div>
       <SearchBox></SearchBox>
-      <Box p={5} background="white" mt={5} boxShadow="sm" borderRadius="lg">
+      <Box
+        p={5}
+        background="white"
+        mt={5}
+        boxShadow="sm"
+        borderRadius="lg"
+        style={{ overflowX: 'scroll' }}
+      >
         {loading ? (
           <Box
             p={10}
@@ -92,11 +95,7 @@ const Accounts = () => {
             <Spinner />
           </Box>
         ) : (
-          <Table
-            variant="simple"
-            onMouseEnter={() => setIsOnTable(true)}
-            onMouseLeave={() => setIsOnTable(false)}
-          >
+          <Table variant="simple">
             <Thead>
               <Tr>
                 <Th>ID</Th>
@@ -152,7 +151,7 @@ const Accounts = () => {
             onClick={() => setPage(page - 1)}
           />
           <Box>
-            {page + 1} of{" "}
+            {page + 1} of{' '}
             {data ? Math.ceil(data?.accounts.totalCount / PAGE_SIZE) : 1}
           </Box>
           <IconButton
