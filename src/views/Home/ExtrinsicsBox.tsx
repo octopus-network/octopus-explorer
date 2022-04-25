@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { useQuery, gql } from "@apollo/client";
+import { useEffect } from 'react';
+import { useQuery, gql } from '@apollo/client';
 import {
   Text,
   Flex,
@@ -10,10 +10,11 @@ import {
   Tag,
   Icon,
   Heading,
-} from "@chakra-ui/react";
-import dayjs from "dayjs";
-import { TimeIcon } from "@chakra-ui/icons";
-import { Link as RouterLink } from "react-router-dom";
+} from '@chakra-ui/react';
+import dayjs from 'dayjs';
+import { TimeIcon } from '@chakra-ui/icons';
+import { Link as RouterLink } from 'react-router-dom';
+import { isMobile } from 'react-device-detect';
 
 const NEW_EXTRINSICS_QUERY = gql`
   query QueryNewExtrinsics {
@@ -65,13 +66,13 @@ const ExtrinsicsBox = () => {
                   to={`/extrinsics/${id}`}
                 >
                   <Heading as="h6" size="sm">
-                    {id.substr(0, 32)}...
+                    {id.substr(0, isMobile ? 18 : 32)}...
                   </Heading>
                 </Link>
                 <HStack spacing={2} mt={1}>
                   <Icon as={TimeIcon} ml={3} boxSize={3} color="yellow.600" />
                   <Text color="grey" fontSize="sm">
-                    {dayjs(timestamp).add(8, "hours").toNow(true)}
+                    {dayjs(timestamp).add(8, 'hours').toNow(true)}
                   </Text>
                 </HStack>
               </Box>

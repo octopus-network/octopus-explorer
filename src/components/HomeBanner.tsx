@@ -1,49 +1,57 @@
-import {
-  Flex,
-  Input,
-  Button,
-  Center,
-  Text,
-} from "@chakra-ui/react";
-import { useRef, useState } from "react";
-import headerBg from "assets/background.svg";
-import { useApolloClient } from "@apollo/client";
-import { useNavigate } from "react-router-dom";
-import { getLinkFromSearch } from "../libs/searchFuncs";
+import { Flex, Input, Button, Center, Text, useToast } from '@chakra-ui/react'
+import { useRef, useState } from 'react'
+import headerBg from 'assets/background.svg'
+import { useApolloClient } from '@apollo/client'
+import { useNavigate } from 'react-router-dom'
+import { getLinkFromSearch } from '../libs/searchFuncs'
 
 const HomeBanner = () => {
-  const navigate = useNavigate();
-  const appoloClient = useApolloClient();
-  const inputRef = useRef<any>();
-  const [keyword, setKeyword] = useState("");
-  const [isSearching, setIsSearching] = useState(false);
+  const navigate = useNavigate()
+  const appoloClient = useApolloClient()
+  const inputRef = useRef<any>()
+  const [keyword, setKeyword] = useState('')
+  const [isSearching, setIsSearching] = useState(false)
   const onInputFocus = () => {
     if (inputRef.current) {
-      inputRef.current.style.maxWidth = "480px";
+      inputRef.current.style.maxWidth = '480px'
     }
-  };
+  }
 
   const onInputBlur = () => {
     if (inputRef.current) {
-      inputRef.current.style.maxWidth = "420px";
+      inputRef.current.style.maxWidth = '420px'
     }
-  };
+  }
 
+  const toast = useToast()
   const onSearch = async () => {
-    setIsSearching(true);
-    let link = await getLinkFromSearch(keyword, appoloClient);
-    await new Promise((resolve) => setTimeout(() => resolve(0), 500));
-    navigate(link);
-    setIsSearching(false);
-  };
+    try {
+      setIsSearching(true)
+      let link = await getLinkFromSearch(keyword, appoloClient)
+      if (link.trim() === '') {
+        throw new Error('No result found')
+      }
+      await new Promise((resolve) => setTimeout(() => resolve(0), 500))
+      navigate(link)
+      setIsSearching(false)
+    } catch (error) {
+      setIsSearching(false)
+      toast({
+        position: 'top-right',
+        title: 'Error',
+        description: error.toString(),
+        status: 'error',
+      })
+    }
+  }
 
   return (
     <div
       style={{
         background: `#26262f url(${headerBg})`,
-        backgroundSize: "1600px auto",
-        backgroundPosition: "center -110px",
-        backgroundRepeat: "no-repeat",
+        backgroundSize: '1600px auto',
+        backgroundPosition: 'center -110px',
+        backgroundRepeat: 'no-repeat',
       }}
     >
       <Center h="120px" pt="20px">
@@ -64,6 +72,11 @@ const HomeBanner = () => {
             onFocus={onInputFocus}
             onBlur={onInputBlur}
             onChange={(e) => setKeyword(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                onSearch()
+              }
+            }}
             size="lg"
             flex="1"
             placeholder="Search by block, transaction id"
@@ -82,7 +95,7 @@ const HomeBanner = () => {
         </Flex>
       </Center>
     </div>
-  );
-};
+  )
+}
 
-export default HomeBanner;
+export default HomeBanner

@@ -1,4 +1,4 @@
-import { Container, Flex } from "@chakra-ui/layout";
+import { Container, Flex } from '@chakra-ui/layout';
 import {
   Box,
   Button,
@@ -11,34 +11,53 @@ import {
   MenuItem,
   Link,
   IconButton,
-  MenuIcon,
   Text,
-} from "@chakra-ui/react";
-import {
-  ChevronDownIcon,
-  ExternalLinkIcon,
-  HamburgerIcon,
-} from "@chakra-ui/icons";
-import { Link as RouterLink, useLocation } from "react-router-dom";
-import logo from "assets/octopus_logo_white.png";
+} from '@chakra-ui/react';
+import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
+import { BrowserView, isMobile } from 'react-device-detect';
 
 const NavLink = ({ title, to }) => {
   const location = useLocation();
-  const pathArr = location.pathname.split("/");
-  const isActive = "/" + pathArr[1] == to;
+  const pathArr = location.pathname.split('/');
+  const isActive = '/' + pathArr[1] == to;
   return (
     <Link as={RouterLink} to={to}>
       <Button
         background="transparent"
-        color={isActive ? "white" : "whiteAlpha.700"}
-        _hover={{ background: "transparent" }}
-        _active={{ background: "transparent", color: "white" }}
+        color={isActive ? 'white' : 'whiteAlpha.700'}
+        _hover={{ background: 'transparent' }}
+        _active={{ background: 'transparent', color: 'white' }}
       >
         {title}
       </Button>
     </Link>
   );
 };
+
+const navs = [
+  {
+    title: 'Home',
+    link: 'home',
+  },
+  {
+    title: 'Accounts',
+    link: 'accounts',
+  },
+
+  {
+    title: 'Blocks',
+    link: 'blocks',
+  },
+  {
+    title: 'Transfers',
+    link: 'transfers',
+  },
+  {
+    title: 'Extrinsics',
+    link: 'extrinsics',
+  },
+];
 
 const Header = ({
   appchains,
@@ -48,40 +67,47 @@ const Header = ({
   appchainInfo: any;
 }) => {
   return appchains && appchains.length > 0 ? (
-    <div style={{ background: "#26262f" }}>
+    <div style={{ background: '#26262f' }}>
       <Container maxW="container.xl" h="88px">
         <Flex align="center" justify="center" h="100%">
           <Box p="2" pl="0">
-            <Flex justify="space-between" align="center">
-              <Image
-                style={{ display: "inline-block" }}
-                boxSize="2.2rem"
-                src={
-                  appchainInfo.appchain_metadata.fungible_token_metadata.icon
-                }
-                mr="10px"
-                htmlWidth={140}
-                alt="logo"
-              />
-              <Text
-                fontSize="lg"
-                color="gray.50"
-                style={{ textTransform: "capitalize", fontWeight: "bolder" }}
-              >
-                {appchainInfo.appchain_id}
-              </Text>
-            </Flex>
+            <Link as={RouterLink} to="/home">
+              <Flex justify="space-between" align="center">
+                <Image
+                  style={{ display: 'inline-block' }}
+                  boxSize="2.2rem"
+                  src={
+                    appchainInfo.appchain_metadata.fungible_token_metadata.icon
+                  }
+                  mr="10px"
+                  htmlWidth={140}
+                  alt="logo"
+                />
+                <Text
+                  fontSize="lg"
+                  color="gray.50"
+                  style={{ textTransform: 'capitalize', fontWeight: 'bolder' }}
+                >
+                  {appchainInfo.appchain_id}
+                </Text>
+              </Flex>
+            </Link>
           </Box>
           <Spacer />
           <HStack
             spacing="5px"
-            display={{ xs: "none", sm: "none", md: "none", lg: "block" }}
+            align="center"
+            direction={'row'}
+            display={{ xs: 'none', sm: 'none', md: 'none', lg: 'block' }}
           >
-            <NavLink title="Home" to="/home" />
-            <NavLink title="Blocks" to="/blocks" />
-            <NavLink title="Accounts" to="/accounts" />
-            <NavLink title="Transfers" to="/transfers" />
-            <NavLink title="Extrinsics" to="/extrinsics" />
+            {!isMobile &&
+              navs.map((nav) => (
+                <NavLink
+                  key={nav.title}
+                  title={nav.title}
+                  to={`/${nav.link}`}
+                />
+              ))}
             <Menu>
               <MenuButton
                 as={Button}
@@ -97,9 +123,9 @@ const Header = ({
                   <Link
                     href={`/?appchain=${appchain.appchain_id}`}
                     key={appchain.appchain_id}
-                    _hover={{ textDecoration: "none" }}
+                    _hover={{ textDecoration: 'none' }}
                   >
-                    <MenuItem color="#fff" _focus={{ background: "#555" }}>
+                    <MenuItem color="#fff" _focus={{ background: '#555' }}>
                       <Image
                         boxSize="2rem"
                         borderRadius="full"
@@ -117,7 +143,7 @@ const Header = ({
               </MenuList>
             </Menu>
           </HStack>
-          <Box display={{ md: "block", lg: "none" }}>
+          <Box display={{ md: 'block', lg: 'none' }}>
             <Menu>
               <MenuButton
                 colorScheme="white"
@@ -125,21 +151,13 @@ const Header = ({
                 icon={<HamburgerIcon fontSize="2xl" />}
               />
               <MenuList>
-                <MenuItem>
-                  <Link as={RouterLink} to="/home">
-                    Home
-                  </Link>
-                </MenuItem>
-                <MenuItem>
-                  <Link as={RouterLink} to="/home">
-                    Blocks
-                  </Link>
-                </MenuItem>
-                <MenuItem>
-                  <Link as={RouterLink} to="/home">
-                    Extrinsics
-                  </Link>
-                </MenuItem>
+                {navs.map((nav) => (
+                  <MenuItem key={nav.title}>
+                    <Link as={RouterLink} to={`/${nav.link}`}>
+                      {nav.title}
+                    </Link>
+                  </MenuItem>
+                ))}
               </MenuList>
             </Menu>
           </Box>
