@@ -73,8 +73,6 @@ const Home = () => {
     return () => stopPolling();
   }, [startPolling, stopPolling]);
 
-  console.log(isMobile);
-
   return (
     <div>
       <Box borderRadius="lg" p={3} background="white" mt="-60px" boxShadow="sm">
