@@ -40,7 +40,7 @@ async function fetchBlockByNum(blockNumber, client) {
   return rt.data.blocks.nodes[0];
 }
 
-async function fetchTxByHash(hash, client) {
+async function fetchTxById(hash, client) {
   const rt = await client.query({
     query: gql`
       query txdetail($id: String!) {
@@ -91,17 +91,18 @@ async function checkKeywordType(keyword, appoloClient) {
     if (blockResult) {
       return "blockNumber";
     }
+  } else if (/^[0-9]+(\-)[0-9]+$/.test(keyword)) {
+    const blockResult = await fetchTxById(keyword, appoloClient);
+    if (blockResult) {
+      return "transaction";
+    }
   } else {
-    const [accountResult, tranResult, blockResult] = await Promise.all([
+    const [accountResult, blockResult] = await Promise.all([
       await fetchAccountByHash(keyword, appoloClient),
-      await fetchTxByHash(keyword, appoloClient),
       await fetchBlockByHash(keyword, appoloClient)
     ])
     if (accountResult) {
       return "accountId";
-    }
-    if (tranResult) {
-      return "transaction";
     }
     if (blockResult) {
       return "blockHash";

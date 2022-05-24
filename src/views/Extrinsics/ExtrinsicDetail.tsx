@@ -43,6 +43,7 @@ const EXTRINSIC_DETAIL_QUERY = gql`
       method
       events {
         nodes {
+          index
           section
           method
           data
@@ -69,22 +70,11 @@ const ExtrinsicDetail = () => {
   useEffect(() => {
     (async () => {
       if (data) {
-        const [blockInfo, allRecords] = await Promise.all([
-          await getBlock(data.extrinsic.block.id),
-          await getEvents(data.extrinsic.block.id),
-        ]);
-        const extrinsicIndex = blockInfo.block.extrinsics.findIndex(
-          (e) => e.hash.toString() === data.extrinsic.id
-        );
-        const records = allRecords.filter(
-          ({ phase }) =>
-            phase.isApplyExtrinsic && phase.asApplyExtrinsic.eq(extrinsicIndex)
-        );
-        const events = records.map(({ event }) => event);
-        console.log(
-          "events",
-          events.map((e) => e.toHuman())
-        );
+        const events = data.extrinsic.events.nodes.map((e) => ({
+          ...e,
+          data: JSON.parse(e.data),
+        }));
+        console.log("events", events);
         const transfers = events
           .filter(
             (event) =>
@@ -313,7 +303,9 @@ const ExtrinsicDetail = () => {
                         <Td maxWidth="400px">
                           {data.map((d, idx) => (
                             <div key={`${index}-data-${idx}`}>
-                              {d.toString()}
+                              {d && typeof d === "object"
+                                ? JSON.stringify(d)
+                                : d.toString()}
                             </div>
                           ))}
                         </Td>

@@ -12,15 +12,15 @@ import {
   HStack,
   IconButton,
   Heading,
-} from '@chakra-ui/react';
-import { useQuery, gql } from '@apollo/client';
-import { ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
-import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import { useEffect } from 'react';
-import SearchBox from '../../components/SearchBox';
-import { getBalanceOf } from 'libs/polkadotApi';
-import CopyButton from '../../components/CopyButton';
+} from "@chakra-ui/react";
+import { useQuery, gql } from "@apollo/client";
+import { ChevronRightIcon, ChevronLeftIcon } from "@chakra-ui/icons";
+import { useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
+import { useEffect } from "react";
+import SearchBox from "../../components/SearchBox";
+import { getBalanceOf } from "libs/polkadotApi";
+import CopyButton from "../../components/CopyButton";
 
 const ACCOUNT_QUERY = gql`
   query QueryAccounts($offset: Int!, $pageSize: Int!) {
@@ -30,10 +30,10 @@ const ACCOUNT_QUERY = gql`
         calls {
           totalCount
         }
-        systemTokenTransfersByFromId {
+        transferOut {
           totalCount
         }
-        systemTokenTransfersByToId {
+        transferIn {
           totalCount
         }
       }
@@ -83,7 +83,7 @@ const Accounts = () => {
         mt={5}
         boxShadow="sm"
         borderRadius="lg"
-        style={{ overflowX: 'scroll' }}
+        style={{ overflowX: "scroll" }}
       >
         {loading ? (
           <Box
@@ -106,13 +106,7 @@ const Accounts = () => {
             </Thead>
             <Tbody>
               {accounts.map(
-                ({
-                  id,
-                  balance,
-                  calls,
-                  systemTokenTransfersByFromId,
-                  systemTokenTransfersByToId,
-                }) => (
+                ({ id, balance, calls, transferOut, transferIn }) => (
                   <Tr key={`account-${id}`}>
                     <Td>
                       <Flex align="center">
@@ -129,10 +123,7 @@ const Accounts = () => {
                       </Flex>
                     </Td>
                     <Td>{balance}</Td>
-                    <Td>
-                      {systemTokenTransfersByFromId.totalCount +
-                        systemTokenTransfersByToId.totalCount}
-                    </Td>
+                    <Td>{transferOut.totalCount + transferIn.totalCount}</Td>
                     <Td>{calls.totalCount}</Td>
                   </Tr>
                 )
@@ -151,7 +142,7 @@ const Accounts = () => {
             onClick={() => setPage(page - 1)}
           />
           <Box>
-            {page + 1} of{' '}
+            {page + 1} of{" "}
             {data ? Math.ceil(data?.accounts.totalCount / PAGE_SIZE) : 1}
           </Box>
           <IconButton

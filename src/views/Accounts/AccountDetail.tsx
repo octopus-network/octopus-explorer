@@ -23,11 +23,7 @@ import {
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  TimeIcon,
-} from "@chakra-ui/icons";
+import { ChevronLeftIcon, ChevronRightIcon, TimeIcon } from "@chakra-ui/icons";
 import { getBalanceOf } from "../../libs/polkadotApi";
 import { useQuery, gql } from "@apollo/client";
 import { useParams, Link as RouterLink, useNavigate } from "react-router-dom";
@@ -59,11 +55,7 @@ const CALLS_QUERY = gql`
 const TRANSFERS_OUT_QUERY = gql`
   query AccountTransfersOut($id: String!, $offset: Int!, $pageSize: Int!) {
     account(id: $id) {
-      systemTokenTransfersByFromId(
-        offset: $offset
-        first: $pageSize
-        orderBy: TIMESTAMP_DESC
-      ) {
+      transferOut(offset: $offset, first: $pageSize, orderBy: TIMESTAMP_DESC) {
         nodes {
           id
           fromId
@@ -81,11 +73,7 @@ const TRANSFERS_OUT_QUERY = gql`
 const TRANSFERS_IN_QUERY = gql`
   query AccountTransfersIn($id: String!, $offset: Int!, $pageSize: Int!) {
     account(id: $id) {
-      systemTokenTransfersByToId(
-        offset: $offset
-        first: $pageSize
-        orderBy: TIMESTAMP_DESC
-      ) {
+      transferIn(offset: $offset, first: $pageSize, orderBy: TIMESTAMP_DESC) {
         nodes {
           id
           fromId
@@ -200,11 +188,11 @@ const AccountDetail = () => {
             <Tab>Calls({detail?.calls?.totalCount || 0})</Tab>
             <Tab>
               Transfers Out(
-              {detail?.systemTokenTransfersByFromId?.totalCount || 0})
+              {detail?.transferOut?.totalCount || 0})
             </Tab>
             <Tab>
               Transfers In(
-              {detail?.systemTokenTransfersByToId?.totalCount || 0})
+              {detail?.transferIn?.totalCount || 0})
             </Tab>
           </TabList>
           <TabPanels>
@@ -341,7 +329,7 @@ const AccountDetail = () => {
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {detail.systemTokenTransfersByFromId.nodes.map(
+                    {detail.transferOut.nodes.map(
                       (
                         { id, fromId, toId, amount, extrinsicId, timestamp },
                         idx
@@ -415,19 +403,13 @@ const AccountDetail = () => {
                   <Box>
                     {transfersOutPage + 1} of{" "}
                     {detail
-                      ? Math.ceil(
-                          detail?.systemTokenTransfersByFromId.totalCount /
-                            PAGE_SIZE
-                        )
+                      ? Math.ceil(detail?.transferOut.totalCount / PAGE_SIZE)
                       : 1}
                   </Box>
                   <IconButton
                     disabled={
                       transfersOutPage >=
-                      Math.ceil(
-                        detail?.systemTokenTransfersByFromId.totalCount /
-                          PAGE_SIZE
-                      )
+                      Math.ceil(detail?.transferOut.totalCount / PAGE_SIZE)
                     }
                     aria-label="left"
                     icon={<ChevronRightIcon />}
@@ -459,7 +441,7 @@ const AccountDetail = () => {
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {detail.systemTokenTransfersByToId.nodes.map(
+                    {detail.transferIn.nodes.map(
                       (
                         { id, fromId, toId, amount, extrinsicId, timestamp },
                         idx
@@ -533,19 +515,13 @@ const AccountDetail = () => {
                   <Box>
                     {transfersInPage + 1} of{" "}
                     {detail
-                      ? Math.ceil(
-                          detail?.systemTokenTransfersByToId.totalCount /
-                            PAGE_SIZE
-                        )
+                      ? Math.ceil(detail?.transferIn.totalCount / PAGE_SIZE)
                       : 1}
                   </Box>
                   <IconButton
                     disabled={
                       transfersInPage >=
-                      Math.ceil(
-                        detail?.systemTokenTransfersByToId.totalCount /
-                          PAGE_SIZE
-                      )
+                      Math.ceil(detail?.transferIn.totalCount / PAGE_SIZE)
                     }
                     aria-label="left"
                     icon={<ChevronRightIcon />}

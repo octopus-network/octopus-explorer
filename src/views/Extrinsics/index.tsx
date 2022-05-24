@@ -15,14 +15,14 @@ import {
   IconButton,
   Heading,
   Tag,
-} from '@chakra-ui/react';
-import dayjs from 'dayjs';
-import { useQuery, gql } from '@apollo/client';
-import { TimeIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
-import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import { useEffect } from 'react';
-import SearchBox from '../../components/SearchBox';
+} from "@chakra-ui/react";
+import dayjs from "dayjs";
+import { useQuery, gql } from "@apollo/client";
+import { TimeIcon, ChevronRightIcon, ChevronLeftIcon } from "@chakra-ui/icons";
+import { useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
+import { useEffect } from "react";
+import SearchBox from "../../components/SearchBox";
 
 const EXTRINSICS_QUERY = gql`
   query QueryExtrinsics($offset: Int!, $pageSize: Int!) {
@@ -74,7 +74,7 @@ const Extrinsics = () => {
         mt={5}
         boxShadow="sm"
         borderRadius="lg"
-        style={{ overflowX: 'scroll' }}
+        style={{ overflowX: "scroll" }}
       >
         {loading ? (
           <Box
@@ -122,7 +122,7 @@ const Extrinsics = () => {
                           color="yellow.600"
                         />
                         <Text color="grey" fontSize="md">
-                          {dayjs(timestamp).add(8, 'hours').toNow(true)}
+                          {dayjs(timestamp).add(8, "hours").toNow(true)}
                         </Text>
                       </HStack>
                     </Td>
@@ -164,7 +164,7 @@ const Extrinsics = () => {
             onClick={() => setPage(page - 1)}
           />
           <Box>
-            {page + 1} of{' '}
+            {page + 1} of{" "}
             {data ? Math.ceil(data?.extrinsics.totalCount / PAGE_SIZE) : 1}
           </Box>
           <IconButton
