@@ -20,16 +20,17 @@ import {
   TabPanels,
   TabPanel,
   Tag,
-} from "@chakra-ui/react";
-import { useState, useEffect } from "react";
-import dayjs from "dayjs";
-import { ChevronLeftIcon, ChevronRightIcon, TimeIcon } from "@chakra-ui/icons";
-import { getBalanceOf } from "../../libs/polkadotApi";
-import { useQuery, gql } from "@apollo/client";
-import { useParams, Link as RouterLink, useNavigate } from "react-router-dom";
-import { getAmountHuman } from "../../libs/polkadotApi";
-import CopyButton from "../../components/CopyButton";
-import SearchBox from "../../components/SearchBox";
+} from '@chakra-ui/react'
+import { useState, useEffect } from 'react'
+import dayjs from 'dayjs'
+import { ChevronLeftIcon, ChevronRightIcon, TimeIcon } from '@chakra-ui/icons'
+import { getBalanceOf } from '../../libs/polkadotApi'
+import { useQuery, gql } from '@apollo/client'
+import { useParams, Link as RouterLink, useNavigate } from 'react-router-dom'
+import { getAmountHuman } from '../../libs/polkadotApi'
+import CopyButton from '../../components/CopyButton'
+import SearchBox from '../../components/SearchBox'
+import StyledLink from 'components/StyledLink'
 
 const CALLS_QUERY = gql`
   query AccountCalls($id: String!, $offset: Int!, $pageSize: Int!) {
@@ -50,7 +51,7 @@ const CALLS_QUERY = gql`
       }
     }
   }
-`;
+`
 
 const TRANSFERS_OUT_QUERY = gql`
   query AccountTransfersOut($id: String!, $offset: Int!, $pageSize: Int!) {
@@ -68,7 +69,7 @@ const TRANSFERS_OUT_QUERY = gql`
       }
     }
   }
-`;
+`
 
 const TRANSFERS_IN_QUERY = gql`
   query AccountTransfersIn($id: String!, $offset: Int!, $pageSize: Int!) {
@@ -86,55 +87,55 @@ const TRANSFERS_IN_QUERY = gql`
       }
     }
   }
-`;
+`
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 20
 
 const AccountDetail = () => {
-  const { id } = useParams();
-  const [detail, setDetail] = useState<any>();
-  const [callsPage, setCallsPage] = useState(0);
-  const [transfersOutPage, setTransfersOutPage] = useState(0);
-  const [transfersInPage, setTransfersInPage] = useState(0);
+  const { id } = useParams()
+  const [detail, setDetail] = useState<any>()
+  const [callsPage, setCallsPage] = useState(0)
+  const [transfersOutPage, setTransfersOutPage] = useState(0)
+  const [transfersInPage, setTransfersInPage] = useState(0)
 
   const callsQuery = useQuery(CALLS_QUERY, {
     variables: { id, offset: callsPage * PAGE_SIZE, pageSize: PAGE_SIZE },
-  });
+  })
   const transfersOutQuery = useQuery(TRANSFERS_OUT_QUERY, {
     variables: { id, offset: callsPage * PAGE_SIZE, pageSize: PAGE_SIZE },
-  });
+  })
   const transfersInQuery = useQuery(TRANSFERS_IN_QUERY, {
     variables: { id, offset: callsPage * PAGE_SIZE, pageSize: PAGE_SIZE },
-  });
+  })
 
   useEffect(() => {
-    callsQuery.startPolling(30 * 1000);
-    transfersOutQuery.startPolling(30 * 1000);
-    transfersInQuery.startPolling(30 * 1000);
+    callsQuery.startPolling(30 * 1000)
+    transfersOutQuery.startPolling(30 * 1000)
+    transfersInQuery.startPolling(30 * 1000)
     return () => {
-      callsQuery.stopPolling();
-      transfersOutQuery.stopPolling();
-      transfersInQuery.stopPolling();
-    };
-  }, []);
+      callsQuery.stopPolling()
+      transfersOutQuery.stopPolling()
+      transfersInQuery.stopPolling()
+    }
+  }, [])
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       if (callsQuery.data && transfersOutQuery.data && transfersInQuery.data) {
-        const balance = await getBalanceOf(id);
+        const balance = await getBalanceOf(id)
         const account = {
           ...callsQuery.data.account,
           ...transfersOutQuery.data.account,
           ...transfersInQuery.data.account,
           balance,
-        };
-        console.log("account:", account);
-        setDetail(account);
+        }
+        console.log('account:', account)
+        setDetail(account)
       } else {
-        setDetail(null);
+        setDetail(null)
       }
-    })();
-  }, [callsQuery, transfersOutQuery, transfersInQuery]);
+    })()
+  }, [callsQuery, transfersOutQuery, transfersInQuery])
 
   return (
     <div>
@@ -243,22 +244,14 @@ const AccountDetail = () => {
                             </Tag>
                           </Td>
                           <Td>
-                            <Link
-                              as={RouterLink}
-                              to={`/accounts/${signerId}`}
-                              color="primary.600"
-                            >
+                            <StyledLink to={`/accounts/${signerId}`}>
                               {signerId.substr(0, 10)}...
-                            </Link>
+                            </StyledLink>
                           </Td>
                           <Td>
-                            <Link
-                              as={RouterLink}
-                              to={`/extrinsics/${extrinsicId}`}
-                              color="primary.600"
-                            >
+                            <StyledLink to={`/extrinsics/${extrinsicId}`}>
                               {extrinsicId.substr(0, 10)}...
-                            </Link>
+                            </StyledLink>
                           </Td>
                           <Td>
                             <HStack spacing={2} mt={1}>
@@ -269,7 +262,7 @@ const AccountDetail = () => {
                                 color="yellow.600"
                               />
                               <Text color="grey" fontSize="sm">
-                                {dayjs(timestamp).add(8, "hours").toNow(true)}
+                                {dayjs(timestamp).add(8, 'hours').toNow(true)}
                               </Text>
                             </HStack>
                           </Td>
@@ -289,7 +282,7 @@ const AccountDetail = () => {
                     onClick={() => setCallsPage(callsPage - 1)}
                   />
                   <Box>
-                    {callsPage + 1} of{" "}
+                    {callsPage + 1} of{' '}
                     {detail
                       ? Math.ceil(detail?.calls.totalCount / PAGE_SIZE)
                       : 1}
@@ -336,41 +329,25 @@ const AccountDetail = () => {
                       ) => (
                         <Tr key={`account-${id}`}>
                           <Td>
-                            <Link
-                              as={RouterLink}
-                              to={`/transfers/${id}`}
-                              color="primary.600"
-                            >
+                            <StyledLink to={`/transfers/${id}`}>
                               {id}
-                            </Link>
+                            </StyledLink>
                           </Td>
                           <Td>
-                            <Link
-                              as={RouterLink}
-                              to={`/accounts/${fromId}`}
-                              color="primary.600"
-                            >
+                            <StyledLink to={`/accounts/${fromId}`}>
                               {fromId.substr(0, 10)}...
-                            </Link>
+                            </StyledLink>
                           </Td>
                           <Td>
-                            <Link
-                              as={RouterLink}
-                              to={`/accounts/${toId}`}
-                              color="primary.600"
-                            >
+                            <StyledLink to={`/accounts/${toId}`}>
                               {toId.substr(0, 10)}...
-                            </Link>
+                            </StyledLink>
                           </Td>
                           <Td>{getAmountHuman(amount)}</Td>
                           <Td>
-                            <Link
-                              as={RouterLink}
-                              to={`/extrinsics/${extrinsicId}`}
-                              color="primary.600"
-                            >
+                            <StyledLink to={`/extrinsics/${extrinsicId}`}>
                               {extrinsicId.substr(0, 10)}...
-                            </Link>
+                            </StyledLink>
                           </Td>
                           <Td>
                             <HStack spacing={2} mt={1}>
@@ -381,7 +358,7 @@ const AccountDetail = () => {
                                 color="yellow.600"
                               />
                               <Text color="grey" fontSize="sm">
-                                {dayjs(timestamp).add(8, "hours").toNow(true)}
+                                {dayjs(timestamp).add(8, 'hours').toNow(true)}
                               </Text>
                             </HStack>
                           </Td>
@@ -401,7 +378,7 @@ const AccountDetail = () => {
                     onClick={() => setTransfersOutPage(transfersOutPage - 1)}
                   />
                   <Box>
-                    {transfersOutPage + 1} of{" "}
+                    {transfersOutPage + 1} of{' '}
                     {detail
                       ? Math.ceil(detail?.transferOut.totalCount / PAGE_SIZE)
                       : 1}
@@ -448,41 +425,25 @@ const AccountDetail = () => {
                       ) => (
                         <Tr key={`account-${id}`}>
                           <Td>
-                            <Link
-                              as={RouterLink}
-                              to={`/transfers/${id}`}
-                              color="primary.600"
-                            >
+                            <StyledLink to={`/transfers/${id}`}>
                               {id}
-                            </Link>
+                            </StyledLink>
                           </Td>
                           <Td>
-                            <Link
-                              as={RouterLink}
-                              to={`/accounts/${fromId}`}
-                              color="primary.600"
-                            >
+                            <StyledLink to={`/accounts/${fromId}`}>
                               {fromId.substr(0, 10)}...
-                            </Link>
+                            </StyledLink>
                           </Td>
                           <Td>
-                            <Link
-                              as={RouterLink}
-                              to={`/accounts/${toId}`}
-                              color="primary.600"
-                            >
+                            <StyledLink to={`/accounts/${toId}`}>
                               {toId.substr(0, 10)}...
-                            </Link>
+                            </StyledLink>
                           </Td>
                           <Td>{getAmountHuman(amount)}</Td>
                           <Td>
-                            <Link
-                              as={RouterLink}
-                              to={`/extrinsics/${extrinsicId}`}
-                              color="primary.600"
-                            >
+                            <StyledLink to={`/extrinsics/${extrinsicId}`}>
                               {extrinsicId.substr(0, 10)}...
-                            </Link>
+                            </StyledLink>
                           </Td>
                           <Td>
                             <HStack spacing={2} mt={1}>
@@ -493,7 +454,7 @@ const AccountDetail = () => {
                                 color="yellow.600"
                               />
                               <Text color="grey" fontSize="sm">
-                                {dayjs(timestamp).add(8, "hours").toNow(true)}
+                                {dayjs(timestamp).add(8, 'hours').toNow(true)}
                               </Text>
                             </HStack>
                           </Td>
@@ -513,7 +474,7 @@ const AccountDetail = () => {
                     onClick={() => setTransfersInPage(transfersInPage - 1)}
                   />
                   <Box>
-                    {transfersInPage + 1} of{" "}
+                    {transfersInPage + 1} of{' '}
                     {detail
                       ? Math.ceil(detail?.transferIn.totalCount / PAGE_SIZE)
                       : 1}
@@ -534,7 +495,7 @@ const AccountDetail = () => {
         </Tabs>
       </Box>
     </div>
-  );
-};
+  )
+}
 
-export default AccountDetail;
+export default AccountDetail

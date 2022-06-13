@@ -1,4 +1,4 @@
-import { Container, Flex } from '@chakra-ui/layout';
+import { Container, Flex } from '@chakra-ui/layout'
 import {
   Box,
   Button,
@@ -12,17 +12,18 @@ import {
   Link,
   IconButton,
   Text,
-} from '@chakra-ui/react';
-import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
-import { BrowserView, isMobile } from 'react-device-detect';
+} from '@chakra-ui/react'
+import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
+import { Link as RouterLink, useLocation } from 'react-router-dom'
+import { BrowserView, isMobile } from 'react-device-detect'
+import StyledLink from './StyledLink'
 
 const NavLink = ({ title, to }) => {
-  const location = useLocation();
-  const pathArr = location.pathname.split('/');
-  const isActive = '/' + pathArr[1] == to;
+  const location = useLocation()
+  const pathArr = location.pathname.split('/')
+  const isActive = '/' + pathArr[1] == to
   return (
-    <Link as={RouterLink} to={to}>
+    <StyledLink to={to}>
       <Button
         background="transparent"
         color={isActive ? 'white' : 'whiteAlpha.700'}
@@ -31,9 +32,9 @@ const NavLink = ({ title, to }) => {
       >
         {title}
       </Button>
-    </Link>
-  );
-};
+    </StyledLink>
+  )
+}
 
 const navs = [
   {
@@ -57,21 +58,21 @@ const navs = [
     title: 'Extrinsics',
     link: 'extrinsics',
   },
-];
+]
 
 const Header = ({
   appchains,
   appchainInfo,
 }: {
-  appchains: any[];
-  appchainInfo: any;
+  appchains: any[]
+  appchainInfo: any
 }) => {
   return appchains && appchains.length > 0 ? (
     <div style={{ background: '#26262f' }}>
       <Container maxW="container.xl" h="88px">
         <Flex align="center" justify="center" h="100%">
           <Box p="2" pl="0">
-            <Link as={RouterLink} to="/home">
+            <StyledLink color="" to="/home">
               <Flex justify="space-between" align="center">
                 <Image
                   style={{ display: 'inline-block' }}
@@ -91,7 +92,7 @@ const Header = ({
                   {appchainInfo.appchain_id}
                 </Text>
               </Flex>
-            </Link>
+            </StyledLink>
           </Box>
           <Spacer />
           <HStack
@@ -153,9 +154,9 @@ const Header = ({
               <MenuList>
                 {navs.map((nav) => (
                   <MenuItem key={nav.title}>
-                    <Link as={RouterLink} to={`/${nav.link}`}>
+                    <StyledLink to={`/${nav.link}`} color="">
                       {nav.title}
-                    </Link>
+                    </StyledLink>
                   </MenuItem>
                 ))}
               </MenuList>
@@ -164,7 +165,7 @@ const Header = ({
         </Flex>
       </Container>
     </div>
-  ) : null;
-};
+  ) : null
+}
 
-export default Header;
+export default Header

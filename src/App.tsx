@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useSearchParams } from 'react-router-dom'
 import { useState } from 'react'
 import { ChakraProvider, Center, Spinner, extendTheme } from '@chakra-ui/react'
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'

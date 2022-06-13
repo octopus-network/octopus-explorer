@@ -13,15 +13,16 @@ import {
   Spinner,
   HStack,
   IconButton,
-} from '@chakra-ui/react';
-import dayjs from 'dayjs';
-import { useQuery, gql } from '@apollo/client';
-import { TimeIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
-import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import { useEffect } from 'react';
-import SearchBox from '../../components/SearchBox';
-import { getAmountHuman } from 'libs/polkadotApi';
+} from '@chakra-ui/react'
+import dayjs from 'dayjs'
+import { useQuery, gql } from '@apollo/client'
+import { TimeIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons'
+import { useState } from 'react'
+import { Link as RouterLink } from 'react-router-dom'
+import { useEffect } from 'react'
+import SearchBox from '../../components/SearchBox'
+import { getAmountHuman } from 'libs/polkadotApi'
+import StyledLink from 'components/StyledLink'
 
 const ACCOUNT_QUERY = gql`
   query QueryAccounts($offset: Int!, $pageSize: Int!) {
@@ -41,25 +42,25 @@ const ACCOUNT_QUERY = gql`
       totalCount
     }
   }
-`;
+`
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 20
 
 const Transfers = () => {
-  const [page, setPage] = useState(0);
-  const [isOnTable, setIsOnTable] = useState(false);
+  const [page, setPage] = useState(0)
+  const [isOnTable, setIsOnTable] = useState(false)
 
   const { loading, data, stopPolling, startPolling } = useQuery(ACCOUNT_QUERY, {
     variables: {
       offset: page * PAGE_SIZE,
       pageSize: PAGE_SIZE,
     },
-  });
+  })
 
   useEffect(() => {
-    startPolling(15 * 1000);
-    return () => stopPolling();
-  }, [startPolling, stopPolling]);
+    startPolling(15 * 1000)
+    return () => stopPolling()
+  }, [startPolling, stopPolling])
 
   return (
     <div>
@@ -102,41 +103,23 @@ const Transfers = () => {
                 ({ id, fromId, toId, amount, extrinsicId, timestamp }) => (
                   <Tr key={`transfer-${id}`}>
                     <Td>
-                      <Link
-                        as={RouterLink}
-                        to={`/transfers/${id}`}
-                        color="primary.600"
-                      >
-                        {id}
-                      </Link>
+                      <StyledLink to={`/transfers/${id}`}>{id}</StyledLink>
                     </Td>
                     <Td>
-                      <Link
-                        as={RouterLink}
-                        to={`/accounts/${fromId}`}
-                        color="primary.600"
-                      >
+                      <StyledLink to={`/accounts/${fromId}`}>
                         {fromId.substr(0, 10)}...
-                      </Link>
+                      </StyledLink>
                     </Td>
                     <Td>
-                      <Link
-                        as={RouterLink}
-                        to={`/accounts/${toId}`}
-                        color="primary.600"
-                      >
+                      <StyledLink to={`/accounts/${toId}`}>
                         {toId.substr(0, 10)}...
-                      </Link>
+                      </StyledLink>
                     </Td>
                     <Td>{getAmountHuman(amount)}</Td>
                     <Td>
-                      <Link
-                        as={RouterLink}
-                        to={`/extrinsics/${extrinsicId}`}
-                        color="primary.600"
-                      >
+                      <StyledLink to={`/extrinsics/${extrinsicId}`}>
                         {extrinsicId.substr(0, 10)}...
-                      </Link>
+                      </StyledLink>
                     </Td>
                     <Td>
                       <HStack spacing={2} mt={1}>
@@ -185,7 +168,7 @@ const Transfers = () => {
         </HStack>
       </Flex>
     </div>
-  );
-};
+  )
+}
 
-export default Transfers;
+export default Transfers

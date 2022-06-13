@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { useQuery, gql } from '@apollo/client';
+import { useEffect } from 'react'
+import { useQuery, gql } from '@apollo/client'
 import {
   Text,
   Flex,
@@ -10,11 +10,12 @@ import {
   Tag,
   Icon,
   Heading,
-} from '@chakra-ui/react';
-import dayjs from 'dayjs';
-import { TimeIcon } from '@chakra-ui/icons';
-import { Link as RouterLink } from 'react-router-dom';
-import { isMobile } from 'react-device-detect';
+} from '@chakra-ui/react'
+import dayjs from 'dayjs'
+import { TimeIcon } from '@chakra-ui/icons'
+import { Link as RouterLink } from 'react-router-dom'
+import { isMobile } from 'react-device-detect'
+import StyledLink from 'components/StyledLink'
 
 const NEW_EXTRINSICS_QUERY = gql`
   query QueryNewExtrinsics {
@@ -31,16 +32,16 @@ const NEW_EXTRINSICS_QUERY = gql`
       }
     }
   }
-`;
+`
 
 const ExtrinsicsBox = () => {
   const { loading, data, stopPolling, startPolling } =
-    useQuery(NEW_EXTRINSICS_QUERY);
+    useQuery(NEW_EXTRINSICS_QUERY)
 
   useEffect(() => {
-    startPolling(1000);
-    return () => stopPolling();
-  }, [stopPolling, startPolling]);
+    startPolling(1000)
+    return () => stopPolling()
+  }, [stopPolling, startPolling])
 
   return (
     <Box p={4} background="white" borderRadius="lg" boxShadow="sm">
@@ -60,15 +61,11 @@ const ExtrinsicsBox = () => {
               pb={4}
             >
               <Box>
-                <Link
-                  color="primary.600"
-                  as={RouterLink}
-                  to={`/extrinsics/${id}`}
-                >
+                <StyledLink to={`/extrinsics/${id}`}>
                   <Heading as="h6" size="sm">
                     {id.substr(0, isMobile ? 18 : 32)}...
                   </Heading>
-                </Link>
+                </StyledLink>
                 <HStack spacing={2} mt={1}>
                   <Icon as={TimeIcon} ml={3} boxSize={3} color="yellow.600" />
                   <Text color="grey" fontSize="sm">
@@ -86,7 +83,7 @@ const ExtrinsicsBox = () => {
         )
       )}
     </Box>
-  );
-};
+  )
+}
 
-export default ExtrinsicsBox;
+export default ExtrinsicsBox
