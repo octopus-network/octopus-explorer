@@ -20,10 +20,7 @@ const pageSize = 10;
 
 export const initNear = async () => {
   const near = await connect(
-    Object.assign(
-      { deps: { keyStore: new keyStores.BrowserLocalStorageKeyStore() } },
-      nearConfig
-    )
+      {...nearConfig, keyStore: new keyStores.BrowserLocalStorageKeyStore(), headers: {}}
   );
 
   window.walletConnection = new WalletConnection(near, "octopus_bridge");
