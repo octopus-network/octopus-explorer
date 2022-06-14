@@ -37,7 +37,7 @@ function App() {
 
         if (!appchain) {
           const defaultAppchain = appchains[appchains.length - 1]
-          // window.location.replace(`/${defaultAppchain.appchain_id}`)
+          window.location.replace(`/${defaultAppchain.appchain_id}`)
         }
         const info = await window.getAppchainInfo(appchain)
         await initPolkaApi(info)
