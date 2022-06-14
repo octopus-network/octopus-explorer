@@ -9,20 +9,19 @@ import {
   Text,
   Divider,
   Icon,
-  Link,
-} from '@chakra-ui/react';
+} from '@chakra-ui/react'
 import {
   MdApps,
   MdSwapHoriz,
   MdAccountCircle,
   MdTrendingUp,
-} from 'react-icons/md';
-import { Link as RouterLink } from 'react-router-dom';
-import ExtrinsicsBox from './ExtrinsicsBox';
-import BlocksBox from './BlocksBox';
-import { useQuery, gql } from '@apollo/client';
-import { useEffect } from 'react';
-import { isMobile } from 'react-device-detect';
+} from 'react-icons/md'
+import ExtrinsicsBox from './ExtrinsicsBox'
+import BlocksBox from './BlocksBox'
+import { useQuery, gql } from '@apollo/client'
+import { useEffect } from 'react'
+import { isMobile } from 'react-device-detect'
+import StyledLink from 'components/StyledLink'
 
 const GLOBAL_DATA_QUERY = gql`
   query QueryGlobalData {
@@ -39,7 +38,7 @@ const GLOBAL_DATA_QUERY = gql`
       totalCount
     }
   }
-`;
+`
 
 const StateBox = ({ label, value, icon }) => {
   return (
@@ -62,16 +61,16 @@ const StateBox = ({ label, value, icon }) => {
         </Heading>
       </Flex>
     </Flex>
-  );
-};
+  )
+}
 
 const Home = () => {
-  const { data, startPolling, stopPolling } = useQuery(GLOBAL_DATA_QUERY);
+  const { data, startPolling, stopPolling } = useQuery(GLOBAL_DATA_QUERY)
 
   useEffect(() => {
-    startPolling(1000);
-    return () => stopPolling();
-  }, [startPolling, stopPolling]);
+    startPolling(1000)
+    return () => stopPolling()
+  }, [startPolling, stopPolling])
 
   return (
     <div>
@@ -133,15 +132,11 @@ const Home = () => {
                 Latest Blocks
               </Heading>
             </HStack>
-            <Link
-              as={RouterLink}
-              to={`/blocks`}
-              _hover={{ textDecoration: 'none' }}
-            >
+            <StyledLink to={`/blocks`}>
               <Button colorScheme="primary" size="sm">
                 All
               </Button>
-            </Link>
+            </StyledLink>
           </Flex>
           <BlocksBox />
         </GridItem>
@@ -153,21 +148,17 @@ const Home = () => {
                 Latest Extrinsics
               </Heading>
             </HStack>
-            <Link
-              as={RouterLink}
-              to={`/extrinsics`}
-              _hover={{ textDecoration: 'none' }}
-            >
+            <StyledLink to={`/extrinsics`}>
               <Button colorScheme="primary" size="sm">
                 All
               </Button>
-            </Link>
+            </StyledLink>
           </Flex>
           <ExtrinsicsBox />
         </GridItem>
       </Grid>
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home
