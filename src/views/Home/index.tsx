@@ -9,7 +9,6 @@ import {
   Text,
   Divider,
   Icon,
-  Link,
 } from '@chakra-ui/react'
 import {
   MdApps,
@@ -17,7 +16,6 @@ import {
   MdAccountCircle,
   MdTrendingUp,
 } from 'react-icons/md'
-import { Link as RouterLink } from 'react-router-dom'
 import ExtrinsicsBox from './ExtrinsicsBox'
 import BlocksBox from './BlocksBox'
 import { useQuery, gql } from '@apollo/client'

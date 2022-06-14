@@ -2,7 +2,6 @@ import {
   Flex,
   Box,
   Text,
-  Link,
   Icon,
   Table,
   Thead,
@@ -20,7 +19,6 @@ import dayjs from 'dayjs'
 import { useQuery, gql } from '@apollo/client'
 import { TimeIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons'
 import { useState } from 'react'
-import { Link as RouterLink } from 'react-router-dom'
 import { useEffect } from 'react'
 import SearchBox from '../../components/SearchBox'
 import StyledLink from 'components/StyledLink'

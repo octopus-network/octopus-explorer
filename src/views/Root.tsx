@@ -1,5 +1,5 @@
 import { Container } from '@chakra-ui/layout'
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import Header from 'components/Header'
 import Footer from 'components/Footer'
 import HomeBanner from 'components/HomeBanner'
@@ -12,11 +12,10 @@ const Root = ({
   appchains: any[]
   appchainInfo: any
 }) => {
-  const [searchParams, setSearchParams] = useSearchParams()
   const location = useLocation()
-  const isHome = location.pathname == '/home' || location.pathname === '/'
-  console.log('#appchain', searchParams.get('appchain'))
-  const navigate = useNavigate()
+  const { appchain } = useParams()
+  const isHome =
+    location.pathname == `/${appchain}` || location.pathname == `/${appchain}/`
 
   return (
     <div>

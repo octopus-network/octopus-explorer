@@ -39,7 +39,7 @@ const NavLink = ({ title, to }) => {
 const navs = [
   {
     title: 'Home',
-    link: 'home',
+    link: '',
   },
   {
     title: 'Accounts',
@@ -72,7 +72,7 @@ const Header = ({
       <Container maxW="container.xl" h="88px">
         <Flex align="center" justify="center" h="100%">
           <Box p="2" pl="0">
-            <StyledLink color="" to="/home">
+            <StyledLink color="" to="">
               <Flex justify="space-between" align="center">
                 <Image
                   style={{ display: 'inline-block' }}
@@ -106,7 +106,7 @@ const Header = ({
                 <NavLink
                   key={nav.title}
                   title={nav.title}
-                  to={`/${nav.link}`}
+                  to={nav.link ? `/${nav.link}` : ''}
                 />
               ))}
             <Menu>
@@ -122,7 +122,7 @@ const Header = ({
               <MenuList bg="#262636" border="none">
                 {appchains.map((appchain) => (
                   <Link
-                    href={`/?appchain=${appchain.appchain_id}`}
+                    href={`/${appchain.appchain_id}`}
                     key={appchain.appchain_id}
                     _hover={{ textDecoration: 'none' }}
                   >
@@ -154,7 +154,7 @@ const Header = ({
               <MenuList>
                 {navs.map((nav) => (
                   <MenuItem key={nav.title}>
-                    <StyledLink to={`/${nav.link}`} color="">
+                    <StyledLink to={nav.link ? `/${nav.link}` : ''} color="">
                       {nav.title}
                     </StyledLink>
                   </MenuItem>

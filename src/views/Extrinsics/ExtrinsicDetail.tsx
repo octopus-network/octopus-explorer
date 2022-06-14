@@ -3,7 +3,6 @@ import {
   Heading,
   Box,
   Tab,
-  Link,
   Text,
   Table,
   Thead,
@@ -20,9 +19,9 @@ import {
 } from '@chakra-ui/react'
 import { useState, useEffect } from 'react'
 import dayjs from 'dayjs'
-import { getBlock, getEvents, getAmountHuman } from '../../libs/polkadotApi'
+import { getAmountHuman } from '../../libs/polkadotApi'
 import { useQuery, gql } from '@apollo/client'
-import { useParams, Link as RouterLink, useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import SearchBox from '../../components/SearchBox'
 import StyledLink from 'components/StyledLink'
 

@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useSearchParams } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { useState } from 'react'
 import { ChakraProvider, Center, Spinner, extendTheme } from '@chakra-ui/react'
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
@@ -22,8 +22,8 @@ function App() {
   const [appchains, setAppchains] = useState<any[]>()
   const [client, setClient] = useState<any>()
 
-  const urlParams = new URLSearchParams(window.location.search)
-  const appchain = urlParams.get('appchain')
+  const appchain = window.location.pathname.split('/')[1]
+
   const appchainTheme = getAppchainTheme(appchain)
   const theme = extendTheme(appchainTheme)
 
@@ -31,15 +31,13 @@ function App() {
     const init = async () => {
       const appchains = await window.getAppchains()
       setAppchains(appchains)
-      console.log('appchain', appchain)
 
       try {
+        console.log('appchain', appchain)
+
         if (!appchain) {
           const defaultAppchain = appchains[appchains.length - 1]
-          window.location.replace(
-            `/home?appchain=${defaultAppchain.appchain_id}`
-          )
-          return
+          // window.location.replace(`/${defaultAppchain.appchain_id}`)
         }
         const info = await window.getAppchainInfo(appchain)
         await initPolkaApi(info)
@@ -76,16 +74,24 @@ function App() {
                   <Root appchains={appchains} appchainInfo={appchainInfo} />
                 }
               >
-                <Route path="" element={<Home />} />
-                <Route path="home" element={<Home />} />
-                <Route path="blocks" element={<Blocks />} />
-                <Route path="blocks/:id" element={<BlockDetail />} />
-                <Route path="accounts" element={<Accounts />} />
-                <Route path="accounts/:id" element={<AccountDetail />} />
-                <Route path="transfers" element={<Transfers />} />
-                <Route path="transfers/:id" element={<TransferDetail />} />
-                <Route path="extrinsics" element={<Extrinsics />} />
-                <Route path="extrinsics/:id" element={<ExtrinsicDetail />} />
+                <Route path="/:appchain" element={<Home />} />
+                <Route path="/:appchain/blocks" element={<Blocks />} />
+                <Route path="/:appchain/blocks/:id" element={<BlockDetail />} />
+                <Route path="/:appchain/accounts" element={<Accounts />} />
+                <Route
+                  path="/:appchain/accounts/:id"
+                  element={<AccountDetail />}
+                />
+                <Route path="/:appchain/transfers" element={<Transfers />} />
+                <Route
+                  path="/:appchain/transfers/:id"
+                  element={<TransferDetail />}
+                />
+                <Route path="/:appchain/extrinsics" element={<Extrinsics />} />
+                <Route
+                  path="/:appchain/extrinsics/:id"
+                  element={<ExtrinsicDetail />}
+                />
               </Route>
             </Routes>
           </BrowserRouter>

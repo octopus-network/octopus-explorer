@@ -1,17 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useQuery, gql } from '@apollo/client'
-import {
-  Text,
-  Flex,
-  Box,
-  Link,
-  Spinner,
-  HStack,
-  Heading,
-} from '@chakra-ui/react'
+import { Text, Flex, Box, Spinner, HStack, Heading } from '@chakra-ui/react'
 import dayjs from 'dayjs'
 import { TimeIcon } from '@chakra-ui/icons'
-import { Link as RouterLink } from 'react-router-dom'
 import StyledLink from 'components/StyledLink'
 
 const NEW_BLOCKS_QUERY = gql`

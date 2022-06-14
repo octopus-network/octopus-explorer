@@ -6,7 +6,6 @@ import {
   Heading,
   Box,
   Tab,
-  Link,
   Text,
   CircularProgress,
   Table,
@@ -30,10 +29,9 @@ import {
   ChevronRightIcon,
   TimeIcon,
   CheckIcon,
-  CopyIcon,
 } from '@chakra-ui/icons'
 import { useQuery, gql } from '@apollo/client'
-import { useParams, Link as RouterLink, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import CopyButton from '../../components/CopyButton'
 import SearchBox from '../../components/SearchBox'
 import StyledLink from 'components/StyledLink'
@@ -96,7 +94,7 @@ const BLOCK_DETAIL_QUERY_BY_HASH = gql`
 `
 
 const BlockDetail = () => {
-  const { id } = useParams()
+  const { id, appchain } = useParams()
   const [detail, setDetail] = useState<any>()
   const [blockNumber, setBlockNumber] = useState('')
   const [isConfirmed, setIsConfirmed] = useState(false)
@@ -149,11 +147,11 @@ const BlockDetail = () => {
   }, [detail])
 
   const onPrevBlock = () => {
-    navigate(`/blocks/${parseInt(blockNumber) - 1}`)
+    navigate(`/${appchain}/blocks/${parseInt(blockNumber) - 1}`)
   }
 
   const onNextBlock = () => {
-    navigate(`/blocks/${parseInt(blockNumber) + 1}`)
+    navigate(`/${appchain}/blocks/${parseInt(blockNumber) + 1}`)
   }
 
   return (

@@ -1,4 +1,4 @@
-import { Link as RouterLink, useSearchParams } from 'react-router-dom'
+import { Link as RouterLink, useParams } from 'react-router-dom'
 import { Link } from '@chakra-ui/react'
 
 export default function StyledLink({
@@ -10,11 +10,10 @@ export default function StyledLink({
   children: any
   color?: string
 }) {
-  const [searchParams, setSearchParams] = useSearchParams()
-  const appchain = searchParams.get('appchain')
+  const { appchain } = useParams()
 
   return (
-    <Link as={RouterLink} to={`${to}?appchain=${appchain}`} color={color}>
+    <Link as={RouterLink} to={`/${appchain}${to}`} color={color}>
       {children}
     </Link>
   )

@@ -1,7 +1,6 @@
 import {
   Flex,
   Box,
-  Link,
   Table,
   Thead,
   Tbody,
@@ -16,7 +15,6 @@ import {
 import { useQuery, gql } from '@apollo/client'
 import { ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons'
 import { useState } from 'react'
-import { Link as RouterLink } from 'react-router-dom'
 import { useEffect } from 'react'
 import SearchBox from '../../components/SearchBox'
 import { getBalanceOf } from 'libs/polkadotApi'

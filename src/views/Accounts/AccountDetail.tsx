@@ -6,7 +6,6 @@ import {
   Heading,
   Box,
   Tab,
-  Link,
   Text,
   Table,
   Thead,
@@ -26,7 +25,7 @@ import dayjs from 'dayjs'
 import { ChevronLeftIcon, ChevronRightIcon, TimeIcon } from '@chakra-ui/icons'
 import { getBalanceOf } from '../../libs/polkadotApi'
 import { useQuery, gql } from '@apollo/client'
-import { useParams, Link as RouterLink, useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { getAmountHuman } from '../../libs/polkadotApi'
 import CopyButton from '../../components/CopyButton'
 import SearchBox from '../../components/SearchBox'

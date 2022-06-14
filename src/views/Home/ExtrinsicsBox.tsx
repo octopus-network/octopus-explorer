@@ -4,7 +4,6 @@ import {
   Text,
   Flex,
   Box,
-  Link,
   Spinner,
   HStack,
   Tag,
@@ -13,7 +12,6 @@ import {
 } from '@chakra-ui/react'
 import dayjs from 'dayjs'
 import { TimeIcon } from '@chakra-ui/icons'
-import { Link as RouterLink } from 'react-router-dom'
 import { isMobile } from 'react-device-detect'
 import StyledLink from 'components/StyledLink'
 

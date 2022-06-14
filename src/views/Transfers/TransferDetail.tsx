@@ -4,7 +4,6 @@ import {
   Icon,
   Heading,
   Box,
-  Link,
   Text,
   CircularProgress,
   Table,
@@ -18,7 +17,7 @@ import { useState, useEffect } from 'react'
 import dayjs from 'dayjs'
 import { TimeIcon, CheckIcon } from '@chakra-ui/icons'
 import { useQuery, gql } from '@apollo/client'
-import { useParams, Link as RouterLink, useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { getAmountHuman } from '../../libs/polkadotApi'
 import CopyButton from '../../components/CopyButton'
 import SearchBox from '../../components/SearchBox'
