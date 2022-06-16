@@ -2,7 +2,6 @@ import {
   Flex,
   Box,
   Text,
-  Link,
   Icon,
   Table,
   Thead,
@@ -14,19 +13,14 @@ import {
   HStack,
   IconButton,
   Heading,
-} from '@chakra-ui/react';
-import dayjs from 'dayjs';
-import { useQuery, gql } from '@apollo/client';
-import {
-  ChevronDownIcon,
-  TimeIcon,
-  ChevronRightIcon,
-  ChevronLeftIcon,
-} from '@chakra-ui/icons';
-import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import { useEffect } from 'react';
-import SearchBox from '../../components/SearchBox';
+} from '@chakra-ui/react'
+import dayjs from 'dayjs'
+import { useQuery, gql } from '@apollo/client'
+import { TimeIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons'
+import { useState } from 'react'
+import { useEffect } from 'react'
+import SearchBox from '../../components/SearchBox'
+import StyledLink from 'components/StyledLink'
 
 const BLOCKS_QUERY = gql`
   query QueryBlocks($offset: Int!, $pageSize: Int!) {
@@ -45,24 +39,24 @@ const BLOCKS_QUERY = gql`
       totalCount
     }
   }
-`;
+`
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 20
 
 const Blocks = () => {
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(0)
 
   const { loading, data, stopPolling, startPolling } = useQuery(BLOCKS_QUERY, {
     variables: {
       offset: page * PAGE_SIZE,
       pageSize: PAGE_SIZE,
     },
-  });
+  })
 
   useEffect(() => {
-    startPolling(1000);
-    return () => stopPolling();
-  }, [startPolling, stopPolling]);
+    startPolling(1000)
+    return () => stopPolling()
+  }, [startPolling, stopPolling])
 
   return (
     <div>
@@ -100,15 +94,11 @@ const Blocks = () => {
                 ({ number, id, timestamp, events, extrinsics }) => (
                   <Tr key={`block-${id}`}>
                     <Td>
-                      <Link
-                        as={RouterLink}
-                        to={`/blocks/${number}`}
-                        color="primary.600"
-                      >
+                      <StyledLink to={`/blocks/${number}`}>
                         <Heading size="sm" as="h6">
                           #{number}
                         </Heading>
-                      </Link>
+                      </StyledLink>
                     </Td>
                     <Td>
                       <HStack spacing={2} mt={1}>
@@ -126,13 +116,9 @@ const Blocks = () => {
                     <Td>{extrinsics.totalCount}</Td>
                     <Td>{events.totalCount}</Td>
                     <Td>
-                      <Link
-                        as={RouterLink}
-                        to={`/blocks/${id}`}
-                        color="primary.600"
-                      >
+                      <StyledLink to={`/blocks/${id}`}>
                         {id.substr(32)}...
-                      </Link>
+                      </StyledLink>
                     </Td>
                   </Tr>
                 )
@@ -163,7 +149,7 @@ const Blocks = () => {
         </HStack>
       </Flex>
     </div>
-  );
-};
+  )
+}
 
-export default Blocks;
+export default Blocks

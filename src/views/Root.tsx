@@ -1,19 +1,22 @@
-import { Container } from "@chakra-ui/layout";
-import { useLocation } from "react-router-dom";
-import Header from "components/Header";
-import Footer from "components/Footer";
-import HomeBanner from "components/HomeBanner";
-import { Outlet } from "react-router-dom";
+import { Container } from '@chakra-ui/layout'
+import { useLocation, useParams } from 'react-router-dom'
+import Header from 'components/Header'
+import Footer from 'components/Footer'
+import HomeBanner from 'components/HomeBanner'
+import { Outlet } from 'react-router-dom'
 
 const Root = ({
   appchains,
   appchainInfo,
 }: {
-  appchains: any[];
-  appchainInfo: any;
+  appchains: any[]
+  appchainInfo: any
 }) => {
-  const location = useLocation();
-  const isHome = location.pathname == "/home";
+  const location = useLocation()
+  const { appchain } = useParams()
+  const isHome =
+    location.pathname == `/${appchain}` || location.pathname == `/${appchain}/`
+
   return (
     <div>
       <Header appchains={appchains} appchainInfo={appchainInfo} />
@@ -27,7 +30,7 @@ const Root = ({
       </Container>
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default Root;
+export default Root
