@@ -114,7 +114,7 @@ async function checkKeywordType(keyword, appoloClient) {
 
 export async function getLinkFromSearch(keyword, appoloClient) {
   const type = await checkKeywordType(keyword, appoloClient)
-  console.log('type', type)
+
   let link = ''
   if (type == 'blockNumber' || type == 'blockHash') {
     link = `/blocks/${keyword}`

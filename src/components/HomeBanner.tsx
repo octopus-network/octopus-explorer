@@ -2,7 +2,7 @@ import { Flex, Input, Button, Center, Text, useToast } from '@chakra-ui/react'
 import { useRef, useState } from 'react'
 import headerBg from 'assets/background.svg'
 import { useApolloClient } from '@apollo/client'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { getLinkFromSearch } from '../libs/searchFuncs'
 
 const HomeBanner = () => {
@@ -24,6 +24,7 @@ const HomeBanner = () => {
   }
 
   const toast = useToast()
+  const { appchain } = useParams()
   const onSearch = async () => {
     try {
       setIsSearching(true)
@@ -32,7 +33,7 @@ const HomeBanner = () => {
         throw new Error('No result found')
       }
       await new Promise((resolve) => setTimeout(() => resolve(0), 500))
-      navigate(link)
+      navigate(`/${appchain}${link}`)
       setIsSearching(false)
     } catch (error) {
       setIsSearching(false)
