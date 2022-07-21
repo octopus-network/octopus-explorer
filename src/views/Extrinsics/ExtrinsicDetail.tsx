@@ -16,19 +16,20 @@ import {
   TabPanels,
   TabPanel,
   Tag,
-} from '@chakra-ui/react'
-import { useState, useEffect } from 'react'
-import dayjs from 'dayjs'
-import { getAmountHuman } from '../../libs/polkadotApi'
-import { useQuery, gql } from '@apollo/client'
-import { useParams } from 'react-router-dom'
-import SearchBox from '../../components/SearchBox'
-import StyledLink from 'components/StyledLink'
+} from "@chakra-ui/react";
+import { useState, useEffect } from "react";
+import dayjs from "dayjs";
+import { getAmountHuman } from "../../libs/polkadotApi";
+import { useQuery, gql } from "@apollo/client";
+import { useParams } from "react-router-dom";
+import SearchBox from "../../components/SearchBox";
+import StyledLink from "components/StyledLink";
 
 const EXTRINSIC_DETAIL_QUERY = gql`
   query ExtrinsicDetail($id: String!) {
     extrinsic(id: $id) {
       id
+      hash
       timestamp
       signature
       signer {
@@ -51,47 +52,56 @@ const EXTRINSIC_DETAIL_QUERY = gql`
       }
     }
   }
-`
+`;
 
 const ExtrinsicDetail = () => {
-  const { id } = useParams()
-  const [detail, setDetail] = useState<any>()
+  const { id } = useParams();
+  const [detail, setDetail] = useState<any>();
 
   const { loading, data, startPolling, stopPolling } = useQuery(
     EXTRINSIC_DETAIL_QUERY,
     { variables: { id } }
-  )
+  );
 
   useEffect(() => {
-    startPolling(1000)
-    return () => stopPolling()
-  }, [])
+    startPolling(1000);
+    return () => stopPolling();
+  }, []);
 
   useEffect(() => {
-    ;(async () => {
+    (async () => {
       if (data) {
         const events = data.extrinsic.events.nodes.map((e) => ({
           ...e,
           data: JSON.parse(e.data),
-        }))
-        console.log('events', events)
+        }));
+        const aa = events.filter(
+          (event) =>
+            event.section.toString() === "balances" &&
+            event.method.toString() === "Transfer"
+        );
+        console.log("aa", aa);
         const transfers = events
           .filter(
             (event) =>
-              event.section.toString() === 'balances' &&
-              event.method.toString() === 'Transfer'
+              event.section.toString() === "balances" &&
+              event.method.toString() === "Transfer"
           )
-          .map(({ data }) => ({
-            fromId: data[0].toString(),
-            toId: data[1].toString(),
-            amount: data[2],
-          }))
-        setDetail({ ...data.extrinsic, transfers, events })
+          .map(({ data }) => {
+            return Array.isArray(data)
+              ? {
+                  from: data[0].toString(),
+                  to: data[1].toString(),
+                  amount: data[2],
+                }
+              : data;
+          });
+        setDetail({ ...data.extrinsic, transfers, events });
       } else {
-        setDetail(null)
+        setDetail(null);
       }
-    })()
-  }, [data])
+    })();
+  }, [data]);
 
   return (
     <div>
@@ -122,8 +132,8 @@ const ExtrinsicDetail = () => {
                 </Td>
                 <Td>
                   {dayjs(detail?.timestamp)
-                    .add(8, 'hours')
-                    .format('YYYY-MM-DD HH:mm:ss')}
+                    .add(8, "hours")
+                    .format("YYYY-MM-DD HH:mm:ss")}
                 </Td>
               </Tr>
               <Tr>
@@ -143,10 +153,18 @@ const ExtrinsicDetail = () => {
               <Tr>
                 <Td>
                   <Heading as="h6" size="xs">
-                    Hash
+                    ID
                   </Heading>
                 </Td>
                 <Td>{detail.id}</Td>
+              </Tr>
+              <Tr>
+                <Td>
+                  <Heading as="h6" size="xs">
+                    Hash
+                  </Heading>
+                </Td>
+                <Td>{detail.hash}</Td>
               </Tr>
               <Tr>
                 <Td>
@@ -237,16 +255,16 @@ const ExtrinsicDetail = () => {
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {detail.transfers.map(({ fromId, toId, amount }, idx) => (
+                    {detail.transfers.map(({ from, to, amount }, idx) => (
                       <Tr key={`transfers-${idx}`}>
                         <Td>
-                          <StyledLink to={`/accounts/${fromId}`}>
-                            {fromId.substr(0, 10)}...
+                          <StyledLink to={`/accounts/${from}`}>
+                            {from.substr(0, 10)}...
                           </StyledLink>
                         </Td>
                         <Td>
-                          <StyledLink to={`/accounts/${toId}`}>
-                            {toId.substr(0, 10)}...
+                          <StyledLink to={`/accounts/${to}`}>
+                            {to.substr(0, 10)}...
                           </StyledLink>
                         </Td>
                         <Td>{getAmountHuman(amount)}</Td>
@@ -285,13 +303,21 @@ const ExtrinsicDetail = () => {
                           </Tag>
                         </Td>
                         <Td maxWidth="400px">
-                          {data.map((d, idx) => (
-                            <div key={`${index}-data-${idx}`}>
-                              {d && typeof d === 'object'
-                                ? JSON.stringify(d)
-                                : d.toString()}
+                          {Array.isArray(data) ? (
+                            data.map((d, idx) => (
+                              <div key={`${index}-data-${idx}`}>
+                                {d && typeof d === "object"
+                                  ? JSON.stringify(d)
+                                  : d.toString()}
+                              </div>
+                            ))
+                          ) : (
+                            <div>
+                              {typeof data === "object"
+                                ? JSON.stringify(data)
+                                : data.toString()}
                             </div>
-                          ))}
+                          )}
                         </Td>
                       </Tr>
                     ))}
@@ -303,7 +329,7 @@ const ExtrinsicDetail = () => {
         </Tabs>
       </Box>
     </div>
-  )
-}
+  );
+};
 
-export default ExtrinsicDetail
+export default ExtrinsicDetail;
