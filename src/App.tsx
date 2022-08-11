@@ -5,7 +5,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { initPolkaApi } from "./libs/polkadotApi";
 
 import Root from "views/Root";
-import Home from "views/default/Home";
+import Home from "views/Home";
 import Blocks from "views/default/Blocks";
 import BlockDetail from "views/default/Blocks/BlockDetail";
 import Transfers from "views/default/Transfers";

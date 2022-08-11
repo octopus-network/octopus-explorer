@@ -124,8 +124,8 @@ export const TRANSFERS_IN_QUERY = gql`
 `;
 
 export const EVM_LOGS_QUERY = gql`
-  query evmLogs($address: String!, $offset: Int!, $pageSize: Int!) {
-    evmLogs(filter:{address: {equalTo: $address}}, offset: $offset, first: $pageSize, orderBy: TIMESTAMP_DESC) {
+  query evmLogs($contractId: String!, $offset: Int!, $pageSize: Int!) {
+    evmLogs(filter:{contractId: {equalTo: $contractId}}, offset: $offset, first: $pageSize, orderBy: TIMESTAMP_DESC) {
       nodes {
         id
         logIndex

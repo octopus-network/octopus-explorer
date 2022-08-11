@@ -48,7 +48,7 @@ const EvmContractData = ({ account }) => {
 
   const evmLogsQuery = useQuery(EVM_LOGS_QUERY, {
     variables: {
-      address: id,
+      contractId: id,
       offset: evmLogsPage * PAGE_SIZE,
       pageSize: PAGE_SIZE,
     },
