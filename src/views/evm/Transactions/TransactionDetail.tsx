@@ -244,9 +244,11 @@ const TransactionDetail = () => {
                           : detail.inputData}
                       </Text>
                       <Flex justify="end" width="100%">
-                        <Tag size="sm" colorScheme={"gray"} ml={2}>
-                          Length: {detail.inputData.length}
-                        </Tag>
+                        {detail.inputData.length > 500 && (
+                          <Tag size="sm" colorScheme={"gray"} ml={2}>
+                            Length: {detail.inputData.length}
+                          </Tag>
+                        )}
                         <CopyButton value={detail.inputData} />
                       </Flex>
                     </Box>
