@@ -21,20 +21,20 @@ import {
   TabPanel,
   Tag,
   CircularProgressLabel,
-} from '@chakra-ui/react'
-import { useState, useEffect } from 'react'
-import dayjs from 'dayjs'
+} from "@chakra-ui/react";
+import { useState, useEffect } from "react";
+import dayjs from "dayjs";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
   TimeIcon,
   CheckIcon,
-} from '@chakra-ui/icons'
-import { useQuery, gql } from '@apollo/client'
-import { useParams, useNavigate } from 'react-router-dom'
-import CopyButton from '../../components/CopyButton'
-import SearchBox from '../../components/SearchBox'
-import StyledLink from 'components/StyledLink'
+} from "@chakra-ui/icons";
+import { useQuery, gql } from "@apollo/client";
+import { useParams, useNavigate } from "react-router-dom";
+import CopyButton from "../../../components/CopyButton";
+import SearchBox from "../../../components/SearchBox";
+import StyledLink from "components/StyledLink";
 
 const BLOCK_DETAIL_QUERY_BY_NUMBER = gql`
   query BlockDetail($number: BigFloat!) {
@@ -63,7 +63,7 @@ const BLOCK_DETAIL_QUERY_BY_NUMBER = gql`
       }
     }
   }
-`
+`;
 
 const BLOCK_DETAIL_QUERY_BY_HASH = gql`
   query BlockDetail($id: String!) {
@@ -91,68 +91,68 @@ const BLOCK_DETAIL_QUERY_BY_HASH = gql`
       }
     }
   }
-`
+`;
 
 const BlockDetail = () => {
-  const { id, appchain } = useParams()
-  const [detail, setDetail] = useState<any>()
-  const [blockNumber, setBlockNumber] = useState('')
-  const [isConfirmed, setIsConfirmed] = useState(false)
-  const [secondsPast, setSecondsPast] = useState(0)
-  const [isBN, setIsBN] = useState(false)
-  const navigate = useNavigate()
+  const { id, appchain } = useParams();
+  const [detail, setDetail] = useState<any>();
+  const [blockNumber, setBlockNumber] = useState("");
+  const [isConfirmed, setIsConfirmed] = useState(false);
+  const [secondsPast, setSecondsPast] = useState(0);
+  const [isBN, setIsBN] = useState(false);
+  const navigate = useNavigate();
 
   const { loading, data, startPolling, stopPolling } = useQuery(
     isBN ? BLOCK_DETAIL_QUERY_BY_NUMBER : BLOCK_DETAIL_QUERY_BY_HASH,
     { variables: isBN ? { number: id } : { id } }
-  )
+  );
 
   useEffect(() => {
-    startPolling(1000)
+    startPolling(6000);
 
-    return () => stopPolling()
-  }, [])
+    return () => stopPolling();
+  }, []);
 
   useEffect(() => {
     if (!/0x/.test(id) && /^\d+$/.test(id)) {
-      setBlockNumber(id)
-      setIsBN(true)
+      setBlockNumber(id);
+      setIsBN(true);
     } else {
-      setIsBN(false)
-      setBlockNumber('')
+      setIsBN(false);
+      setBlockNumber("");
     }
-  }, [id])
+  }, [id]);
 
   useEffect(() => {
     if (data) {
       if (isBN) {
-        setDetail(data.blocks.nodes[0])
+        setDetail(data.blocks.nodes[0]);
       } else if (data.block) {
-        setDetail(data.block)
-        setBlockNumber(data.block.number)
+        setDetail(data.block);
+        setBlockNumber(data.block.number);
       }
     } else {
-      setDetail(null)
+      setDetail(null);
     }
-  }, [data, isBN])
+  }, [data, isBN]);
 
   useEffect(() => {
     if (detail) {
       let diffSeconds = dayjs(detail.timestamp)
-        .add(8, 'hours')
-        .diff(dayjs(), 'seconds')
-      setSecondsPast(diffSeconds)
-      setIsConfirmed(diffSeconds < -12)
+        .add(8, "hours")
+        .diff(dayjs(), "seconds");
+      setSecondsPast(diffSeconds);
+      setIsConfirmed(diffSeconds < -12);
     }
-  }, [detail])
+  }, [detail]);
 
   const onPrevBlock = () => {
-    navigate(`/${appchain}/blocks/${parseInt(blockNumber) - 1}`)
-  }
+    navigate(`/${appchain}/blocks/${parseInt(blockNumber) - 1}`);
+  };
 
   const onNextBlock = () => {
-    navigate(`/${appchain}/blocks/${parseInt(blockNumber) + 1}`)
-  }
+    navigate(`/${appchain}/blocks/${parseInt(blockNumber) + 1}`);
+  };
 
   return (
     <div>
@@ -199,8 +199,8 @@ const BlockDetail = () => {
                 </Td>
                 <Td>
                   {dayjs(detail?.timestamp)
-                    .add(8, 'hours')
-                    .format('YYYY-MM-DD HH:mm:ss')}
+                    .add(8, "hours")
+                    .format("YYYY-MM-DD HH:mm:ss")}
                 </Td>
               </Tr>
               <Tr>
@@ -222,7 +222,7 @@ const BlockDetail = () => {
                         </CircularProgressLabel>
                       )}
                     </CircularProgress>
-                    <Text>{isConfirmed ? 'Confirmed' : 'Pending'}</Text>
+                    <Text>{isConfirmed ? "Confirmed" : "Pending"}</Text>
                   </HStack>
                 </Td>
               </Tr>
@@ -269,7 +269,7 @@ const BlockDetail = () => {
                   <HStack spacing={2} mt={1}>
                     <Icon as={TimeIcon} ml={3} boxSize={3} color="yellow.600" />
                     <Text color="grey" fontSize="sm">
-                      {dayjs(detail.timestamp).add(8, 'hours').toNow(true)}
+                      {dayjs(detail.timestamp).add(8, "hours").toNow(true)}
                     </Text>
                   </HStack>
                 </Td>
@@ -329,7 +329,7 @@ const BlockDetail = () => {
                                 color="yellow.600"
                               />
                               <Text color="grey" fontSize="sm">
-                                {dayjs(timestamp).add(8, 'hours').toNow(true)}
+                                {dayjs(timestamp).add(8, "hours").toNow(true)}
                               </Text>
                             </HStack>
                           </Td>
@@ -381,7 +381,7 @@ const BlockDetail = () => {
         </Tabs>
       </Box>
     </div>
-  )
-}
+  );
+};
 
-export default BlockDetail
+export default BlockDetail;

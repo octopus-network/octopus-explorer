@@ -9,19 +9,19 @@ import {
   Text,
   Divider,
   Icon,
-} from '@chakra-ui/react'
+} from "@chakra-ui/react";
 import {
   MdApps,
   MdSwapHoriz,
   MdAccountCircle,
   MdTrendingUp,
-} from 'react-icons/md'
-import ExtrinsicsBox from './ExtrinsicsBox'
-import BlocksBox from './BlocksBox'
-import { useQuery, gql } from '@apollo/client'
-import { useEffect } from 'react'
-import { isMobile } from 'react-device-detect'
-import StyledLink from 'components/StyledLink'
+} from "react-icons/md";
+import ExtrinsicsBox from "./ExtrinsicsBox";
+import BlocksBox from "./BlocksBox";
+import { useQuery, gql } from "@apollo/client";
+import { useEffect } from "react";
+import { isMobile } from "react-device-detect";
+import StyledLink from "components/StyledLink";
 
 const GLOBAL_DATA_QUERY = gql`
   query QueryGlobalData {
@@ -38,7 +38,7 @@ const GLOBAL_DATA_QUERY = gql`
       totalCount
     }
   }
-`
+`;
 
 const StateBox = ({ label, value, icon }) => {
   return (
@@ -48,8 +48,8 @@ const StateBox = ({ label, value, icon }) => {
       </Box>
       <Flex
         ml={4}
-        direction={isMobile ? 'column' : 'row'}
-        align={isMobile ? 'flex-start' : 'center'}
+        direction={isMobile ? "column" : "row"}
+        align={isMobile ? "flex-start" : "center"}
         justify="space-between"
         flex={1}
       >
@@ -61,16 +61,16 @@ const StateBox = ({ label, value, icon }) => {
         </Heading>
       </Flex>
     </Flex>
-  )
-}
+  );
+};
 
 const Home = () => {
-  const { data, startPolling, stopPolling } = useQuery(GLOBAL_DATA_QUERY)
+  const { data, startPolling, stopPolling } = useQuery(GLOBAL_DATA_QUERY);
 
   useEffect(() => {
-    startPolling(1000)
-    return () => stopPolling()
-  }, [startPolling, stopPolling])
+    startPolling(6000);
+    return () => stopPolling();
+  }, [startPolling, stopPolling]);
 
   return (
     <div>
@@ -158,7 +158,7 @@ const Home = () => {
         </GridItem>
       </Grid>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

@@ -1,5 +1,5 @@
-import { useEffect } from 'react'
-import { useQuery, gql } from '@apollo/client'
+import { useEffect } from "react";
+import { useQuery, gql } from "@apollo/client";
 import {
   Text,
   Flex,
@@ -9,11 +9,11 @@ import {
   Tag,
   Icon,
   Heading,
-} from '@chakra-ui/react'
-import dayjs from 'dayjs'
-import { TimeIcon } from '@chakra-ui/icons'
-import { isMobile } from 'react-device-detect'
-import StyledLink from 'components/StyledLink'
+} from "@chakra-ui/react";
+import dayjs from "dayjs";
+import { TimeIcon } from "@chakra-ui/icons";
+import { isMobile } from "react-device-detect";
+import StyledLink from "components/StyledLink";
 
 const NEW_EXTRINSICS_QUERY = gql`
   query QueryNewExtrinsics {
@@ -30,16 +30,16 @@ const NEW_EXTRINSICS_QUERY = gql`
       }
     }
   }
-`
+`;
 
 const ExtrinsicsBox = () => {
   const { loading, data, stopPolling, startPolling } =
-    useQuery(NEW_EXTRINSICS_QUERY)
+    useQuery(NEW_EXTRINSICS_QUERY);
 
   useEffect(() => {
-    startPolling(1000)
-    return () => stopPolling()
-  }, [stopPolling, startPolling])
+    startPolling(6000);
+    return () => stopPolling();
+  }, [stopPolling, startPolling]);
 
   return (
     <Box p={4} background="white" borderRadius="lg" boxShadow="sm">
@@ -67,7 +67,7 @@ const ExtrinsicsBox = () => {
                 <HStack spacing={2} mt={1}>
                   <Icon as={TimeIcon} ml={3} boxSize={3} color="yellow.600" />
                   <Text color="grey" fontSize="sm">
-                    {dayjs(timestamp).add(8, 'hours').toNow(true)}
+                    {dayjs(timestamp).add(8, "hours").toNow(true)}
                   </Text>
                 </HStack>
               </Box>
@@ -81,7 +81,7 @@ const ExtrinsicsBox = () => {
         )
       )}
     </Box>
-  )
-}
+  );
+};
 
-export default ExtrinsicsBox
+export default ExtrinsicsBox;

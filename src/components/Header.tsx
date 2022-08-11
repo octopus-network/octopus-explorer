@@ -1,4 +1,4 @@
-import { Container, Flex } from '@chakra-ui/layout'
+import { Container, Flex } from "@chakra-ui/layout";
 import {
   Box,
   Button,
@@ -12,70 +12,77 @@ import {
   Link,
   IconButton,
   Text,
-} from '@chakra-ui/react'
-import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
-import { Link as RouterLink, useLocation } from 'react-router-dom'
-import { BrowserView, isMobile } from 'react-device-detect'
-import StyledLink from './StyledLink'
+} from "@chakra-ui/react";
+import { ChevronDownIcon, HamburgerIcon } from "@chakra-ui/icons";
+import { Link as RouterLink, useLocation } from "react-router-dom";
+import { BrowserView, isMobile } from "react-device-detect";
+import StyledLink from "./StyledLink";
 
 const NavLink = ({ title, to }) => {
-  const location = useLocation()
-  const pathArr = location.pathname.split('/')
-  const isActive = '/' + pathArr[1] == to
+  const location = useLocation();
+  const pathArr = location.pathname.split("/");
+  const isActive = "/" + pathArr[1] == to;
   return (
     <StyledLink to={to}>
       <Button
         background="transparent"
-        color={isActive ? 'white' : 'whiteAlpha.700'}
-        _hover={{ background: 'transparent' }}
-        _active={{ background: 'transparent', color: 'white' }}
+        color={isActive ? "white" : "whiteAlpha.700"}
+        _hover={{ background: "transparent" }}
+        _active={{ background: "transparent", color: "white" }}
       >
         {title}
       </Button>
     </StyledLink>
-  )
-}
+  );
+};
 
-const navs = [
+const defaultNavs = [
   {
-    title: 'Home',
-    link: '',
+    title: "Home",
+    link: "",
   },
   {
-    title: 'Accounts',
-    link: 'accounts',
+    title: "Accounts",
+    link: "accounts",
   },
 
   {
-    title: 'Blocks',
-    link: 'blocks',
+    title: "Blocks",
+    link: "blocks",
   },
   {
-    title: 'Transfers',
-    link: 'transfers',
+    title: "Transfers",
+    link: "transfers",
   },
   {
-    title: 'Extrinsics',
-    link: 'extrinsics',
+    title: "Extrinsics",
+    link: "extrinsics",
   },
-]
+];
 
 const Header = ({
   appchains,
   appchainInfo,
 }: {
-  appchains: any[]
-  appchainInfo: any
+  appchains: any[];
+  appchainInfo: any;
 }) => {
+  const navs = [...defaultNavs];
+  if (window.isEvm) {
+    navs.push({
+      title: "Transactions",
+      link: "transactions",
+    });
+  }
   return appchains && appchains.length > 0 ? (
-    <div style={{ background: '#26262f' }}>
+    <div style={{ background: "#26262f" }}>
       <Container maxW="container.xl" h="88px">
         <Flex align="center" justify="center" h="100%">
           <Box p="2" pl="0">
             <StyledLink color="" to="">
               <Flex justify="space-between" align="center">
                 <Image
-                  style={{ display: 'inline-block' }}
+                  style={{ display: "inline-block" }}
                   boxSize="2.2rem"
                   src={
                     appchainInfo.appchain_metadata.fungible_token_metadata.icon
@@ -87,7 +94,7 @@ const Header = ({
                 <Text
                   fontSize="lg"
                   color="gray.50"
-                  style={{ textTransform: 'capitalize', fontWeight: 'bolder' }}
+                  style={{ textTransform: "capitalize", fontWeight: "bolder" }}
                 >
                   {appchainInfo.appchain_id}
                 </Text>
@@ -98,15 +105,15 @@ const Header = ({
           <HStack
             spacing="5px"
             align="center"
-            direction={'row'}
-            display={{ xs: 'none', sm: 'none', md: 'none', lg: 'block' }}
+            direction={"row"}
+            display={{ xs: "none", sm: "none", md: "none", lg: "block" }}
           >
             {!isMobile &&
               navs.map((nav) => (
                 <NavLink
                   key={nav.title}
                   title={nav.title}
-                  to={nav.link ? `/${nav.link}` : ''}
+                  to={nav.link ? `/${nav.link}` : ""}
                 />
               ))}
             <Menu>
@@ -124,9 +131,9 @@ const Header = ({
                   <Link
                     href={`/${appchain.appchain_id}`}
                     key={appchain.appchain_id}
-                    _hover={{ textDecoration: 'none' }}
+                    _hover={{ textDecoration: "none" }}
                   >
-                    <MenuItem color="#fff" _focus={{ background: '#555' }}>
+                    <MenuItem color="#fff" _focus={{ background: "#555" }}>
                       <Image
                         boxSize="2rem"
                         borderRadius="full"
@@ -144,7 +151,7 @@ const Header = ({
               </MenuList>
             </Menu>
           </HStack>
-          <Box display={{ md: 'block', lg: 'none' }}>
+          <Box display={{ md: "block", lg: "none" }}>
             <Menu>
               <MenuButton
                 colorScheme="white"
@@ -154,7 +161,7 @@ const Header = ({
               <MenuList>
                 {navs.map((nav) => (
                   <MenuItem key={nav.title}>
-                    <StyledLink to={nav.link ? `/${nav.link}` : ''} color="">
+                    <StyledLink to={nav.link ? `/${nav.link}` : ""} color="">
                       {nav.title}
                     </StyledLink>
                   </MenuItem>
@@ -165,7 +172,7 @@ const Header = ({
         </Flex>
       </Container>
     </div>
-  ) : null
-}
+  ) : null;
+};
 
-export default Header
+export default Header;

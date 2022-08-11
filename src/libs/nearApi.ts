@@ -20,7 +20,7 @@ const pageSize = 10;
 
 export const initNear = async () => {
   const near = await connect(
-      {...nearConfig, keyStore: new keyStores.BrowserLocalStorageKeyStore(), headers: {}}
+    { ...nearConfig, keyStore: new keyStores.BrowserLocalStorageKeyStore(), headers: {} }
   );
 
   window.walletConnection = new WalletConnection(near, "octopus_bridge");
@@ -55,6 +55,7 @@ export const initNear = async () => {
     let appchainInfo = await window.anchor.get_appchain_settings({});
     appchainInfo = { ...appchainInfo, ...appchainStatus };
     console.log("appchainInfo", appchainInfo);
+    window.isEvm = appchainInfo.appchain_metadata.template_type === "BarnacleEvm";
     return appchainInfo;
   };
 

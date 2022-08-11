@@ -11,13 +11,13 @@ export async function initPolkaApi(info: any) {
   });
 }
 
-export function getAmountHuman(origin) {
+export function getAmountHuman(origin, fixed: number = 2) {
   const {
     appchain_metadata: {
       fungible_token_metadata: { decimals },
     },
   } = appchainInfo;
-  return amountToHuman(origin, decimals);
+  return amountToHuman(origin, decimals, fixed);
 }
 
 export async function getBalanceOf(accountId: string) {

@@ -7,4 +7,5 @@ interface Window {
   getAppchainInfo: any;
   getAppchains: any;
   getAnchorEventHistory: any;
+  isEvm: boolean;
 }

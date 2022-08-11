@@ -41,7 +41,7 @@ async function fetchBlockByNum(blockNumber, client) {
   return rt.data.blocks.nodes[0]
 }
 
-async function fetchTxById(hash, client) {
+async function fetchTxById(id, client) {
   const rt = await client.query({
     query: gql`
       query txdetail($id: String!) {
@@ -50,13 +50,33 @@ async function fetchTxById(hash, client) {
         }
       }
     `,
-    variables: { id: hash },
+    variables: { id },
   })
 
   if (rt.data.extrinsic) {
     return rt.data.extrinsic.id
   }
   return rt.data.extrinsic
+}
+
+async function fetchTransactionByHash(hash, client) {
+  if (window.isEvm) {
+    const rt = await client.query({
+      query: gql`
+        query transaction($id: String!) {
+          transaction(id: $id) {
+            id
+          }
+        }
+      `,
+      variables: { id: hash },
+    })
+
+    if (rt.data.transaction) {
+      return rt.data.transaction.id
+    }
+  }
+  return false
 }
 
 async function fetchAccountByHash(hash, client) {
@@ -68,10 +88,12 @@ async function fetchAccountByHash(hash, client) {
         }
       }
     `,
-    variables: { id: hash },
+    variables: { id: window.isEvm ? hash.toLowerCase() : hash },
   })
 
-  if (rt.data.account) {
+  if (rt && rt.data.account) {
+    console.log("rt.data.account", rt.data.account)
+
     return rt.data.account.id
   }
   return rt.data.account
@@ -98,10 +120,14 @@ async function checkKeywordType(keyword, appoloClient) {
       return 'transaction'
     }
   } else {
-    const [accountResult, blockResult] = await Promise.all([
+    const [transactionResult, accountResult, blockResult] = await Promise.all([
+      await fetchTransactionByHash(keyword, appoloClient),
       await fetchAccountByHash(keyword, appoloClient),
       await fetchBlockByHash(keyword, appoloClient),
     ])
+    if (transactionResult) {
+      return 'transactionId'
+    }
     if (accountResult) {
       return 'accountId'
     }
@@ -122,6 +148,8 @@ export async function getLinkFromSearch(keyword, appoloClient) {
     link = `/extrinsics/${keyword}`
   } else if (type == 'accountId') {
     link = `/accounts/${keyword}`
+  } else if (type == 'transactionId') {
+    link = `/transactions/${keyword}`
   }
   console.log('link', link)
   return link

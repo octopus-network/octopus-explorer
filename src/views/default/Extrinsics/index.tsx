@@ -20,7 +20,7 @@ import { useQuery, gql } from "@apollo/client";
 import { TimeIcon, ChevronRightIcon, ChevronLeftIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 import { useEffect } from "react";
-import SearchBox from "../../components/SearchBox";
+import SearchBox from "../../../components/SearchBox";
 import StyledLink from "components/StyledLink";
 
 const EXTRINSICS_QUERY = gql`
@@ -61,7 +61,7 @@ const Extrinsics = () => {
   );
 
   useEffect(() => {
-    startPolling(1000);
+    startPolling(6000);
     return () => stopPolling();
   }, [startPolling, stopPolling]);
 

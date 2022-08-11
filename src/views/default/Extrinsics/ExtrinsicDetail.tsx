@@ -19,10 +19,10 @@ import {
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
-import { getAmountHuman } from "../../libs/polkadotApi";
+import { getAmountHuman } from "../../../libs/polkadotApi";
 import { useQuery, gql } from "@apollo/client";
 import { useParams } from "react-router-dom";
-import SearchBox from "../../components/SearchBox";
+import SearchBox from "../../../components/SearchBox";
 import StyledLink from "components/StyledLink";
 
 const EXTRINSIC_DETAIL_QUERY = gql`
@@ -64,7 +64,7 @@ const ExtrinsicDetail = () => {
   );
 
   useEffect(() => {
-    startPolling(1000);
+    startPolling(6000);
     return () => stopPolling();
   }, []);
 
