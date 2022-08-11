@@ -11,6 +11,7 @@ import {
   HStack,
   IconButton,
   Heading,
+  Tag,
 } from "@chakra-ui/react";
 import { useQuery, gql } from "@apollo/client";
 import { ChevronRightIcon, ChevronLeftIcon } from "@chakra-ui/icons";
@@ -29,6 +30,7 @@ const ACCOUNT_QUERY = gql`
       nodes {
         id
         freeBalance
+        isContract
         extrinsics {
           totalCount
         }
@@ -110,6 +112,7 @@ const Accounts = () => {
               {accounts.map(
                 ({
                   id,
+                  isContract,
                   freeBalance,
                   extrinsics,
                   transactionOut,
@@ -120,9 +123,16 @@ const Accounts = () => {
                       <Flex align="center">
                         <StyledLink to={`/accounts/${id}`}>
                           <Heading size="sm" as="h6">
-                            {briefHex(id, 10)}...
+                            {briefHex(id, 10)}
                           </Heading>
                         </StyledLink>
+                        <Tag
+                          size="sm"
+                          colorScheme={isContract ? "primary" : "secondary"}
+                          ml={2}
+                        >
+                          {isContract ? "Contract" : "User"}
+                        </Tag>
                         <CopyButton value={id} />
                       </Flex>
                     </Td>
