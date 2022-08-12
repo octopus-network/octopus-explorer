@@ -114,7 +114,7 @@ const Home = () => {
                   <GridItem rowSpan={4}>
                     <StateBox
                       label="Transactions"
-                      icon={MdAccountCircle}
+                      icon={MdReceiptLong}
                       value={data?.transactions.totalCount}
                     />
                   </GridItem>
