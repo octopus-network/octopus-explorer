@@ -1,4 +1,10 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useParams,
+} from "react-router-dom";
 import { useState } from "react";
 import { ChakraProvider, Center, Spinner, extendTheme } from "@chakra-ui/react";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
@@ -22,6 +28,11 @@ import EvmAccounts from "views/evm/Accounts";
 import EvmAccountDetail from "views/evm/Accounts/AccountDetail";
 import Transactions from "views/evm/Transactions";
 import TransactionDetail from "views/evm/Transactions/TransactionDetail";
+
+const TxRedirect = () => {
+  const { appchain, id } = useParams();
+  return <Navigate to={`/${appchain}/transactions/${id}`} replace />;
+};
 
 function App() {
   const [appchainInfo, setAppchainInfo] = useState<any>();
@@ -111,6 +122,7 @@ function App() {
                   path="/:appchain/transactions/:id"
                   element={<TransactionDetail />}
                 />
+                <Route path="/:appchain/tx/:id" element={<TxRedirect />} />
               </Route>
             </Routes>
           </BrowserRouter>
