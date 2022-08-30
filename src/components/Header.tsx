@@ -45,10 +45,13 @@ const defaultNavs = [
     title: "Accounts",
     link: "accounts",
   },
-
   {
     title: "Blocks",
     link: "blocks",
+  },
+  {
+    title: "Tokens",
+    link: "tokens",
   },
   {
     title: "Transfers",
@@ -68,6 +71,7 @@ const Header = ({
   appchainInfo: any;
 }) => {
   const navs = [...defaultNavs];
+  const tokens = ["erc20", "erc721", "erc1155"];
   if (window.isEvm) {
     navs.push({
       title: "Transactions",
@@ -109,13 +113,46 @@ const Header = ({
             display={{ xs: "none", sm: "none", md: "none", lg: "block" }}
           >
             {!isMobile &&
-              navs.map((nav) => (
-                <NavLink
-                  key={nav.title}
-                  title={nav.title}
-                  to={nav.link ? `/${nav.link}` : ""}
-                />
-              ))}
+              navs.map((nav) =>
+                nav.title === "Tokens" ? (
+                  window.isEvm ? (
+                    <Menu key={nav.title}>
+                      <MenuButton
+                        as={Button}
+                        rightIcon={<ChevronDownIcon />}
+                        colorScheme="Black"
+                      >
+                        <Box>
+                          <span>Tokens</span>
+                        </Box>
+                      </MenuButton>
+                      <MenuList bg="#262636" border="none">
+                        {tokens.map((token) => (
+                          <Link
+                            href={`/${appchainInfo.appchain_id}/${token}_tokens`}
+                            key={token}
+                            _hover={{ textDecoration: "none" }}
+                          >
+                            <MenuItem
+                              color="#fff"
+                              _focus={{ background: "#555" }}
+                            >
+                              <span>{token.toUpperCase()} Tokens</span>
+                            </MenuItem>
+                          </Link>
+                        ))}
+                      </MenuList>
+                    </Menu>
+                  ) : null
+                ) : (
+                  <NavLink
+                    key={nav.title}
+                    title={nav.title}
+                    to={nav.link ? `/${nav.link}` : ""}
+                  />
+                )
+              )}
+
             <Menu>
               <MenuButton
                 as={Button}

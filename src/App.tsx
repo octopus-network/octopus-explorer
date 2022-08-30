@@ -29,6 +29,14 @@ import EvmAccountDetail from "views/evm/Accounts/AccountDetail";
 import Transactions from "views/evm/Transactions";
 import TransactionDetail from "views/evm/Transactions/TransactionDetail";
 
+import Erc20TokenList from "views/evm/Tokens/Erc20TokenList";
+import Erc721TokenList from "views/evm/Tokens/Erc721TokenList";
+import Erc721TokenDetail from "views/evm/Tokens/Erc721TokenDetail";
+import Erc1155TokenList from "views/evm/Tokens/Erc1155TokenList";
+import Erc1155TokenDetail from "views/evm/Tokens/Erc1155TokenDetail";
+
+import { initWeb3 } from "libs/webApi";
+
 const TxRedirect = () => {
   const { appchain, id } = useParams();
   return <Navigate to={`/${appchain}/transactions/${id}`} replace />;
@@ -82,6 +90,7 @@ function App() {
   if (!appchainInfo) {
     return;
   }
+  initWeb3(appchainInfo.appchain_id);
   const Accounts = window.isEvm ? EvmAccounts : DefaultAccounts;
   const AccountDetail = window.isEvm ? EvmAccountDetail : DefaultAccountDetail;
   return (
@@ -103,6 +112,26 @@ function App() {
                 <Route
                   path="/:appchain/accounts/:id"
                   element={<AccountDetail />}
+                />
+                <Route
+                  path="/:appchain/erc20_tokens"
+                  element={<Erc20TokenList />}
+                />
+                <Route
+                  path="/:appchain/erc721_tokens"
+                  element={<Erc721TokenList />}
+                />
+                <Route
+                  path="/:appchain/erc721_tokens/:id"
+                  element={<Erc721TokenDetail />}
+                />
+                <Route
+                  path="/:appchain/erc1155_tokens"
+                  element={<Erc1155TokenList />}
+                />
+                <Route
+                  path="/:appchain/erc1155_tokens/:id"
+                  element={<Erc1155TokenDetail />}
                 />
                 <Route path="/:appchain/transfers" element={<Transfers />} />
                 <Route

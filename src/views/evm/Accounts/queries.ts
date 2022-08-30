@@ -10,6 +10,31 @@ export const ACCOUNT_QUERY = gql`
       miscFrozenBalance
       feeFrozenBalance
       isContract
+      createdAt
+      erc20TokenContract {
+        id
+        erc20Transfers {
+          totalCount
+        }
+      }
+      erc721TokenContract {
+        id
+        tokens {
+          totalCount
+        }
+        erc721Transfers {
+          totalCount
+        }
+      }
+      erc1155TokenContract {
+        id
+        tokens {
+          totalCount
+        }
+        erc1155Transfers {
+          totalCount
+        }
+      }
       creator {
         id
         isContract
@@ -19,52 +44,172 @@ export const ACCOUNT_QUERY = gql`
           id
         }
       }
-      createdAt
     }
   }
 `;
 
-export const TRANSACTIONS_OUT_QUERY = gql`
-  query AccountTransactionsOut($id: String!, $offset: Int!, $pageSize: Int!) {
-    account(id: $id) {
-      transactionOut(offset: $offset, first: $pageSize, orderBy: TIMESTAMP_DESC) {
-        nodes {
+export const EVM_TRANSACTIONS_QUERY = gql`
+  query AccountTransactions($id: String!, $offset: Int!, $pageSize: Int!) {
+    transactions(
+      filter: {
+        or: [
+          {fromId: { equalTo: $id}}
+          {toId: { equalTo: $id}}
+        ]
+      },
+      offset: $offset,
+      first: $pageSize,
+      orderBy: TIMESTAMP_DESC
+    ) {
+      nodes {
+        id
+        from {
           id
-          fromId
-          to {
-            id
-            isContract
-          }
-          isSuccess
-          value
-          timestamp
+          isContract
+          erc20TokenContractId
+          erc721TokenContractId
+          erc1155TokenContractId
         }
-        totalCount
+        to {
+          id
+          isContract
+          erc20TokenContractId
+          erc721TokenContractId
+          erc1155TokenContractId
+        }
+        value
+        isSuccess
+        timestamp
       }
+      totalCount
     }
   }
 `;
 
-export const TRANSACTIONS_IN_QUERY = gql`
-  query AccountTransactionsIn($id: String!, $offset: Int!, $pageSize: Int!) {
-    account(id: $id) {
-      transactionIn(offset: $offset, first: $pageSize, orderBy: TIMESTAMP_DESC) {
-        nodes {
+export const EVM_ERC20_TRANSACTIONS_QUERY = gql`
+  query AccountTransactions($id: String!, $offset: Int!, $pageSize: Int!) {
+    erc20Transfers(
+      filter: {
+        or: [
+          {fromId: { equalTo: $id}}
+          {toId: { equalTo: $id}}
+        ]
+      },
+      offset: $offset,
+      first: $pageSize,
+      orderBy: TIMESTAMP_DESC
+    ) {
+      nodes {
+        id
+        transactionId
+        from {
           id
-          fromId
-          to {
-            id
-            isContract
-          }
-          isSuccess
-          value
-          timestamp
+          isContract
+          erc20TokenContractId
+          erc721TokenContractId
+          erc1155TokenContractId
         }
-        totalCount
+        to {
+          id
+          isContract
+          erc20TokenContractId
+          erc721TokenContractId
+          erc1155TokenContractId
+        }
+        tokenContract {
+          id
+          symbol
+        }
+        value
+        timestamp
       }
+      totalCount
     }
   }
 `;
+
+export const EVM_ERC721_TRANSACTIONS_QUERY = gql`
+  query AccountTransactions($id: String!, $offset: Int!, $pageSize: Int!) {
+    erc721Transfers(
+      filter: {
+        or: [
+          {fromId: { equalTo: $id}}
+          {toId: { equalTo: $id}}
+        ]
+      },
+      offset: $offset,
+      first: $pageSize,
+      orderBy: TIMESTAMP_DESC
+    ) {
+      nodes {
+        id
+        transactionId
+        from {
+          id
+          isContract
+          erc20TokenContractId
+          erc721TokenContractId
+          erc1155TokenContractId
+        }
+        to {
+          id
+          isContract
+          erc20TokenContractId
+          erc721TokenContractId
+          erc1155TokenContractId
+        }
+        tokenContract {
+          id
+          symbol
+        }
+        tokenId
+        timestamp
+      }
+      totalCount
+    }
+  }
+`;
+
+
+export const EVM_ERC1155_TRANSACTIONS_QUERY = gql`
+  query AccountTransactions($id: String!, $offset: Int!, $pageSize: Int!) {
+    erc1155Transfers(
+      filter: {
+        or: [
+          {fromId: { equalTo: $id}}
+          {toId: { equalTo: $id}}
+        ]
+      },
+      offset: $offset,
+      first: $pageSize,
+      orderBy: TIMESTAMP_DESC
+    ) {
+      nodes {
+        id
+        transactionId
+        from {
+          id
+          isContract
+          erc20TokenContractId
+          erc721TokenContractId
+          erc1155TokenContractId
+        }
+        to {
+          id
+          isContract
+          erc20TokenContractId
+          erc721TokenContractId
+          erc1155TokenContractId
+        }
+        value
+        tokenId
+        timestamp
+      }
+      totalCount
+    }
+  }
+`;
+
 
 export const CALLS_QUERY = gql`
   query AccountCalls($id: String!, $offset: Int!, $pageSize: Int!) {
@@ -138,5 +283,146 @@ export const EVM_LOGS_QUERY = gql`
   }
 `;
 
+export const CONTRACT_ERC20_TRANSACTIONS_QUERY = gql`
+  query erc20Transfers($contractId: String!, $offset: Int!, $pageSize: Int!) {
+    erc20Transfers(filter:{tokenContractId: {equalTo: $contractId}}, offset: $offset, first: $pageSize, orderBy: TIMESTAMP_DESC) {
+      nodes {
+        id
+        transactionId
+        from {
+          id
+          isContract
+          erc20TokenContractId
+          erc721TokenContractId
+          erc1155TokenContractId
+        }
+        to {
+          id
+          isContract
+          erc20TokenContractId
+          erc721TokenContractId
+          erc1155TokenContractId
+        }
+        tokenContract {
+          id
+          symbol
+        }
+        value
+        timestamp
+      }
+      totalCount
+    }
+  }
+`;
+
+export const CONTRACT_ERC721_TRANSACTIONS_QUERY = gql`
+  query erc721Transfers($contractId: String!, $offset: Int!, $pageSize: Int!) {
+    erc721Transfers(filter:{tokenContractId: {equalTo: $contractId}}, offset: $offset, first: $pageSize, orderBy: TIMESTAMP_DESC) {
+      nodes {
+        id
+        transactionId
+        from {
+          id
+          isContract
+          erc20TokenContractId
+          erc721TokenContractId
+          erc1155TokenContractId
+        }
+        to {
+          id
+          isContract
+          erc20TokenContractId
+          erc721TokenContractId
+          erc1155TokenContractId
+        }
+        tokenContract {
+          id
+          symbol
+        }
+        token {
+          id
+          idInContract
+        }
+        timestamp
+      }
+      totalCount
+    }
+  }
+`;
+
+export const CONTRACT_ERC1155_TRANSACTIONS_QUERY = gql`
+  query erc1155Transfers($contractId: String!, $offset: Int!, $pageSize: Int!) {
+    erc1155Transfers(filter:{tokenContractId: {equalTo: $contractId}}, offset: $offset, first: $pageSize, orderBy: TIMESTAMP_DESC) {
+      nodes {
+        id
+        transactionId
+        from {
+          id
+          isContract
+          erc20TokenContractId
+          erc721TokenContractId
+          erc1155TokenContractId
+        }
+        to {
+          id
+          isContract
+          erc20TokenContractId
+          erc721TokenContractId
+          erc1155TokenContractId
+        }
+        tokenContractId
+        value
+        token {
+          id
+          idInContract
+        }
+        timestamp
+      }
+      totalCount
+    }
+  }
+`;
+
+
+export const CONTRACT_ERC721_TOKENS_QUERY = gql`
+  query erc721Tokens($contractId: String!, $offset: Int!, $pageSize: Int!) {
+    erc721Tokens(filter:{tokenContractId: {equalTo: $contractId}}, offset: $offset, first: $pageSize) {
+      nodes {
+        id
+        tokenContractId
+        idInContract
+        tokenURI
+        balances {
+          totalCount
+        }
+        erc721Transfers {
+          totalCount
+        }
+      }
+      totalCount
+    }
+  }
+`;
+
+export const CONTRACT_ERC1155_TOKENS_QUERY = gql`
+  query erc1155Tokens($contractId: String!, $offset: Int!, $pageSize: Int!) {
+    erc1155Tokens(filter:{tokenContractId: {equalTo: $contractId}}, offset: $offset, first: $pageSize) {
+      nodes {
+        id
+        tokenContractId
+        idInContract
+        uri
+        totalSupply
+        balances {
+          totalCount
+        }
+        erc1155Transfers {
+          totalCount
+        }
+      }
+      totalCount
+    }
+  }
+`;
 
 export const PAGE_SIZE = 20;

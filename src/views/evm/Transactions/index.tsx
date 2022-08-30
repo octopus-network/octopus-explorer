@@ -120,7 +120,7 @@ const Transactions = () => {
                       </StyledLink>
                     </Td>
                     <Td>
-                      <StyledLink to={`/accounts/${to.id}`}>
+                      <StyledLink to={`/erc20tokens/${to.id}`}>
                         {briefHex(to.id, 10)}
                       </StyledLink>
                       <Tag

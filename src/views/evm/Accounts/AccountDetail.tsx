@@ -33,8 +33,9 @@ import { MdApps } from "react-icons/md";
 import { briefHex } from "libs/utils";
 import { ACCOUNT_QUERY } from "./queries";
 import EvmAcountData from "./EvmAccountData";
-import EvmContractData from "./EvmContractData";
+import EvmContractData from "./Contracts/EvmContractData";
 import AppchainData from "./AppchainData";
+import AccountTag from "components/AccountTag";
 
 const AccountDetail = () => {
   const { id } = useParams();
@@ -93,13 +94,7 @@ const AccountDetail = () => {
                 <Td>
                   <Flex align="center">
                     <Text>{id}</Text>
-                    <Tag
-                      size="sm"
-                      colorScheme={account.isContract ? "primary" : "secondary"}
-                      ml={2}
-                    >
-                      {account.isContract ? "Contract" : "User"}
-                    </Tag>
+                    <AccountTag account={account} />
                     <CopyButton value={id} />
                   </Flex>
                 </Td>
@@ -164,11 +159,8 @@ const AccountDetail = () => {
         )}
       </Box>
       {account &&
-        (account.isContract ? (
-          <EvmContractData account={account} />
-        ) : (
-          <EvmAcountData account={account} />
-        ))}
+        (account.isContract ? <EvmContractData account={account} /> : null)}
+      {account && <EvmAcountData account={account} />}
       {account && <AppchainData account={account} />}
     </div>
   );
