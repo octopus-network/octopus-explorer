@@ -19,7 +19,7 @@ import {
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
-import { getAmountHuman } from "../../../libs/polkadotApi";
+import { getNativeAmountHuman } from "../../../libs/polkadotApi";
 import { useQuery, gql } from "@apollo/client";
 import { useParams } from "react-router-dom";
 import SearchBox from "../../../components/SearchBox";
@@ -267,7 +267,7 @@ const ExtrinsicDetail = () => {
                             {to.substr(0, 10)}...
                           </StyledLink>
                         </Td>
-                        <Td>{getAmountHuman(amount)}</Td>
+                        <Td>{getNativeAmountHuman(amount)}</Td>
                       </Tr>
                     ))}
                   </Tbody>

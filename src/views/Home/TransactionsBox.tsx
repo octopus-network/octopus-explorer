@@ -15,7 +15,7 @@ import { TimeIcon } from "@chakra-ui/icons";
 import { isMobile } from "react-device-detect";
 import StyledLink from "components/StyledLink";
 import { briefHex } from "libs/utils";
-import { getAmountHuman } from "libs/polkadotApi";
+import { getNativeAmountHuman } from "libs/polkadotApi";
 
 const NEW_TRANSACTION_QUERY = gql`
   query QueryNewTransactions {
@@ -84,7 +84,7 @@ const TransactionsBox = () => {
                 </StyledLink>
                 <div>
                   <Text color="grey" fontSize="sm">
-                    {getAmountHuman(value, 4)}
+                    {getNativeAmountHuman(value, 4)}
                   </Text>
                 </div>
               </Box>

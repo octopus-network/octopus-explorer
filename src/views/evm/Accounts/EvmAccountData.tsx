@@ -24,7 +24,7 @@ import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import { ChevronLeftIcon, ChevronRightIcon, TimeIcon } from "@chakra-ui/icons";
 import { useQuery, gql } from "@apollo/client";
-import { getAmountHuman } from "../../../libs/polkadotApi";
+import { getNativeAmountHuman } from "../../../libs/polkadotApi";
 import StyledLink from "components/StyledLink";
 import { MdApps } from "react-icons/md";
 import { briefHex } from "libs/utils";
@@ -201,7 +201,7 @@ const EvmAcountData = ({ account }) => {
                             </StyledLink>
                             <AccountTag account={to} />
                           </Td>
-                          <Td>{getAmountHuman(value)}</Td>
+                          <Td>{getNativeAmountHuman(value)}</Td>
                           <Td>
                             <HStack spacing={2} mt={1}>
                               <Icon
@@ -323,7 +323,7 @@ const EvmAcountData = ({ account }) => {
                             </StyledLink>
                             <AccountTag account={to} />
                           </Td>
-                          <Td>{getAmountHuman(value)}</Td>
+                          <Td>{getNativeAmountHuman(value)}</Td>
                           <Td>
                             <StyledLink to={`/accounts/${tokenContract.id}`}>
                               {briefHex(tokenContract.id, 10)}

@@ -26,7 +26,7 @@ import { ChevronLeftIcon, ChevronRightIcon, TimeIcon } from "@chakra-ui/icons";
 import { getBalanceOf } from "../../../libs/polkadotApi";
 import { useQuery, gql } from "@apollo/client";
 import { useParams } from "react-router-dom";
-import { getAmountHuman } from "../../../libs/polkadotApi";
+import { getNativeAmountHuman } from "../../../libs/polkadotApi";
 import CopyButton from "../../../components/CopyButton";
 import SearchBox from "../../../components/SearchBox";
 import StyledLink from "components/StyledLink";
@@ -342,7 +342,7 @@ const AccountDetail = () => {
                               {toId.substr(0, 10)}...
                             </StyledLink>
                           </Td>
-                          <Td>{getAmountHuman(amount)}</Td>
+                          <Td>{getNativeAmountHuman(amount)}</Td>
                           <Td>
                             <StyledLink to={`/extrinsics/${extrinsicId}`}>
                               {extrinsicId.substr(0, 10)}...
@@ -438,7 +438,7 @@ const AccountDetail = () => {
                               {toId.substr(0, 10)}...
                             </StyledLink>
                           </Td>
-                          <Td>{getAmountHuman(amount)}</Td>
+                          <Td>{getNativeAmountHuman(amount)}</Td>
                           <Td>
                             <StyledLink to={`/extrinsics/${extrinsicId}`}>
                               {extrinsicId.substr(0, 10)}...

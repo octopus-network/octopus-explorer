@@ -22,7 +22,7 @@ import { getBalanceOf } from "libs/polkadotApi";
 import CopyButton from "../../../components/CopyButton";
 import StyledLink from "components/StyledLink";
 import { briefHex } from "libs/utils";
-import { getAmountHuman } from "libs/polkadotApi";
+import { getNativeAmountHuman } from "libs/polkadotApi";
 
 const ACCOUNT_QUERY = gql`
   query QueryAccounts($offset: Int!, $pageSize: Int!) {
@@ -136,7 +136,7 @@ const Accounts = () => {
                         <CopyButton value={id} />
                       </Flex>
                     </Td>
-                    <Td>{getAmountHuman(freeBalance)}</Td>
+                    <Td>{getNativeAmountHuman(freeBalance)}</Td>
                     <Td>
                       {transactionOut.totalCount + transactionIn.totalCount}
                     </Td>

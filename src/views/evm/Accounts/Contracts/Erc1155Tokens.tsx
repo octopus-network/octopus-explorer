@@ -26,7 +26,7 @@ import dayjs from "dayjs";
 import { ChevronLeftIcon, ChevronRightIcon, TimeIcon } from "@chakra-ui/icons";
 import { useQuery, gql } from "@apollo/client";
 import { useParams } from "react-router-dom";
-import { getAmountHuman } from "../../../../libs/polkadotApi";
+import { getNativeAmountHuman } from "../../../../libs/polkadotApi";
 import CopyButton from "../../../../components/CopyButton";
 import SearchBox from "../../../../components/SearchBox";
 import StyledLink from "components/StyledLink";
@@ -85,10 +85,7 @@ const Erc1155Tokens = ({ account }) => {
           </Thead>
           <Tbody>
             {detail.erc1155Tokens.nodes.map(
-              (
-                { id, idInContract, tokenURI, balances, erc1155Transfers },
-                idx
-              ) => (
+              ({ id, idInContract, uri, balances, erc1155Transfers }, idx) => (
                 <Tr key={`transaction-${id}`}>
                   <Td>
                     <StyledLink to={`/erc1155_tokens/${id}`}>
@@ -96,10 +93,9 @@ const Erc1155Tokens = ({ account }) => {
                     </StyledLink>
                   </Td>
                   <Td>
-                    <Link
-                      href={tokenURI}
-                      _hover={{ textDecoration: "none" }}
-                    ></Link>
+                    <Link href={uri} color="primary.600">
+                      {uri}
+                    </Link>
                   </Td>
                   <Td>{balances.totalCount}</Td>
                   <Td>{erc1155Transfers.totalCount}</Td>

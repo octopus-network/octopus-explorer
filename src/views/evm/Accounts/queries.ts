@@ -13,12 +13,18 @@ export const ACCOUNT_QUERY = gql`
       createdAt
       erc20TokenContract {
         id
+        name
+        symbol
+        decimals
+        totalSupply
         erc20Transfers {
           totalCount
         }
       }
       erc721TokenContract {
         id
+        name
+        symbol
         tokens {
           totalCount
         }

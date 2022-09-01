@@ -11,7 +11,7 @@ export async function initPolkaApi(info: any) {
   });
 }
 
-export function getAmountHuman(origin, fixed: number = 2) {
+export function getNativeAmountHuman(origin, fixed: number = 2) {
   const {
     appchain_metadata: {
       fungible_token_metadata: { decimals },
@@ -19,6 +19,7 @@ export function getAmountHuman(origin, fixed: number = 2) {
   } = appchainInfo;
   return amountToHuman(origin, decimals, fixed);
 }
+
 
 export async function getBalanceOf(accountId: string) {
   if (appchainApi) {

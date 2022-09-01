@@ -19,7 +19,7 @@ import { TimeIcon, ChevronRightIcon, ChevronLeftIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 import { useEffect } from "react";
 import SearchBox from "../../../components/SearchBox";
-import { getAmountHuman } from "libs/polkadotApi";
+import { getNativeAmountHuman } from "libs/polkadotApi";
 import StyledLink from "components/StyledLink";
 
 const ACCOUNT_QUERY = gql`
@@ -113,7 +113,7 @@ const Transfers = () => {
                         {toId.substr(0, 10)}...
                       </StyledLink>
                     </Td>
-                    <Td>{getAmountHuman(amount)}</Td>
+                    <Td>{getNativeAmountHuman(amount)}</Td>
                     <Td>
                       <StyledLink to={`/extrinsics/${extrinsicId}`}>
                         {extrinsicId.substr(0, 10)}...

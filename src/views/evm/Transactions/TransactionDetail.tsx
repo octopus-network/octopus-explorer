@@ -25,7 +25,7 @@ import dayjs from "dayjs";
 import { TimeIcon, ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { useQuery, gql } from "@apollo/client";
 import { useParams } from "react-router-dom";
-import { getAmountHuman } from "../../../libs/polkadotApi";
+import { getNativeAmountHuman } from "../../../libs/polkadotApi";
 import CopyButton from "../../../components/CopyButton";
 import SearchBox from "../../../components/SearchBox";
 import StyledLink from "components/StyledLink";
@@ -171,7 +171,7 @@ const TransactionDetail = () => {
                     Value
                   </Heading>
                 </Td>
-                <Td>{getAmountHuman(detail.value, 4)}</Td>
+                <Td>{getNativeAmountHuman(detail.value, 4)}</Td>
               </Tr>
               <Tr>
                 <Td>
@@ -227,7 +227,7 @@ const TransactionDetail = () => {
                     gasUsed
                   </Heading>
                 </Td>
-                <Td>{getAmountHuman(detail.gasUsed, 18)}</Td>
+                <Td>{getNativeAmountHuman(detail.gasUsed, 18)}</Td>
               </Tr>
               <Tr>
                 <Td>
@@ -335,9 +335,11 @@ const TransactionDetail = () => {
                             <Text wordBreak="break-all">{data}</Text>
                           </Td>
                           <Td>
-                            <Text wordBreak="break-all">
-                              {topics.length > 0 && JSON.stringify(topics)}
-                            </Text>
+                            <Box p={4} background="blackAlpha.50">
+                              <Text wordBreak="break-all">
+                                {topics.length > 0 && JSON.stringify(topics)}
+                              </Text>
+                            </Box>
                           </Td>
                         </Tr>
                       )

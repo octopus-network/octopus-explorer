@@ -25,7 +25,7 @@ import dayjs from "dayjs";
 import { ChevronLeftIcon, ChevronRightIcon, TimeIcon } from "@chakra-ui/icons";
 import { useQuery, gql } from "@apollo/client";
 import { useParams } from "react-router-dom";
-import { getAmountHuman } from "../../../../libs/polkadotApi";
+import { getNativeAmountHuman } from "../../../../libs/polkadotApi";
 import CopyButton from "../../../../components/CopyButton";
 import SearchBox from "../../../../components/SearchBox";
 import StyledLink from "components/StyledLink";
@@ -181,9 +181,11 @@ const EvmContractData = ({ account }) => {
                             <Text wordBreak="break-all">{data}</Text>
                           </Td>
                           <Td>
-                            <Text wordBreak="break-all">
-                              {topics.length > 0 && JSON.stringify(topics)}
-                            </Text>
+                            <Box p={4} background="blackAlpha.50">
+                              <Text wordBreak="break-all">
+                                {topics.length > 0 && JSON.stringify(topics)}
+                              </Text>
+                            </Box>
                           </Td>
                         </Tr>
                       )

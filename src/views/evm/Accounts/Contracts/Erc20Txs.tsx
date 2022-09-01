@@ -25,7 +25,7 @@ import dayjs from "dayjs";
 import { ChevronLeftIcon, ChevronRightIcon, TimeIcon } from "@chakra-ui/icons";
 import { useQuery, gql } from "@apollo/client";
 import { useParams } from "react-router-dom";
-import { getAmountHuman } from "../../../../libs/polkadotApi";
+import { getNativeAmountHuman } from "../../../../libs/polkadotApi";
 import CopyButton from "../../../../components/CopyButton";
 import SearchBox from "../../../../components/SearchBox";
 import StyledLink from "components/StyledLink";
@@ -117,7 +117,7 @@ const Erc20Txs = ({ account }) => {
                     </StyledLink>
                     <AccountTag account={to} />
                   </Td>
-                  <Td>{getAmountHuman(value)}</Td>
+                  <Td>{getNativeAmountHuman(value)}</Td>
                   <Td>
                     <HStack spacing={2} mt={1}>
                       <Icon

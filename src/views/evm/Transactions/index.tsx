@@ -23,7 +23,7 @@ import { useEffect } from "react";
 import SearchBox from "../../../components/SearchBox";
 import StyledLink from "components/StyledLink";
 import { briefHex } from "libs/utils";
-import { getAmountHuman } from "../../../libs/polkadotApi";
+import { getNativeAmountHuman } from "../../../libs/polkadotApi";
 
 const TRANSACTIONS_QUERY = gql`
   query QueryTransactions($offset: Int!, $pageSize: Int!) {
@@ -131,7 +131,7 @@ const Transactions = () => {
                         {to.isContract ? "Contract" : "User"}
                       </Tag>
                     </Td>
-                    <Td>{getAmountHuman(value)}</Td>
+                    <Td>{getNativeAmountHuman(value)}</Td>
                     <Td>
                       <StyledLink to={`/blocks/${block.number}`}>
                         <Heading as="h6" size="sm">

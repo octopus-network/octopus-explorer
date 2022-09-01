@@ -23,9 +23,8 @@ import { useEffect } from "react";
 import SearchBox from "../../../components/SearchBox";
 import StyledLink from "components/StyledLink";
 import { briefHex } from "libs/utils";
-import { getAmountHuman } from "../../../libs/polkadotApi";
-import { erc20Contract } from "libs/webApi";
 import { useParams } from "react-router-dom";
+import { amountToHuman } from "libs/utils";
 
 const TOKEN_QUERY = gql`
   query QueryTransactions($offset: Int!, $pageSize: Int!) {
@@ -71,16 +70,6 @@ const Erc20TokenList = () => {
   useEffect(() => {
     (async () => {
       if (data) {
-        // const detailedList = await Promise.all(
-        //   data.erc20TokenContracts.nodes.map(async (tc) => {
-        //     const erc20 = erc20Contract(appchain, tc.id);
-        //     const name = await erc20.methods.name().call();
-        //     const symbol = await erc20.methods.symbol().call();
-        //     const decimals = await erc20.methods.decimals().call();
-        //     return { ...tc, name, symbol, decimals };
-        //   })
-        // );
-        console.log("detailedList", detailedList);
         setDetailedList(data.erc20TokenContracts.nodes);
       } else {
         setDetailedList(null);
@@ -143,7 +132,7 @@ const Erc20TokenList = () => {
                     </Td>
                     <Td>{name}</Td>
                     <Td>{symbol}</Td>
-                    <Td>{totalSupply}</Td>
+                    <Td>{amountToHuman(totalSupply, decimals, 2)}</Td>
                     <Td>{holders.totalCount}</Td>
                     <Td>{erc20Transfers.totalCount}</Td>
                   </Tr>

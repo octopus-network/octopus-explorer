@@ -25,7 +25,7 @@ import dayjs from "dayjs";
 import { ChevronLeftIcon, ChevronRightIcon, TimeIcon } from "@chakra-ui/icons";
 import { useQuery, gql } from "@apollo/client";
 import { useParams } from "react-router-dom";
-import { getAmountHuman } from "../../../libs/polkadotApi";
+import { getNativeAmountHuman } from "../../../libs/polkadotApi";
 import CopyButton from "../../../components/CopyButton";
 import SearchBox from "../../../components/SearchBox";
 import StyledLink from "components/StyledLink";
@@ -36,6 +36,7 @@ import EvmAcountData from "./EvmAccountData";
 import EvmContractData from "./Contracts/EvmContractData";
 import AppchainData from "./AppchainData";
 import AccountTag from "components/AccountTag";
+import { amountToHuman } from "libs/utils";
 
 const AccountDetail = () => {
   const { id } = useParams();
@@ -105,8 +106,74 @@ const AccountDetail = () => {
                     Balance
                   </Heading>
                 </Td>
-                <Td>{getAmountHuman(account.freeBalance)}</Td>
+                <Td>{getNativeAmountHuman(account.freeBalance)}</Td>
               </Tr>
+              {account.erc20TokenContract && (
+                <Tr>
+                  <Td>
+                    <Heading as="h6" size="xs">
+                      Name
+                    </Heading>
+                  </Td>
+                  <Td>{account.erc20TokenContract.name}</Td>
+                </Tr>
+              )}
+              {account.erc20TokenContract && (
+                <Tr>
+                  <Td>
+                    <Heading as="h6" size="xs">
+                      Symbol
+                    </Heading>
+                  </Td>
+                  <Td>{account.erc20TokenContract.symbol}</Td>
+                </Tr>
+              )}
+              {account.erc20TokenContract && (
+                <Tr>
+                  <Td>
+                    <Heading as="h6" size="xs">
+                      Decimals
+                    </Heading>
+                  </Td>
+                  <Td>{account.erc20TokenContract.decimals}</Td>
+                </Tr>
+              )}
+              {account.erc20TokenContract && (
+                <Tr>
+                  <Td>
+                    <Heading as="h6" size="xs">
+                      TotalSupply
+                    </Heading>
+                  </Td>
+                  <Td>
+                    {amountToHuman(
+                      account.erc20TokenContract.totalSupply,
+                      account.erc20TokenContract.decimals,
+                      2
+                    )}
+                  </Td>
+                </Tr>
+              )}
+              {account.erc721TokenContract && (
+                <Tr>
+                  <Td>
+                    <Heading as="h6" size="xs">
+                      Name
+                    </Heading>
+                  </Td>
+                  <Td>{account.erc721TokenContract.name}</Td>
+                </Tr>
+              )}
+              {account.erc721TokenContract && (
+                <Tr>
+                  <Td>
+                    <Heading as="h6" size="xs">
+                      Symbol
+                    </Heading>
+                  </Td>
+                  <Td>{account.erc721TokenContract.symbol}</Td>
+                </Tr>
+              )}
               {account.isContract && (
                 <Tr>
                   <Td>

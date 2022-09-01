@@ -81,7 +81,8 @@ function App() {
     }
     setClient(
       new ApolloClient({
-        uri: appchainInfo.subql_endpoint,
+        // uri: appchainInfo.subql_endpoint,
+        uri: "http://localhost:3001",
         cache: new InMemoryCache(),
       })
     );
