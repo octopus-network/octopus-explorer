@@ -11,7 +11,8 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { initPolkaApi } from "./libs/polkadotApi";
 
 import Root from "views/Root";
-import Home from "views/Home";
+import Home from "views/Home/Home";
+import EvmHome from "views/Home/EvmHome";
 import Blocks from "views/default/Blocks";
 import BlockDetail from "views/default/Blocks/BlockDetail";
 import Transfers from "views/default/Transfers";
@@ -34,8 +35,6 @@ import Erc721TokenList from "views/evm/Tokens/Erc721TokenList";
 import Erc721TokenDetail from "views/evm/Tokens/Erc721TokenDetail";
 import Erc1155TokenList from "views/evm/Tokens/Erc1155TokenList";
 import Erc1155TokenDetail from "views/evm/Tokens/Erc1155TokenDetail";
-
-import { initWeb3 } from "libs/webApi";
 
 const TxRedirect = () => {
   const { appchain, id } = useParams();
@@ -90,7 +89,6 @@ function App() {
   if (!appchainInfo) {
     return;
   }
-  initWeb3(appchainInfo.appchain_id);
   const Accounts = window.isEvm ? EvmAccounts : DefaultAccounts;
   const AccountDetail = window.isEvm ? EvmAccountDetail : DefaultAccountDetail;
   return (
@@ -105,7 +103,10 @@ function App() {
                   <Root appchains={appchains} appchainInfo={appchainInfo} />
                 }
               >
-                <Route path="/:appchain" element={<Home />} />
+                <Route
+                  path="/:appchain"
+                  element={window.isEvm ? <EvmHome /> : <Home />}
+                />
                 <Route path="/:appchain/blocks" element={<Blocks />} />
                 <Route path="/:appchain/blocks/:id" element={<BlockDetail />} />
                 <Route path="/:appchain/accounts" element={<Accounts />} />
