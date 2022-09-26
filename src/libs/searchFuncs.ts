@@ -1,6 +1,7 @@
 import { gql } from '@apollo/client'
 import { decodeAddress, encodeAddress } from '@polkadot/keyring'
 import { hexToU8a, isHex } from '@polkadot/util'
+import { ethers } from "ethers";
 
 async function fetchBlockByHash(blockHash, client) {
   const rt = await client.query({
@@ -41,7 +42,7 @@ async function fetchBlockByNum(blockNumber, client) {
   return rt.data.blocks.nodes[0]
 }
 
-async function fetchTxById(id, client) {
+async function fetchExtrinsicById(id, client) {
   const rt = await client.query({
     query: gql`
       query txdetail($id: String!) {
@@ -92,14 +93,12 @@ async function fetchAccountByHash(hash, client) {
   })
 
   if (rt && rt.data.account) {
-    console.log("rt.data.account", rt.data.account)
-
     return rt.data.account.id
   }
   return rt.data.account
 }
 
-function isValidAddress(address) {
+function isValidAppchainAddress(address) {
   try {
     encodeAddress(isHex(address) ? hexToU8a(address) : decodeAddress(address))
     return true
@@ -108,6 +107,15 @@ function isValidAddress(address) {
   }
 }
 
+function isValidEvmAddress(address) {
+  return ethers.utils.isAddress(address);
+}
+
+function isValidBlockOrTransactionHash(hash) {
+  return /0[x][0-9a-fA-F]{64}$/.test(hash);
+}
+
+
 async function checkKeywordType(keyword, appoloClient) {
   if (/^[0-9]+$/.test(keyword)) {
     const blockResult = await fetchBlockByNum(keyword, appoloClient)
@@ -115,41 +123,50 @@ async function checkKeywordType(keyword, appoloClient) {
       return 'blockNumber'
     }
   } else if (/^[0-9]+(\-)[0-9]+$/.test(keyword)) {
-    const blockResult = await fetchTxById(keyword, appoloClient)
-    if (blockResult) {
-      return 'transaction'
+    const extrinsicResult = await fetchExtrinsicById(keyword, appoloClient)
+    if (extrinsicResult) {
+      return 'extrinsic'
     }
-  } else {
-    const [transactionResult, accountResult, blockResult] = await Promise.all([
-      await fetchTransactionByHash(keyword, appoloClient),
-      await fetchAccountByHash(keyword, appoloClient),
-      await fetchBlockByHash(keyword, appoloClient),
-    ])
-    if (transactionResult) {
-      return 'transactionId'
-    }
-    if (accountResult) {
-      return 'accountId'
+  } else if (isValidBlockOrTransactionHash(keyword)) {
+    let blockResult, transactionResult;
+    if (window.isEvm) {
+      const [_blockResult, _transactionResult] = await Promise.all([
+        await fetchBlockByHash(keyword, appoloClient),
+        await fetchTransactionByHash(keyword, appoloClient),
+      ])
+      blockResult = _blockResult;
+      transactionResult = _transactionResult;
+    } else {
+      blockResult = await fetchBlockByHash(keyword, appoloClient);
     }
     if (blockResult) {
       return 'blockHash'
     }
+    if (transactionResult) {
+      return 'transactionId'
+    }
+  } else {
+    if ((window.isEvm && isValidEvmAddress(keyword))
+      || (!window.isEvm && isValidAppchainAddress(keyword))) {
+      return 'accountId';
+    }
+    return 'notFound'
   }
-  return ''
 }
 
 export async function getLinkFromSearch(keyword, appoloClient) {
   const type = await checkKeywordType(keyword, appoloClient)
-
   let link = ''
   if (type == 'blockNumber' || type == 'blockHash') {
     link = `/blocks/${keyword}`
-  } else if (type == 'transaction') {
+  } else if (type == 'extrinsic') {
     link = `/extrinsics/${keyword}`
   } else if (type == 'accountId') {
     link = `/accounts/${keyword}`
   } else if (type == 'transactionId') {
     link = `/transactions/${keyword}`
+  } else if (type == 'notFound') {
+    link = `/not_found/${keyword}`
   }
   console.log('link', link)
   return link

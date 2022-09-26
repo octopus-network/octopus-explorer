@@ -123,9 +123,18 @@ const AccountDetail = () => {
       if (callsQuery.data && transfersOutQuery.data && transfersInQuery.data) {
         const balance = await getBalanceOf(id);
         const account = {
-          ...callsQuery.data.account,
-          ...transfersOutQuery.data.account,
-          ...transfersInQuery.data.account,
+          calls: callsQuery.data.account || {
+            nodes: [],
+            totalCount: 0,
+          },
+          transferIn: transfersOutQuery.data.account || {
+            nodes: [],
+            totalCount: 0,
+          },
+          transferOut: transfersInQuery.data.account || {
+            nodes: [],
+            totalCount: 0,
+          },
           balance,
         };
         console.log("account:", account);

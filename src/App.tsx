@@ -36,6 +36,8 @@ import Erc721TokenDetail from "views/evm/Tokens/Erc721TokenDetail";
 import Erc1155TokenList from "views/evm/Tokens/Erc1155TokenList";
 import Erc1155TokenDetail from "views/evm/Tokens/Erc1155TokenDetail";
 
+import NotFound from "views/NotFound";
+
 const TxRedirect = () => {
   const { appchain, id } = useParams();
   return <Navigate to={`/${appchain}/transactions/${id}`} replace />;
@@ -153,6 +155,7 @@ function App() {
                   element={<TransactionDetail />}
                 />
                 <Route path="/:appchain/tx/:id" element={<TxRedirect />} />
+                <Route path="/:appchain/not_found/:id" element={<NotFound />} />
               </Route>
             </Routes>
           </BrowserRouter>

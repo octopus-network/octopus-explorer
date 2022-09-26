@@ -75,12 +75,7 @@ const ExtrinsicDetail = () => {
           ...e,
           data: JSON.parse(e.data),
         }));
-        const aa = events.filter(
-          (event) =>
-            event.section.toString() === "balances" &&
-            event.method.toString() === "Transfer"
-        );
-        console.log("aa", aa);
+
         const transfers = events
           .filter(
             (event) =>
