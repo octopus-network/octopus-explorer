@@ -57,7 +57,14 @@ const AccountDetail = () => {
     if (accountQuery.data) {
       const { account } = accountQuery.data;
       console.log("account:", account);
-      setAccount(account);
+      if (account) {
+        setAccount(account);
+      } else {
+        setAccount({
+          freeBalance: 0,
+          createdAt: "Not detected yet.",
+        });
+      }
     } else {
       setAccount(null);
     }
@@ -227,8 +234,8 @@ const AccountDetail = () => {
       </Box>
       {account &&
         (account.isContract ? <EvmContractData account={account} /> : null)}
-      {account && <EvmAcountData account={account} />}
-      {account && <AppchainData account={account} />}
+      {account?.id && <EvmAcountData account={account} />}
+      {account?.id && <AppchainData account={account} />}
     </div>
   );
 };
