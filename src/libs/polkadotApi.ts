@@ -5,10 +5,12 @@ let appchainApi;
 let appchainInfo;
 export async function initPolkaApi(info: any) {
   appchainInfo = info;
-  const wsProvider = new WsProvider(info.rpc_endpoint);
-  appchainApi = await ApiPromise.create({
-    provider: wsProvider,
-  });
+  if (info.appchain_id.toLowerCase() !== "deip") {
+    const wsProvider = new WsProvider(info.rpc_endpoint);
+    appchainApi = await ApiPromise.create({
+      provider: wsProvider,
+    });
+  }
 }
 
 export function getNativeAmountHuman(origin, fixed: number = 2) {
@@ -30,18 +32,8 @@ export async function getBalanceOf(accountId: string) {
     } = appchainInfo;
     const account = await appchainApi.query.system.account(accountId);
     return amountToHuman(account.data.free.toString(), decimals);
-  }
-}
-
-export async function getBlock(blockhash: string) {
-  if (appchainApi) {
-    return await appchainApi.rpc.chain.getBlock(blockhash);
-  }
-}
-
-export async function getEvents(blockhash: string) {
-  if (appchainApi) {
-    return await appchainApi.query.system.events.at(blockhash);
+  } else {
+    return null
   }
 }
 
