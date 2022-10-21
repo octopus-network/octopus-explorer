@@ -68,7 +68,7 @@ export const initNear = async () => {
       .fill("")
       .map(async ($_, index) => {
         const appchains = await window.registry.get_appchains_with_state_of({
-          appchain_state: ["Active"],
+          appchain_state: ["Active", "Broken"],
           page_number: index + 1,
           page_size: pageSize,
           sorting_field: "RegisteredTime",
