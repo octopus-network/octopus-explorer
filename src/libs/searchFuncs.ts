@@ -60,6 +60,28 @@ async function fetchExtrinsicById(id, client) {
   return rt.data.extrinsic
 }
 
+async function fetchExtrinsicByHash(hash, client) {
+  console.log("hash", hash);
+  const rt = await client.query({
+    query: gql`
+      query txdetail($hash: String!) {
+        extrinsics(filter: {hash: {equalTo: $hash}}) {
+          nodes {
+            id
+          }
+        }
+      }
+    `,
+    variables: { hash },
+  })
+
+  const extrinsic = rt.data.extrinsics.nodes[0];
+  if (extrinsic) {
+    return extrinsic.id
+  }
+  return extrinsic
+}
+
 async function fetchTransactionByHash(hash, client) {
   if (window.isEvm) {
     const rt = await client.query({
@@ -120,53 +142,58 @@ async function checkKeywordType(keyword, appoloClient) {
   if (/^[0-9]+$/.test(keyword)) {
     const blockResult = await fetchBlockByNum(keyword, appoloClient)
     if (blockResult) {
-      return 'blockNumber'
+      return { type: 'blockNumber', payload: keyword };
     }
   } else if (/^[0-9]+(\-)[0-9]+$/.test(keyword)) {
     const extrinsicResult = await fetchExtrinsicById(keyword, appoloClient)
     if (extrinsicResult) {
-      return 'extrinsic'
+      return { type: 'extrinsicId', payload: keyword };
     }
   } else if (isValidBlockOrTransactionHash(keyword)) {
-    let blockResult, transactionResult;
+    console.log("here");
+    let blockResult, transactionResult, extrinsicResult;
     if (window.isEvm) {
       const [_blockResult, _transactionResult] = await Promise.all([
         await fetchBlockByHash(keyword, appoloClient),
-        await fetchTransactionByHash(keyword, appoloClient),
+        await fetchTransactionByHash(keyword, appoloClient)
       ])
       blockResult = _blockResult;
       transactionResult = _transactionResult;
     } else {
       blockResult = await fetchBlockByHash(keyword, appoloClient);
+      extrinsicResult = await fetchExtrinsicByHash(keyword, appoloClient);
     }
     if (blockResult) {
-      return 'blockHash'
+      return { type: 'blockHash', payload: keyword };
     }
     if (transactionResult) {
-      return 'transactionId'
+      return { type: 'transactionId', payload: keyword };
+    }
+    if (extrinsicResult) {
+      return { type: 'extrinsicId', payload: extrinsicResult };
     }
   } else {
     if ((window.isEvm && isValidEvmAddress(keyword))
       || (!window.isEvm && isValidAppchainAddress(keyword))) {
-      return 'accountId';
+      return { type: 'accountId', payload: keyword };
     }
-    return 'notFound'
   }
+  return { type: 'notFound', payload: keyword }
 }
 
 export async function getLinkFromSearch(keyword, appoloClient) {
-  const type = await checkKeywordType(keyword, appoloClient)
+  const { type, payload } = await checkKeywordType(keyword, appoloClient)
   let link = ''
   if (type == 'blockNumber' || type == 'blockHash') {
-    link = `/blocks/${keyword}`
-  } else if (type == 'extrinsic') {
-    link = `/extrinsics/${keyword}`
+    link = `/blocks/${payload}`
+  } else if (type == 'extrinsicId') {
+    link = `/extrinsics/${payload}`
   } else if (type == 'accountId') {
-    link = `/accounts/${keyword}`
+    link = `/accounts/${payload}`
   } else if (type == 'transactionId') {
-    link = `/transactions/${keyword}`
+    link = `/transactions/${payload}`
   } else if (type == 'notFound') {
-    link = `/not_found/${keyword}`
+    link = `/not_found/${payload}`
   }
   console.log('link', link)
   return link
