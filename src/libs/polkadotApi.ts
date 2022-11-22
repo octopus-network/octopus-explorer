@@ -5,12 +5,10 @@ let appchainApi;
 let appchainInfo;
 export async function initPolkaApi(info: any) {
   appchainInfo = info;
-  if (info.appchain_id.toLowerCase() !== "deip") {
-    const wsProvider = new WsProvider(info.rpc_endpoint);
-    appchainApi = await ApiPromise.create({
-      provider: wsProvider,
-    });
-  }
+  const wsProvider = new WsProvider(info.rpc_endpoint);
+  appchainApi = await ApiPromise.create({
+    provider: wsProvider,
+  });
 }
 
 export function getNativeAmountHuman(origin, fixed: number = 2) {
