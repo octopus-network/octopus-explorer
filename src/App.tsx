@@ -8,7 +8,7 @@ import {
 import { useState } from "react";
 import { ChakraProvider, Center, Spinner, extendTheme } from "@chakra-ui/react";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
-import { initPolkaApi } from "./libs/polkadotApi";
+import { initAppchainUtils } from "./libs/appchainUtils";
 
 import Root from "views/Root";
 import Home from "views/Home/Home";
@@ -66,7 +66,7 @@ function App() {
           window.location.replace(`/${defaultAppchain.appchain_id}`);
         }
         const info = await window.getAppchainInfo(appchain);
-        await initPolkaApi(info);
+        await initAppchainUtils(info);
         setAppchainInfo(info);
       } catch (err) {
         console.log(err);

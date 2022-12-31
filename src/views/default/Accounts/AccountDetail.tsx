@@ -23,13 +23,22 @@ import {
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import { ChevronLeftIcon, ChevronRightIcon, TimeIcon } from "@chakra-ui/icons";
-import { getBalanceOf } from "../../../libs/polkadotApi";
 import { useQuery, gql } from "@apollo/client";
 import { useParams } from "react-router-dom";
-import { getNativeAmountHuman } from "../../../libs/polkadotApi";
+import { getNativeAmountHuman } from "../../../libs/appchainUtils";
 import CopyButton from "../../../components/CopyButton";
 import SearchBox from "../../../components/SearchBox";
 import StyledLink from "components/StyledLink";
+
+export const ACCOUNT_QUERY = gql`
+  query Accounts($id: String!) {
+    account(id: $id) {
+      id
+      nonce
+      freeBalance
+    }
+  }
+`;
 
 const CALLS_QUERY = gql`
   query AccountCalls($id: String!, $offset: Int!, $pageSize: Int!) {
@@ -97,6 +106,9 @@ const AccountDetail = () => {
   const [transfersOutPage, setTransfersOutPage] = useState(0);
   const [transfersInPage, setTransfersInPage] = useState(0);
 
+  const accountQuery = useQuery(ACCOUNT_QUERY, {
+    variables: { id },
+  });
   const callsQuery = useQuery(CALLS_QUERY, {
     variables: { id, offset: callsPage * PAGE_SIZE, pageSize: PAGE_SIZE },
   });
@@ -108,10 +120,12 @@ const AccountDetail = () => {
   });
 
   useEffect(() => {
+    accountQuery.startPolling(30 * 1000);
     callsQuery.startPolling(30 * 1000);
     transfersOutQuery.startPolling(30 * 1000);
     transfersInQuery.startPolling(30 * 1000);
     return () => {
+      accountQuery.stopPolling();
       callsQuery.stopPolling();
       transfersOutQuery.stopPolling();
       transfersInQuery.stopPolling();
@@ -120,9 +134,14 @@ const AccountDetail = () => {
 
   useEffect(() => {
     (async () => {
-      if (callsQuery.data && transfersOutQuery.data && transfersInQuery.data) {
-        const balance = await getBalanceOf(id);
+      if (
+        accountQuery.data &&
+        callsQuery.data &&
+        transfersOutQuery.data &&
+        transfersInQuery.data
+      ) {
         const account = {
+          balance: accountQuery.data.account.freeBalance,
           calls: callsQuery.data.account.calls || {
             nodes: [],
             totalCount: 0,
@@ -135,7 +154,6 @@ const AccountDetail = () => {
             nodes: [],
             totalCount: 0,
           },
-          balance,
         };
         console.log("account:", account);
         setDetail(account);
@@ -185,7 +203,7 @@ const AccountDetail = () => {
                     Balance
                   </Heading>
                 </Td>
-                <Td>{detail.balance}</Td>
+                <Td>{getNativeAmountHuman(detail.balance)}</Td>
               </Tr>
             </Tbody>
           </Table>

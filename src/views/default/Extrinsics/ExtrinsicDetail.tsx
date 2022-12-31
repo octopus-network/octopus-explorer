@@ -19,7 +19,7 @@ import {
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
-import { getNativeAmountHuman } from "../../../libs/polkadotApi";
+import { getNativeAmountHuman } from "../../../libs/appchainUtils";
 import { useQuery, gql } from "@apollo/client";
 import { useParams } from "react-router-dom";
 import SearchBox from "../../../components/SearchBox";

@@ -19,7 +19,7 @@ import { TimeIcon, ChevronRightIcon, ChevronLeftIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 import { useEffect } from "react";
 import SearchBox from "../../../components/SearchBox";
-import { getNativeAmountHuman } from "libs/polkadotApi";
+import { getNativeAmountHuman } from "libs/appchainUtils";
 import StyledLink from "components/StyledLink";
 
 const ACCOUNT_QUERY = gql`

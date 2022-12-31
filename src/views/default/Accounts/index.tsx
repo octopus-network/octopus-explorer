@@ -17,15 +17,16 @@ import { ChevronRightIcon, ChevronLeftIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 import { useEffect } from "react";
 import SearchBox from "../../../components/SearchBox";
-import { getBalanceOf } from "libs/polkadotApi";
 import CopyButton from "../../../components/CopyButton";
 import StyledLink from "components/StyledLink";
+import { getNativeAmountHuman } from "../../../libs/appchainUtils";
 
 const ACCOUNT_QUERY = gql`
   query QueryAccounts($offset: Int!, $pageSize: Int!) {
     accounts(offset: $offset, first: $pageSize, orderBy: ID_ASC) {
       nodes {
         id
+        freeBalance
         calls {
           totalCount
         }
@@ -63,10 +64,7 @@ const Accounts = () => {
     (async () => {
       if (data) {
         const accounts = await Promise.all(
-          data.accounts.nodes.map(async (account) => {
-            const balance = await getBalanceOf(account.id);
-            return { ...account, balance };
-          })
+          data.accounts.nodes.map(async (account) => account)
         );
         setAccounts(accounts);
       }
@@ -105,7 +103,7 @@ const Accounts = () => {
             </Thead>
             <Tbody>
               {accounts.map(
-                ({ id, balance, calls, transferOut, transferIn }) => (
+                ({ id, freeBalance, calls, transferOut, transferIn }) => (
                   <Tr key={`account-${id}`}>
                     <Td>
                       <Flex align="center">
@@ -117,7 +115,7 @@ const Accounts = () => {
                         <CopyButton value={id} />
                       </Flex>
                     </Td>
-                    <Td>{balance}</Td>
+                    <Td>{getNativeAmountHuman(freeBalance)}</Td>
                     <Td>{transferOut.totalCount + transferIn.totalCount}</Td>
                     <Td>{calls.totalCount}</Td>
                   </Tr>

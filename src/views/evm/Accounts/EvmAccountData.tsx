@@ -24,7 +24,7 @@ import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import { ChevronLeftIcon, ChevronRightIcon, TimeIcon } from "@chakra-ui/icons";
 import { useQuery, gql } from "@apollo/client";
-import { getNativeAmountHuman } from "../../../libs/polkadotApi";
+import { getNativeAmountHuman } from "../../../libs/appchainUtils";
 import StyledLink from "components/StyledLink";
 import { MdApps } from "react-icons/md";
 import { briefHex } from "libs/utils";
