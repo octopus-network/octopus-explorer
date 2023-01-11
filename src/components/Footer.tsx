@@ -9,7 +9,7 @@ const Footer = () => {
         <Flex align="center" justifyContent="space-between">
           <Box p={4}>
             <Text color="whiteAlpha.600" fontSize="sm">
-              © 2022 Octopus Network -- All Rights Reserved
+              © {new Date().getFullYear()} Octopus Network -- All Rights Reserved
             </Text>
           </Box>
           <HStack>

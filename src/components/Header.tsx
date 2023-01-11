@@ -78,6 +78,7 @@ const Header = ({
       link: "transactions",
     });
   }
+  
   return appchains && appchains.length > 0 ? (
     <div style={{ background: "#26262f" }}>
       <Container maxW="container.xl" h="88px">
