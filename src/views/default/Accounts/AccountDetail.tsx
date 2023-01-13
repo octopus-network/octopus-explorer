@@ -23,10 +23,9 @@ import {
 import { useState, useEffect } from 'react'
 import dayjs from 'dayjs'
 import { ChevronLeftIcon, ChevronRightIcon, TimeIcon } from '@chakra-ui/icons'
-import { getBalanceOf } from '../../../libs/polkadotApi'
 import { useQuery, gql } from '@apollo/client'
 import { useParams } from 'react-router-dom'
-import { getNativeAmountHuman } from '../../../libs/polkadotApi'
+import { getNativeAmountHuman } from '../../../libs/appchainUtils'
 import CopyButton from '../../../components/CopyButton'
 import StyledLink from 'components/StyledLink'
 
@@ -133,7 +132,6 @@ const AccountDetail = () => {
   useEffect(() => {
     ;(async () => {
       if (callsQuery.data && transfersOutQuery.data && transfersInQuery.data) {
-        const balance = await getBalanceOf(id)
         const account = {
           balance: accountQuery.data.account.freeBalance,
           calls: callsQuery.data.account.calls || {
@@ -147,8 +145,7 @@ const AccountDetail = () => {
           transferOut: transfersInQuery.data.account.transferOut || {
             nodes: [],
             totalCount: 0,
-          },
-          balance,
+          }
         }
         console.log('account:', account)
         setDetail(account)

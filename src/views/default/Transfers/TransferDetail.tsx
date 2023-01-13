@@ -18,7 +18,7 @@ import dayjs from 'dayjs'
 import { TimeIcon, CheckIcon } from '@chakra-ui/icons'
 import { useQuery, gql } from '@apollo/client'
 import { useParams } from 'react-router-dom'
-import { getNativeAmountHuman } from '../../../libs/polkadotApi'
+import { getNativeAmountHuman } from '../../../libs/appchainUtils'
 import CopyButton from '../../../components/CopyButton'
 import StyledLink from 'components/StyledLink'
 

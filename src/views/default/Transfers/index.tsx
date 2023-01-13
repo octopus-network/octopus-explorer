@@ -17,7 +17,7 @@ import dayjs from 'dayjs'
 import { useQuery, gql } from '@apollo/client'
 import { TimeIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons'
 import { useState, useEffect } from 'react'
-import { getNativeAmountHuman } from 'libs/polkadotApi'
+import { getNativeAmountHuman } from 'libs/appchainUtils'
 import StyledLink from 'components/StyledLink'
 
 const ACCOUNT_QUERY = gql`

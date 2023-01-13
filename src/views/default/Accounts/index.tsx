@@ -16,9 +16,9 @@ import { useQuery, gql } from '@apollo/client'
 import { ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons'
 import { useState } from 'react'
 import { useEffect } from 'react'
-import { getBalanceOf } from 'libs/polkadotApi'
 import CopyButton from '../../../components/CopyButton'
 import StyledLink from 'components/StyledLink'
+import { getNativeAmountHuman } from 'libs/appchainUtils'
 
 const ACCOUNT_QUERY = gql`
   query QueryAccounts($offset: Int!, $pageSize: Int!) {
@@ -62,13 +62,7 @@ const Accounts = () => {
   useEffect(() => {
     ;(async () => {
       if (data) {
-        const accounts = await Promise.all(
-          data.accounts.nodes.map(async (account) => {
-            const balance = await getBalanceOf(account.id)
-            return { ...account, balance }
-          })
-        )
-        setAccounts(accounts)
+        setAccounts(data.accounts.nodes.map((account) => account))
       }
     })()
   }, [data])

@@ -19,7 +19,7 @@ import {
 import AccountTag from 'components/AccountTag'
 import StyledLink from 'components/StyledLink'
 import dayjs from 'dayjs'
-import { getNativeAmountHuman } from 'libs/polkadotApi'
+import { getNativeAmountHuman } from 'libs/appchainUtils'
 import { briefHex } from 'libs/utils'
 import { useEffect, useState } from 'react'
 import { PAGE_SIZE } from 'views/evm/Accounts/queries'

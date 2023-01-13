@@ -22,7 +22,7 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import StyledLink from 'components/StyledLink'
 import { briefHex } from 'libs/utils'
-import { getNativeAmountHuman } from '../../../libs/polkadotApi'
+import { getNativeAmountHuman } from '../../../libs/appchainUtils'
 
 const TRANSACTIONS_QUERY = gql`
   query QueryTransactions($offset: Int!, $pageSize: Int!) {

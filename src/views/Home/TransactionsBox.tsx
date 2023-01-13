@@ -15,7 +15,7 @@ import { TimeIcon } from '@chakra-ui/icons'
 import { isMobile } from 'react-device-detect'
 import StyledLink from 'components/StyledLink'
 import { briefHex } from 'libs/utils'
-import { getNativeAmountHuman } from 'libs/polkadotApi'
+import { getNativeAmountHuman } from 'libs/appchainUtils'
 
 const NEW_TRANSACTION_QUERY = gql`
   query QueryNewTransactions {

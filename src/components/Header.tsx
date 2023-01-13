@@ -136,7 +136,9 @@ const Header = ({
                   ))}
                 </MenuList>
               </Menu>
-              <NavLink key="Tokens" title="Tokens" to="/tokens" />
+              {window.isEvm && (
+                <NavLink key="Tokens" title="Tokens" to="/tokens" />
+              )}
               <Menu>
                 <MenuButton
                   as={Button}
