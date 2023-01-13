@@ -69,10 +69,7 @@ function App() {
         }
         const info = await window.getAppchainInfo(appchain)
         setAppchainInfo(info)
-
-        console.log('###before init', new Date())
         await initPolkaApi(info)
-        console.log('###after init', new Date())
       } catch (err) {
         console.log(err)
         setAppchainInfo(null)

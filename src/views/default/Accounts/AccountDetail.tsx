@@ -30,6 +30,16 @@ import { getNativeAmountHuman } from '../../../libs/polkadotApi'
 import CopyButton from '../../../components/CopyButton'
 import StyledLink from 'components/StyledLink'
 
+export const ACCOUNT_QUERY = gql`
+  query Accounts($id: String!) {
+    account(id: $id) {
+      id
+      nonce
+      freeBalance
+    }
+  }
+`;
+
 const CALLS_QUERY = gql`
   query AccountCalls($id: String!, $offset: Int!, $pageSize: Int!) {
     account(id: $id) {
@@ -96,6 +106,9 @@ const AccountDetail = () => {
   const [transfersOutPage, setTransfersOutPage] = useState(0)
   const [transfersInPage, setTransfersInPage] = useState(0)
 
+  const accountQuery = useQuery(ACCOUNT_QUERY, {
+    variables: { id },
+  });
   const callsQuery = useQuery(CALLS_QUERY, {
     variables: { id, offset: callsPage * PAGE_SIZE, pageSize: PAGE_SIZE },
   })
@@ -122,6 +135,7 @@ const AccountDetail = () => {
       if (callsQuery.data && transfersOutQuery.data && transfersInQuery.data) {
         const balance = await getBalanceOf(id)
         const account = {
+          balance: accountQuery.data.account.freeBalance,
           calls: callsQuery.data.account.calls || {
             nodes: [],
             totalCount: 0,
@@ -183,7 +197,7 @@ const AccountDetail = () => {
                     Balance
                   </Heading>
                 </Td>
-                <Td>{detail.balance}</Td>
+                <Td>{getNativeAmountHuman(detail.balance)}</Td>
               </Tr>
             </Tbody>
           </Table>

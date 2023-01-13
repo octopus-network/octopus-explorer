@@ -25,6 +25,7 @@ const ACCOUNT_QUERY = gql`
     accounts(offset: $offset, first: $pageSize, orderBy: ID_ASC) {
       nodes {
         id
+        freeBalance
         calls {
           totalCount
         }
@@ -103,7 +104,7 @@ const Accounts = () => {
             </Thead>
             <Tbody>
               {accounts.map(
-                ({ id, balance, calls, transferOut, transferIn }) => (
+                ({ id, freeBalance, calls, transferOut, transferIn }) => (
                   <Tr key={`account-${id}`}>
                     <Td>
                       <Flex align="center">
@@ -115,7 +116,7 @@ const Accounts = () => {
                         <CopyButton value={id} />
                       </Flex>
                     </Td>
-                    <Td>{balance}</Td>
+                    <Td>{getNativeAmountHuman(freeBalance)}</Td>
                     <Td>{transferOut.totalCount + transferIn.totalCount}</Td>
                     <Td>{calls.totalCount}</Td>
                   </Tr>
