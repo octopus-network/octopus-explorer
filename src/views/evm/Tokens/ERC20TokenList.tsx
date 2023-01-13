@@ -1,8 +1,6 @@
 import {
   Flex,
   Box,
-  Text,
-  Icon,
   Table,
   Thead,
   Tbody,
@@ -12,19 +10,14 @@ import {
   Spinner,
   HStack,
   IconButton,
-  Heading,
-  Tag,
-} from "@chakra-ui/react";
-import dayjs from "dayjs";
-import { useQuery, gql } from "@apollo/client";
-import { TimeIcon, ChevronRightIcon, ChevronLeftIcon } from "@chakra-ui/icons";
-import { useState } from "react";
-import { useEffect } from "react";
-import SearchBox from "../../../components/SearchBox";
-import StyledLink from "components/StyledLink";
-import { briefHex } from "libs/utils";
-import { useParams } from "react-router-dom";
-import { amountToHuman } from "libs/utils";
+} from '@chakra-ui/react'
+import { useQuery, gql } from '@apollo/client'
+import { ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons'
+import { useState } from 'react'
+import { useEffect } from 'react'
+import StyledLink from 'components/StyledLink'
+import { useParams } from 'react-router-dom'
+import { amountToHuman } from 'libs/utils'
 
 const TOKEN_QUERY = gql`
   query QueryTransactions($offset: Int!, $pageSize: Int!) {
@@ -45,48 +38,47 @@ const TOKEN_QUERY = gql`
       totalCount
     }
   }
-`;
+`
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 20
 
-const Erc20TokenList = () => {
-  const { appchain } = useParams();
-  const [page, setPage] = useState(0);
-  const [isOnTable, setIsOnTable] = useState(false);
-  const [detailedList, setDetailedList] = useState<any>();
+const ERC20TokenList = () => {
+  const { appchain } = useParams()
+  const [page, setPage] = useState(0)
+  const [isOnTable, setIsOnTable] = useState(false)
+  const [detailedList, setDetailedList] = useState<any>()
 
   const { loading, data, stopPolling, startPolling } = useQuery(TOKEN_QUERY, {
     variables: {
       offset: page * PAGE_SIZE,
       pageSize: PAGE_SIZE,
     },
-  });
+  })
 
   useEffect(() => {
-    startPolling(6000);
-    return () => stopPolling();
-  }, [startPolling, stopPolling]);
+    startPolling(6000)
+    return () => stopPolling()
+  }, [startPolling, stopPolling])
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       if (data) {
-        setDetailedList(data.erc20TokenContracts.nodes);
+        setDetailedList(data.erc20TokenContracts.nodes)
       } else {
-        setDetailedList(null);
+        setDetailedList(null)
       }
-    })();
-  }, [data]);
+    })()
+  }, [data])
 
   return (
-    <div>
-      <SearchBox></SearchBox>
+    <>
       <Box
         p={5}
         background="white"
         mt={5}
         boxShadow="sm"
         borderRadius="lg"
-        style={{ overflowX: "scroll" }}
+        style={{ overflowX: 'scroll' }}
       >
         {!detailedList ? (
           <Box
@@ -99,18 +91,16 @@ const Erc20TokenList = () => {
           </Box>
         ) : (
           <Table
-            variant="simple"
+            variant="striped"
             onMouseEnter={() => setIsOnTable(true)}
             onMouseLeave={() => setIsOnTable(false)}
           >
             <Thead>
               <Tr>
-                <Th>Contract</Th>
-                <Th>Name</Th>
-                <Th>Symbol</Th>
+                <Th>Token</Th>
                 <Th>Total Supply</Th>
                 <Th>Holders</Th>
-                <Th>ERC20 Transfers</Th>
+                <Th>Transfers</Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -127,11 +117,9 @@ const Erc20TokenList = () => {
                   <Tr key={`transaction-${id}`}>
                     <Td>
                       <StyledLink to={`/accounts/${id}`}>
-                        {briefHex(id, 10)}
+                        {name}({symbol})
                       </StyledLink>
                     </Td>
-                    <Td>{name}</Td>
-                    <Td>{symbol}</Td>
                     <Td>{amountToHuman(totalSupply, decimals, 2)}</Td>
                     <Td>{holders.totalCount}</Td>
                     <Td>{erc20Transfers.totalCount}</Td>
@@ -152,7 +140,7 @@ const Erc20TokenList = () => {
             onClick={() => setPage(page - 1)}
           />
           <Box>
-            {page + 1} of{" "}
+            {page + 1} of{' '}
             {data
               ? Math.ceil(data?.erc20TokenContracts.totalCount / PAGE_SIZE)
               : 1}
@@ -168,8 +156,8 @@ const Erc20TokenList = () => {
           />
         </HStack>
       </Flex>
-    </div>
-  );
-};
+    </>
+  )
+}
 
-export default Erc20TokenList;
+export default ERC20TokenList

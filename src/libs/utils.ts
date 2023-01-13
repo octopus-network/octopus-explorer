@@ -1,6 +1,13 @@
 const BigNumber = require('bignumber.js')
 
-export function amountToHuman(origin: string, decimals: number, fixed: number = 2) {
+export function amountToHuman(
+  origin: string | undefined,
+  decimals: number,
+  fixed: number = 2
+) {
+  if (!origin) {
+    return ''
+  }
   let originNumber = origin
   if (typeof originNumber === 'string') {
     originNumber = originNumber.replaceAll(',', '')
@@ -20,7 +27,9 @@ export function amountFromHuman(origin, decimals: number) {
 }
 
 export function briefHex(address: string, length: number) {
-  const before = Math.ceil(length / 2);
+  const before = Math.ceil(length / 2)
   const after = length - before
-  return address.length > 2 + length ? address.slice(0, 2 + before) + "..." + address.slice(-after) : address;
+  return address.length > 2 + length
+    ? address.slice(0, 2 + before) + '...' + address.slice(-after)
+    : address
 }
