@@ -71,9 +71,12 @@ const Header = ({
     })
   }
 
+  const location = useLocation()
+  const isHome = location.pathname.split('/').length == 2
+
   return appchains && appchains.length > 0 ? (
     <div style={{ background: '#26262f' }}>
-      <Container maxW="container.xl" h="120px">
+      <Container maxW="container.xl" h={isHome ? '80px' : '120px'}>
         <Flex align="center" justify="center" h="100%">
           <Box p="2" pl="0">
             <StyledLink color="" to="">
@@ -100,7 +103,7 @@ const Header = ({
           </Box>
           <Spacer />
           <VStack align="flex-end" justify="flex-end">
-            <SearchBox></SearchBox>
+            {!isHome && <SearchBox></SearchBox>}
 
             <HStack
               spacing="5px"

@@ -30,7 +30,6 @@ const AccountDetail = () => {
   useEffect(() => {
     if (accountQuery.data) {
       const { account } = accountQuery.data
-      console.log('account:', account)
       if (account) {
         setAccount(account)
       } else {
@@ -47,13 +46,11 @@ const AccountDetail = () => {
   const isERC20Token = account?.erc20TokenContract
   const isContract = account?.isContract
 
-  console.log('AccountDetail', id, account)
-
   return (
     <div>
       {account && (
         <Flex justify="space-between" align="center">
-          <VStack>
+          <VStack align="flex-start">
             <HStack align="flex-end" gap={2}>
               <Heading size="lg">
                 {isContract ? (isERC20Token ? 'Token' : 'Contract') : 'Account'}
@@ -65,19 +62,16 @@ const AccountDetail = () => {
               </Text>
               {!isERC20Token && <CopyButton value={id} />}
             </HStack>
+            <HStack align="flex-start" justify="flex-start" gap={2}>
+              <AccountTag account={account} />
+            </HStack>
           </VStack>
-
-          <HStack align="center" gap={2}>
-            <AccountTag account={account} />
-          </HStack>
         </Flex>
       )}
       <HStack align="flex-start" mt={5} gap={4}>
         <Overview account={account} />
         <Summary account={account} />
       </HStack>
-      {account &&
-        (account.isContract ? <EvmContractData account={account} /> : null)}
       {account?.id && <EvmAcountData account={account} />}
       {account?.id && <AppchainData account={account} />}
     </div>

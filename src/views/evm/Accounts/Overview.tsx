@@ -14,19 +14,19 @@ export default function Overview({ account }: { account?: Account }) {
       <Box>
         {!isERC20Token && (
           <HStack borderBottom="1px solid #eee" m={2} p={2}>
-            <Text>Balance</Text>
+            <Text w={100}>Balance:</Text>
             <Text>{amountToHuman(account?.freeBalance, 18, 4)}</Text>
           </HStack>
         )}
         {!isERC20Token && (
           <HStack m={2} p={2}>
-            <Text>Nonce</Text>
+            <Text w={100}>Nonce:</Text>
             <Text>{account?.nonce}</Text>
           </HStack>
         )}
         {isERC20Token && (
           <HStack borderBottom="1px solid #eee" m={2} p={2}>
-            <Text>Total Supply</Text>
+            <Text w={100}>Total Supply:</Text>
             <Text>
               {amountToHuman(
                 account.erc20TokenContract.totalSupply,
@@ -39,13 +39,13 @@ export default function Overview({ account }: { account?: Account }) {
         )}
         {isERC20Token && (
           <HStack borderBottom="1px solid #eee" m={2} p={2}>
-            <Text>Holders</Text>
+            <Text w={100}>Holders:</Text>
             <Text>{account.erc20TokenContract.erc20Transfers.totalCount}</Text>
           </HStack>
         )}
         {isERC20Token && (
           <HStack m={2} p={2}>
-            <Text>Transfers</Text>
+            <Text w={100}>Transfers:</Text>
             <Text>{account.erc20TokenContract.erc20Transfers.totalCount}</Text>
           </HStack>
         )}

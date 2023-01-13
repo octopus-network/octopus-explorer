@@ -56,6 +56,8 @@ function App() {
   useEffect(() => {
     const init = async () => {
       const appchains = await window.getAppchains()
+      console.log('appchains', appchains)
+
       setAppchains(appchains)
 
       try {
@@ -66,8 +68,11 @@ function App() {
           window.location.replace(`/${defaultAppchain.appchain_id}`)
         }
         const info = await window.getAppchainInfo(appchain)
-        await initPolkaApi(info)
         setAppchainInfo(info)
+
+        console.log('###before init', new Date())
+        await initPolkaApi(info)
+        console.log('###after init', new Date())
       } catch (err) {
         console.log(err)
         setAppchainInfo(null)

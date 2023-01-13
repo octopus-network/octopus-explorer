@@ -19,17 +19,16 @@ import {
   TabPanels,
   TabPanel,
   Tag,
-} from "@chakra-ui/react";
-import { useState, useEffect } from "react";
-import dayjs from "dayjs";
-import { TimeIcon, ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { useQuery, gql } from "@apollo/client";
-import { useParams } from "react-router-dom";
-import { getNativeAmountHuman } from "../../../libs/polkadotApi";
-import CopyButton from "../../../components/CopyButton";
-import SearchBox from "../../../components/SearchBox";
-import StyledLink from "components/StyledLink";
-import { briefHex } from "libs/utils";
+} from '@chakra-ui/react'
+import { useState, useEffect } from 'react'
+import dayjs from 'dayjs'
+import { TimeIcon, ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
+import { useQuery, gql } from '@apollo/client'
+import { useParams } from 'react-router-dom'
+import { getNativeAmountHuman } from '../../../libs/polkadotApi'
+import CopyButton from '../../../components/CopyButton'
+import StyledLink from 'components/StyledLink'
+import { briefHex } from 'libs/utils'
 
 const TRANSACTION_DETAIL_QUERY = gql`
   query transactionDetail($id: String!) {
@@ -65,37 +64,36 @@ const TRANSACTION_DETAIL_QUERY = gql`
       }
     }
   }
-`;
+`
 
 const TransactionDetail = () => {
-  const { id } = useParams();
-  const [detail, setDetail] = useState<any>();
+  const { id } = useParams()
+  const [detail, setDetail] = useState<any>()
 
   const transactionQuery = useQuery(TRANSACTION_DETAIL_QUERY, {
     variables: { id },
-  });
+  })
 
   useEffect(() => {
-    transactionQuery.startPolling(20 * 1000);
+    transactionQuery.startPolling(20 * 1000)
     return () => {
-      transactionQuery.stopPolling();
-    };
-  }, []);
+      transactionQuery.stopPolling()
+    }
+  }, [])
 
   useEffect(() => {
     if (transactionQuery.data) {
-      setDetail(transactionQuery.data.transaction);
+      setDetail(transactionQuery.data.transaction)
     } else {
-      setDetail(null);
+      setDetail(null)
     }
-  }, [transactionQuery]);
+  }, [transactionQuery])
   return (
     <div>
       <Flex justify="space-between" align="center">
         <Heading as="h6" size="sm">
           Transaction Detail
         </Heading>
-        <SearchBox></SearchBox>
       </Flex>
       <Box mt={5} p={4} background="white" boxShadow="sm" borderRadius="lg">
         {!detail ? (
@@ -158,10 +156,10 @@ const TransactionDetail = () => {
                   </StyledLink>
                   <Tag
                     size="sm"
-                    colorScheme={detail.to.isContract ? "primary" : "secondary"}
+                    colorScheme={detail.to.isContract ? 'primary' : 'secondary'}
                     ml={2}
                   >
-                    {detail.to.isContract ? "Contract" : "User"}
+                    {detail.to.isContract ? 'Contract' : 'User'}
                   </Tag>
                 </Td>
               </Tr>
@@ -182,10 +180,10 @@ const TransactionDetail = () => {
                 <Td>
                   <Tag
                     size="sm"
-                    colorScheme={detail.isSuccess ? "green" : "red"}
+                    colorScheme={detail.isSuccess ? 'green' : 'red'}
                     mr={2}
                   >
-                    {detail.isSuccess ? "Success" : "Fail"}
+                    {detail.isSuccess ? 'Success' : 'Fail'}
                   </Tag>
                 </Td>
               </Tr>
@@ -240,12 +238,12 @@ const TransactionDetail = () => {
                     <Box p={2} background="white">
                       <Text wordBreak="break-all">
                         {detail.inputData.length > 500
-                          ? detail.inputData.slice(0, 500) + "..."
+                          ? detail.inputData.slice(0, 500) + '...'
                           : detail.inputData}
                       </Text>
                       <Flex justify="end" width="100%">
                         {detail.inputData.length > 500 && (
-                          <Tag size="sm" colorScheme={"gray"} ml={2}>
+                          <Tag size="sm" colorScheme={'gray'} ml={2}>
                             Length: {detail.inputData.length}
                           </Tag>
                         )}
@@ -279,7 +277,7 @@ const TransactionDetail = () => {
                   <HStack spacing={2} mt={1}>
                     <Icon as={TimeIcon} ml={3} boxSize={3} color="yellow.600" />
                     <Text color="grey" fontSize="sm">
-                      {dayjs(detail.timestamp).add(8, "hours").toNow(true)}(
+                      {dayjs(detail.timestamp).add(8, 'hours').toNow(true)}(
                       {detail.timestamp})
                     </Text>
                   </HStack>
@@ -352,7 +350,7 @@ const TransactionDetail = () => {
         </Tabs>
       </Box>
     </div>
-  );
-};
+  )
+}
 
-export default TransactionDetail;
+export default TransactionDetail
