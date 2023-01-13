@@ -4,95 +4,97 @@ import {
   Route,
   Navigate,
   useParams,
-} from "react-router-dom";
-import { useState } from "react";
-import { ChakraProvider, Center, Spinner, extendTheme } from "@chakra-ui/react";
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
-import { initAppchainUtils } from "./libs/appchainUtils";
+} from 'react-router-dom'
+import { useState } from 'react'
+import { ChakraProvider, Center, Spinner, extendTheme } from '@chakra-ui/react'
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
+import { initPolkaApi } from './libs/polkadotApi'
 
-import Root from "views/Root";
-import Home from "views/Home/Home";
-import EvmHome from "views/Home/EvmHome";
-import Blocks from "views/default/Blocks";
-import BlockDetail from "views/default/Blocks/BlockDetail";
-import Transfers from "views/default/Transfers";
-import TransferDetail from "views/default/Transfers/TransferDetail";
-import ExtrinsicDetail from "views/default/Extrinsics/ExtrinsicDetail";
-import Extrinsics from "views/default/Extrinsics";
-import { useEffect } from "react";
-import { getAppchainTheme } from "./libs/appchainThemes";
+import Root from 'views/Root'
+import Home from 'views/Home/Home'
+import EvmHome from 'views/Home/EvmHome'
+import Blocks from 'views/default/Blocks'
+import BlockDetail from 'views/default/Blocks/BlockDetail'
+import Transfers from 'views/default/Transfers'
+import TransferDetail from 'views/default/Transfers/TransferDetail'
+import ExtrinsicDetail from 'views/default/Extrinsics/ExtrinsicDetail'
+import Extrinsics from 'views/default/Extrinsics'
+import { useEffect } from 'react'
+import { getAppchainTheme } from './libs/appchainThemes'
 
-import DefaultAccounts from "views/default/Accounts";
-import DefaultAccountDetail from "views/default/Accounts/AccountDetail";
+import DefaultAccounts from 'views/default/Accounts'
+import DefaultAccountDetail from 'views/default/Accounts/AccountDetail'
 
-import EvmAccounts from "views/evm/Accounts";
-import EvmAccountDetail from "views/evm/Accounts/AccountDetail";
-import Transactions from "views/evm/Transactions";
-import TransactionDetail from "views/evm/Transactions/TransactionDetail";
+import EvmAccounts from 'views/evm/Accounts'
+import EvmAccountDetail from 'views/evm/Accounts/AccountDetail'
+import Transactions from 'views/evm/Transactions'
+import TransactionDetail from 'views/evm/Transactions/TransactionDetail'
 
-import Erc20TokenList from "views/evm/Tokens/Erc20TokenList";
-import Erc721TokenList from "views/evm/Tokens/Erc721TokenList";
-import Erc721TokenDetail from "views/evm/Tokens/Erc721TokenDetail";
-import Erc1155TokenList from "views/evm/Tokens/Erc1155TokenList";
-import Erc1155TokenDetail from "views/evm/Tokens/Erc1155TokenDetail";
+import ERC20TokenList from 'views/evm/Tokens/Erc20TokenList'
+import Erc721TokenList from 'views/evm/Tokens/Erc721TokenList'
+import Erc721TokenDetail from 'views/evm/Tokens/Erc721TokenDetail'
+import Erc1155TokenList from 'views/evm/Tokens/Erc1155TokenList'
+import Erc1155TokenDetail from 'views/evm/Tokens/Erc1155TokenDetail'
 
-import NotFound from "views/NotFound";
+import NotFound from 'views/NotFound'
 
 const TxRedirect = () => {
-  const { appchain, id } = useParams();
-  return <Navigate to={`/${appchain}/transactions/${id}`} replace />;
-};
+  const { appchain, id } = useParams()
+  return <Navigate to={`/${appchain}/transactions/${id}`} replace />
+}
 
 function App() {
-  const [appchainInfo, setAppchainInfo] = useState<any>();
-  const [appchains, setAppchains] = useState<any[]>();
-  const [client, setClient] = useState<any>();
+  const [appchainInfo, setAppchainInfo] = useState<any>()
+  const [appchains, setAppchains] = useState<any[]>()
+  const [client, setClient] = useState<any>()
 
-  const appchain = window.location.pathname.split("/")[1];
+  const appchain = window.location.pathname.split('/')[1]
 
-  const appchainTheme = getAppchainTheme(appchain);
-  const theme = extendTheme(appchainTheme);
+  const appchainTheme = getAppchainTheme(appchain)
+  const theme = extendTheme(appchainTheme)
 
   useEffect(() => {
     const init = async () => {
-      const appchains = await window.getAppchains();
-      setAppchains(appchains);
+      const appchains = await window.getAppchains()
+      console.log('appchains', appchains)
+
+      setAppchains(appchains)
 
       try {
-        console.log("appchain", appchain);
+        console.log('appchain', appchain)
 
         if (!appchain) {
-          const defaultAppchain = appchains[appchains.length - 1];
-          window.location.replace(`/${defaultAppchain.appchain_id}`);
+          const defaultAppchain = appchains[appchains.length - 1]
+          window.location.replace(`/${defaultAppchain.appchain_id}`)
         }
-        const info = await window.getAppchainInfo(appchain);
-        await initAppchainUtils(info);
-        setAppchainInfo(info);
+        const info = await window.getAppchainInfo(appchain)
+        setAppchainInfo(info)
+        await initPolkaApi(info)
       } catch (err) {
-        console.log(err);
-        setAppchainInfo(null);
+        console.log(err)
+        setAppchainInfo(null)
       }
-    };
-    init();
-  }, [appchain]);
+    }
+    init()
+  }, [appchain])
 
   useEffect(() => {
     if (!appchainInfo) {
-      return;
+      return
     }
     setClient(
       new ApolloClient({
         uri: appchainInfo.subql_endpoint,
         cache: new InMemoryCache(),
       })
-    );
-  }, [appchainInfo]);
+    )
+  }, [appchainInfo])
 
   if (!appchainInfo) {
-    return;
+    return
   }
-  const Accounts = window.isEvm ? EvmAccounts : DefaultAccounts;
-  const AccountDetail = window.isEvm ? EvmAccountDetail : DefaultAccountDetail;
+  const Accounts = window.isEvm ? EvmAccounts : DefaultAccounts
+  const AccountDetail = window.isEvm ? EvmAccountDetail : DefaultAccountDetail
   return (
     <ChakraProvider theme={theme}>
       {client ? (
@@ -116,10 +118,7 @@ function App() {
                   path="/:appchain/accounts/:id"
                   element={<AccountDetail />}
                 />
-                <Route
-                  path="/:appchain/erc20_tokens"
-                  element={<Erc20TokenList />}
-                />
+                <Route path="/:appchain/tokens" element={<ERC20TokenList />} />
                 <Route
                   path="/:appchain/erc721_tokens"
                   element={<Erc721TokenList />}
@@ -172,7 +171,7 @@ function App() {
         </Center>
       )}
     </ChakraProvider>
-  );
+  )
 }
 
-export default App;
+export default App

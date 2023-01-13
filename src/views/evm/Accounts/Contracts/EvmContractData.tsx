@@ -2,7 +2,6 @@ import {
   IconButton,
   Flex,
   HStack,
-  Icon,
   Heading,
   Box,
   Tab,
@@ -18,31 +17,25 @@ import {
   TabList,
   TabPanels,
   TabPanel,
-  Tag,
-} from "@chakra-ui/react";
-import { useState, useEffect } from "react";
-import dayjs from "dayjs";
-import { ChevronLeftIcon, ChevronRightIcon, TimeIcon } from "@chakra-ui/icons";
-import { useQuery, gql } from "@apollo/client";
-import { useParams } from "react-router-dom";
-import { getNativeAmountHuman } from "../../../../libs/appchainUtils";
-import CopyButton from "../../../../components/CopyButton";
-import SearchBox from "../../../../components/SearchBox";
-import StyledLink from "components/StyledLink";
-import { MdApps } from "react-icons/md";
-import { briefHex } from "libs/utils";
-import { PAGE_SIZE, EVM_LOGS_QUERY } from "../queries";
-import Erc20Txs from "./Erc20Txs";
-import Erc721Tokens from "./Erc721Tokens";
-import Erc721Txs from "./Erc721Txs";
-import Erc1155Tokens from "./Erc1155Tokens";
-import Erc1155Txs from "./Erc1155Txs";
+} from '@chakra-ui/react'
+import { useState, useEffect } from 'react'
+import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
+import { useQuery } from '@apollo/client'
+import StyledLink from 'components/StyledLink'
+import { MdApps } from 'react-icons/md'
+import { briefHex } from 'libs/utils'
+import { PAGE_SIZE, EVM_LOGS_QUERY } from '../queries'
+import Erc20Txs from './Erc20Txs'
+import Erc721Tokens from './Erc721Tokens'
+import Erc721Txs from './Erc721Txs'
+import Erc1155Tokens from './Erc1155Tokens'
+import Erc1155Txs from './Erc1155Txs'
 
 const EvmContractData = ({ account }) => {
   const { id, erc20TokenContract, erc721TokenContract, erc1155TokenContract } =
-    account;
-  const [detail, setDetail] = useState<any>();
-  const [evmLogsPage, setEvmLogsPage] = useState(0);
+    account
+  const [detail, setDetail] = useState<any>()
+  const [evmLogsPage, setEvmLogsPage] = useState(0)
 
   const evmLogsQuery = useQuery(EVM_LOGS_QUERY, {
     variables: {
@@ -50,26 +43,26 @@ const EvmContractData = ({ account }) => {
       offset: evmLogsPage * PAGE_SIZE,
       pageSize: PAGE_SIZE,
     },
-  });
+  })
 
   useEffect(() => {
-    evmLogsQuery.startPolling(30 * 1000);
+    evmLogsQuery.startPolling(30 * 1000)
     return () => {
-      evmLogsQuery.stopPolling();
-    };
-  }, []);
+      evmLogsQuery.stopPolling()
+    }
+  }, [])
 
   useEffect(() => {
     if (account && evmLogsQuery.data) {
       const accountDetail = {
         ...account,
         ...evmLogsQuery.data,
-      };
-      setDetail(accountDetail);
+      }
+      setDetail(accountDetail)
     } else {
-      setDetail(null);
+      setDetail(null)
     }
-  }, [evmLogsQuery]);
+  }, [evmLogsQuery])
 
   return (
     <div>
@@ -203,7 +196,7 @@ const EvmContractData = ({ account }) => {
                     onClick={() => setEvmLogsPage(evmLogsPage - 1)}
                   />
                   <Box>
-                    {evmLogsPage + 1} of{" "}
+                    {evmLogsPage + 1} of{' '}
                     {detail
                       ? Math.ceil(detail?.evmLogs.totalCount / PAGE_SIZE)
                       : 1}
@@ -224,7 +217,7 @@ const EvmContractData = ({ account }) => {
         </Tabs>
       </Box>
     </div>
-  );
-};
+  )
+}
 
-export default EvmContractData;
+export default EvmContractData

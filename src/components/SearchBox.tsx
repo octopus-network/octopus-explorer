@@ -28,6 +28,7 @@ const SearchBox = () => {
         onChange={(e) => setKeyword(e.target.value)}
         size="lg"
         flex="1"
+        width={500}
         placeholder="Search for block/extrinsic/account"
         borderRightRadius="0"
       />

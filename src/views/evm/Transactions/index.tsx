@@ -14,16 +14,15 @@ import {
   IconButton,
   Heading,
   Tag,
-} from "@chakra-ui/react";
-import dayjs from "dayjs";
-import { useQuery, gql } from "@apollo/client";
-import { TimeIcon, ChevronRightIcon, ChevronLeftIcon } from "@chakra-ui/icons";
-import { useState } from "react";
-import { useEffect } from "react";
-import SearchBox from "../../../components/SearchBox";
-import StyledLink from "components/StyledLink";
-import { briefHex } from "libs/utils";
-import { getNativeAmountHuman } from "../../../libs/appchainUtils";
+} from '@chakra-ui/react'
+import dayjs from 'dayjs'
+import { useQuery, gql } from '@apollo/client'
+import { TimeIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons'
+import { useState } from 'react'
+import { useEffect } from 'react'
+import StyledLink from 'components/StyledLink'
+import { briefHex } from 'libs/utils'
+import { getNativeAmountHuman } from '../../../libs/polkadotApi'
 
 const TRANSACTIONS_QUERY = gql`
   query QueryTransactions($offset: Int!, $pageSize: Int!) {
@@ -45,13 +44,13 @@ const TRANSACTIONS_QUERY = gql`
       totalCount
     }
   }
-`;
+`
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 20
 
 const Transactions = () => {
-  const [page, setPage] = useState(0);
-  const [isOnTable, setIsOnTable] = useState(false);
+  const [page, setPage] = useState(0)
+  const [isOnTable, setIsOnTable] = useState(false)
 
   const { loading, data, stopPolling, startPolling } = useQuery(
     TRANSACTIONS_QUERY,
@@ -61,23 +60,22 @@ const Transactions = () => {
         pageSize: PAGE_SIZE,
       },
     }
-  );
+  )
 
   useEffect(() => {
-    startPolling(6000);
-    return () => stopPolling();
-  }, [startPolling, stopPolling]);
+    startPolling(6000)
+    return () => stopPolling()
+  }, [startPolling, stopPolling])
 
   return (
     <div>
-      <SearchBox></SearchBox>
       <Box
         p={5}
         background="white"
         mt={5}
         boxShadow="sm"
         borderRadius="lg"
-        style={{ overflowX: "scroll" }}
+        style={{ overflowX: 'scroll' }}
       >
         {loading ? (
           <Box
@@ -125,10 +123,10 @@ const Transactions = () => {
                       </StyledLink>
                       <Tag
                         size="sm"
-                        colorScheme={to.isContract ? "primary" : "secondary"}
+                        colorScheme={to.isContract ? 'primary' : 'secondary'}
                         ml={2}
                       >
-                        {to.isContract ? "Contract" : "User"}
+                        {to.isContract ? 'Contract' : 'User'}
                       </Tag>
                     </Td>
                     <Td>{getNativeAmountHuman(value)}</Td>
@@ -148,17 +146,17 @@ const Transactions = () => {
                           color="yellow.600"
                         />
                         <Text color="grey" fontSize="md">
-                          {dayjs(timestamp).add(8, "hours").toNow(true)}
+                          {dayjs(timestamp).add(8, 'hours').toNow(true)}
                         </Text>
                       </HStack>
                     </Td>
                     <Td>
                       <Tag
                         size="sm"
-                        colorScheme={isSuccess ? "green" : "red"}
+                        colorScheme={isSuccess ? 'green' : 'red'}
                         mr={2}
                       >
-                        {isSuccess ? "Success" : "Fail"}
+                        {isSuccess ? 'Success' : 'Fail'}
                       </Tag>
                     </Td>
                   </Tr>
@@ -178,7 +176,7 @@ const Transactions = () => {
             onClick={() => setPage(page - 1)}
           />
           <Box>
-            {page + 1} of{" "}
+            {page + 1} of{' '}
             {data ? Math.ceil(data?.transactions.totalCount / PAGE_SIZE) : 1}
           </Box>
           <IconButton
@@ -192,7 +190,7 @@ const Transactions = () => {
         </HStack>
       </Flex>
     </div>
-  );
-};
+  )
+}
 
-export default Transactions;
+export default Transactions

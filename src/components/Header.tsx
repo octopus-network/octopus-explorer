@@ -1,4 +1,4 @@
-import { Container, Flex } from "@chakra-ui/layout";
+import { Container, Flex, VStack } from '@chakra-ui/layout'
 import {
   Box,
   Button,
@@ -12,81 +12,77 @@ import {
   Link,
   IconButton,
   Text,
-} from "@chakra-ui/react";
-import { ChevronDownIcon, HamburgerIcon } from "@chakra-ui/icons";
-import { Link as RouterLink, useLocation } from "react-router-dom";
-import { BrowserView, isMobile } from "react-device-detect";
-import StyledLink from "./StyledLink";
+} from '@chakra-ui/react'
+import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
+import { Link as RouterLink, useLocation } from 'react-router-dom'
+import { isMobile } from 'react-device-detect'
+import StyledLink from './StyledLink'
+import SearchBox from './SearchBox'
 
 const NavLink = ({ title, to }) => {
-  const location = useLocation();
-  const pathArr = location.pathname.split("/");
-  const isActive = "/" + pathArr[1] == to;
+  const location = useLocation()
+  const pathArr = location.pathname.split('/')
+  const isActive = '/' + pathArr[1] == to
   return (
     <StyledLink to={to}>
       <Button
         background="transparent"
-        color={isActive ? "white" : "whiteAlpha.700"}
-        _hover={{ background: "transparent" }}
-        _active={{ background: "transparent", color: "white" }}
+        color={isActive ? 'white' : 'whiteAlpha.700'}
+        _hover={{ background: 'transparent' }}
+        _active={{ background: 'transparent', color: 'white' }}
       >
         {title}
       </Button>
     </StyledLink>
-  );
-};
+  )
+}
 
 const defaultNavs = [
   {
-    title: "Home",
-    link: "",
+    title: 'Accounts',
+    link: 'accounts',
   },
   {
-    title: "Accounts",
-    link: "accounts",
+    title: 'Blocks',
+    link: 'blocks',
   },
   {
-    title: "Blocks",
-    link: "blocks",
+    title: 'Transfers',
+    link: 'transfers',
   },
   {
-    title: "Tokens",
-    link: "tokens",
+    title: 'Extrinsics',
+    link: 'extrinsics',
   },
-  {
-    title: "Transfers",
-    link: "transfers",
-  },
-  {
-    title: "Extrinsics",
-    link: "extrinsics",
-  },
-];
+]
 
 const Header = ({
   appchains,
   appchainInfo,
 }: {
-  appchains: any[];
-  appchainInfo: any;
+  appchains: any[]
+  appchainInfo: any
 }) => {
-  const navs = [...defaultNavs];
-  const tokens = ["erc20", "erc721", "erc1155"];
+  const navs = [...defaultNavs]
   if (window.isEvm) {
     navs.push({
-      title: "Transactions",
-      link: "transactions",
-    });
+      title: 'Transactions',
+      link: 'transactions',
+    })
   }
+
+  const location = useLocation()
+  const isHome = location.pathname.split('/').length == 2
+
   return appchains && appchains.length > 0 ? (
-    <div style={{ background: "#26262f" }}>
-      <Container maxW="container.xl" h="88px">
+    <div style={{ background: '#26262f' }}>
+      <Container maxW="container.xl" h={isHome ? '80px' : '120px'}>
         <Flex align="center" justify="center" h="100%">
           <Box p="2" pl="0">
             <StyledLink color="" to="">
               <Flex justify="space-between" align="center">
                 <Image
-                  style={{ display: "inline-block" }}
+                  style={{ display: 'inline-block' }}
                   boxSize="2.2rem"
                   src={
                     appchainInfo.appchain_metadata.fungible_token_metadata.icon
@@ -98,7 +94,7 @@ const Header = ({
                 <Text
                   fontSize="lg"
                   color="gray.50"
-                  style={{ textTransform: "capitalize", fontWeight: "bolder" }}
+                  style={{ textTransform: 'capitalize', fontWeight: 'bolder' }}
                 >
                   {appchainInfo.appchain_id}
                 </Text>
@@ -106,89 +102,78 @@ const Header = ({
             </StyledLink>
           </Box>
           <Spacer />
-          <HStack
-            spacing="5px"
-            align="center"
-            direction={"row"}
-            display={{ xs: "none", sm: "none", md: "none", lg: "block" }}
-          >
-            {!isMobile &&
-              navs.map((nav) =>
-                nav.title === "Tokens" ? (
-                  window.isEvm ? (
-                    <Menu key={nav.title}>
-                      <MenuButton
-                        as={Button}
-                        rightIcon={<ChevronDownIcon />}
-                        colorScheme="Black"
-                      >
-                        <Box>
-                          <span>Tokens</span>
-                        </Box>
-                      </MenuButton>
-                      <MenuList bg="#262636" border="none">
-                        {tokens.map((token) => (
-                          <Link
-                            href={`/${appchainInfo.appchain_id}/${token}_tokens`}
-                            key={token}
-                            _hover={{ textDecoration: "none" }}
-                          >
-                            <MenuItem
-                              color="#fff"
-                              _focus={{ background: "#555" }}
-                            >
-                              <span>{token.toUpperCase()} Tokens</span>
-                            </MenuItem>
-                          </Link>
-                        ))}
-                      </MenuList>
-                    </Menu>
-                  ) : null
-                ) : (
-                  <NavLink
-                    key={nav.title}
-                    title={nav.title}
-                    to={nav.link ? `/${nav.link}` : ""}
-                  />
-                )
-              )}
+          <VStack align="flex-end" justify="flex-end">
+            {!isHome && <SearchBox></SearchBox>}
 
-            <Menu>
-              <MenuButton
-                as={Button}
-                rightIcon={<ChevronDownIcon />}
-                colorScheme="Black"
-              >
-                <Box>
-                  <span>{appchainInfo.appchain_id}</span>
-                </Box>
-              </MenuButton>
-              <MenuList bg="#262636" border="none">
-                {appchains.map((appchain) => (
-                  <Link
-                    href={`/${appchain.appchain_id}`}
-                    key={appchain.appchain_id}
-                    _hover={{ textDecoration: "none" }}
-                  >
-                    <MenuItem color="#fff" _focus={{ background: "#555" }}>
-                      <Image
-                        boxSize="2rem"
-                        borderRadius="full"
-                        src={
-                          appchain.appchain_metadata.fungible_token_metadata
-                            .icon
-                        }
-                        alt={appchain.appchain_id}
-                        mr="12px"
-                      />
-                      <span>{appchain.appchain_id}</span>
-                    </MenuItem>
-                  </Link>
-                ))}
-              </MenuList>
-            </Menu>
-          </HStack>
-          <Box display={{ md: "block", lg: "none" }}>
+            <HStack
+              spacing="5px"
+              align="center"
+              direction={'row'}
+              display={{ xs: 'none', sm: 'none', md: 'none', lg: 'block' }}
+            >
+              <NavLink key="Home" title="Home" to="" />
+              <Menu>
+                <MenuButton
+                  as={Button}
+                  rightIcon={<ChevronDownIcon />}
+                  colorScheme="Black"
+                >
+                  <Box>
+                    <Text>Blockchain</Text>
+                  </Box>
+                </MenuButton>
+                <MenuList border="none">
+                  {navs.map((nav) => (
+                    <Link
+                      href={nav.link}
+                      key={nav.title}
+                      _hover={{ textDecoration: 'none' }}
+                    >
+                      <MenuItem>
+                        <Text>{nav.title}</Text>
+                      </MenuItem>
+                    </Link>
+                  ))}
+                </MenuList>
+              </Menu>
+              <NavLink key="Tokens" title="Tokens" to="/tokens" />
+              <Menu>
+                <MenuButton
+                  as={Button}
+                  rightIcon={<ChevronDownIcon />}
+                  colorScheme="Black"
+                >
+                  <Box>
+                    <span>{appchainInfo.appchain_id}</span>
+                  </Box>
+                </MenuButton>
+                <MenuList bg="#262636" border="none">
+                  {appchains.map((appchain) => (
+                    <Link
+                      href={`/${appchain.appchain_id}`}
+                      key={appchain.appchain_id}
+                      _hover={{ textDecoration: 'none' }}
+                    >
+                      <MenuItem color="#fff" _focus={{ background: '#555' }}>
+                        <Image
+                          boxSize="2rem"
+                          borderRadius="full"
+                          src={
+                            appchain.appchain_metadata.fungible_token_metadata
+                              .icon
+                          }
+                          alt={appchain.appchain_id}
+                          mr="12px"
+                        />
+                        <span>{appchain.appchain_id}</span>
+                      </MenuItem>
+                    </Link>
+                  ))}
+                </MenuList>
+              </Menu>
+            </HStack>
+          </VStack>
+          <Box display={{ md: 'block', lg: 'none' }}>
             <Menu>
               <MenuButton
                 colorScheme="white"
@@ -198,7 +183,7 @@ const Header = ({
               <MenuList>
                 {navs.map((nav) => (
                   <MenuItem key={nav.title}>
-                    <StyledLink to={nav.link ? `/${nav.link}` : ""} color="">
+                    <StyledLink to={nav.link ? `/${nav.link}` : ''} color="">
                       {nav.title}
                     </StyledLink>
                   </MenuItem>
@@ -209,7 +194,7 @@ const Header = ({
         </Flex>
       </Container>
     </div>
-  ) : null;
-};
+  ) : null
+}
 
-export default Header;
+export default Header
