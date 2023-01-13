@@ -30,11 +30,11 @@ import EvmAccountDetail from 'views/evm/Accounts/AccountDetail'
 import Transactions from 'views/evm/Transactions'
 import TransactionDetail from 'views/evm/Transactions/TransactionDetail'
 
-import ERC20TokenList from 'views/evm/Tokens/Erc20TokenList'
-import Erc721TokenList from 'views/evm/Tokens/Erc721TokenList'
-import Erc721TokenDetail from 'views/evm/Tokens/Erc721TokenDetail'
-import Erc1155TokenList from 'views/evm/Tokens/Erc1155TokenList'
-import Erc1155TokenDetail from 'views/evm/Tokens/Erc1155TokenDetail'
+import ERC20TokenList from 'views/evm/TokenList/Erc20'
+import Erc721TokenList from 'views/evm/TokenList/Erc721'
+import Erc721TokenDetail from 'views/evm/TokenList/Erc721TokenDetail'
+import Erc1155TokenList from 'views/evm/TokenList/Erc1155'
+import Erc1155TokenDetail from 'views/evm/TokenList/Erc1155TokenDetail'
 
 import NotFound from 'views/NotFound'
 
