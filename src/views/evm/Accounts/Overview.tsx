@@ -1,11 +1,12 @@
 import { Box, Heading, HStack, Text } from '@chakra-ui/react'
-import CopyButton from 'components/CopyButton'
 import { amountToHuman } from 'libs/utils'
 import { Account } from 'types'
 
 export default function Overview({ account }: { account?: Account }) {
   const isERC20Token = account?.erc20TokenContract
   const isContract = account?.isContract
+  console.log('account', account)
+
   return (
     <Box flex={1} background="white" boxShadow="sm" borderRadius="lg">
       <Heading size="md" borderBottom="1px solid #eee" p={4}>
@@ -28,11 +29,7 @@ export default function Overview({ account }: { account?: Account }) {
           <HStack borderBottom="1px solid #eee" m={2} p={2}>
             <Text w={100}>Total Supply:</Text>
             <Text>
-              {amountToHuman(
-                account.erc20TokenContract.totalSupply,
-                account.erc20TokenContract.decimals,
-                0
-              )}
+              {amountToHuman(account.erc20TokenContract.totalSupply, 0, 0)}
             </Text>
             <Text>{account.erc20TokenContract.symbol}</Text>
           </HStack>
