@@ -29,7 +29,11 @@ export default function Overview({ account }: { account?: Account }) {
           <HStack borderBottom="1px solid #eee" m={2} p={2}>
             <Text w={100}>Total Supply:</Text>
             <Text>
-              {amountToHuman(account.erc20TokenContract.totalSupply, 0, 0)}
+              {amountToHuman(
+                account.erc20TokenContract.totalSupply,
+                account.erc20TokenContract.decimals,
+                0
+              )}
             </Text>
             <Text>{account.erc20TokenContract.symbol}</Text>
           </HStack>
