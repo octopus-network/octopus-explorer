@@ -5,7 +5,6 @@ import { useParams } from 'react-router-dom'
 import CopyButton from '../../../components/CopyButton'
 import { ACCOUNT_QUERY } from './queries'
 import EvmAcountData from './EvmAccountData'
-import EvmContractData from './Contracts/EvmContractData'
 import AppchainData from './AppchainData'
 import AccountTag from 'components/AccountTag'
 import Overview from './Overview'
@@ -69,7 +68,7 @@ const AccountDetail = () => {
         </Flex>
       )}
       <HStack align="flex-start" mt={5} gap={4}>
-        <Overview account={account} />
+        <Overview id={id} account={account} />
         <Summary account={account} />
       </HStack>
       {account?.id && <EvmAcountData account={account} />}

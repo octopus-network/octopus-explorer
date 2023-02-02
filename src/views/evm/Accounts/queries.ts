@@ -86,6 +86,16 @@ export const EVM_TRANSACTIONS_QUERY = gql`
     }
   }
 `
+export const EVM_TRANSACTIONS_COUNT = gql`
+  query AccountTransactions($id: String!) {
+    transactions(
+      filter: { or: [{ fromId: { equalTo: $id } }, { toId: { equalTo: $id } }] }
+      orderBy: TIMESTAMP_DESC
+    ) {
+      totalCount
+    }
+  }
+`
 
 export const EVM_ERC20_TRANSACTIONS_QUERY = gql`
   query AccountTransactions($id: String!, $offset: Int!, $pageSize: Int!) {
@@ -453,6 +463,17 @@ export const ERC20_BALANCES = gql`
           totalSupply
         }
       }
+      totalCount
+    }
+  }
+`
+
+export const ERC20_HODLER_COUNT = gql`
+  query erc20Balances($contractId: String!) {
+    erc20Balances(
+      filter: { tokenContractId: { equalTo: $contractId } }
+      orderBy: VALUE_DESC
+    ) {
       totalCount
     }
   }
