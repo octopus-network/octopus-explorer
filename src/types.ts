@@ -22,3 +22,15 @@ export interface Account {
   reservedBalance: string
   transactionIn: { nodes: any[] }
 }
+
+export interface Asset {
+  accountId: string
+  id: string
+  tokenContract: {
+    decimals: number
+    name: string
+    symbol: string
+  }
+  value: string
+  balance: any
+}

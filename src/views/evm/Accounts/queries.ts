@@ -479,4 +479,21 @@ export const ERC20_HODLER_COUNT = gql`
   }
 `
 
+export const ERC20_ASSETS = gql`
+  query erc20Balances($accountId: String!) {
+    erc20Balances(first: 100, filter: { accountId: { equalTo: $accountId } }) {
+      nodes {
+        id
+        accountId
+        value
+        tokenContract {
+          symbol
+          name
+          decimals
+        }
+      }
+    }
+  }
+`
+
 export const PAGE_SIZE = 20

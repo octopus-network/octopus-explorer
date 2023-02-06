@@ -2,8 +2,13 @@ import { Box, Heading, HStack, Text } from '@chakra-ui/react'
 import { amountToHuman } from 'libs/utils'
 import { Account } from 'types'
 import { useApolloClient } from '@apollo/client'
-import { ERC20_HODLER_COUNT, EVM_TRANSACTIONS_COUNT } from './queries'
+import {
+  ERC20_ASSETS,
+  ERC20_HODLER_COUNT,
+  EVM_TRANSACTIONS_COUNT,
+} from './queries'
 import { useEffect, useState } from 'react'
+import Assets from './Assets'
 
 export default function Overview({
   account,
@@ -14,6 +19,7 @@ export default function Overview({
 }) {
   const [holderCount, setHolderCount] = useState('-')
   const [txCount, setTxCount] = useState('-')
+  const [assets, setAssets] = useState([])
   const isERC20Token = account?.erc20TokenContract
 
   const client = useApolloClient()
@@ -39,6 +45,17 @@ export default function Overview({
         })
         .catch(() => {})
     }
+    if (!isERC20Token && client) {
+      client
+        .query({
+          query: ERC20_ASSETS,
+          variables: { accountId: id.toLowerCase() },
+        })
+        .then((result) => {
+          setAssets(result.data.erc20Balances.nodes)
+        })
+        .catch(() => {})
+    }
   }, [client, isERC20Token])
 
   return (
@@ -54,9 +71,15 @@ export default function Overview({
           </HStack>
         )}
         {!isERC20Token && (
-          <HStack m={2} p={2}>
+          <HStack borderBottom="1px solid #eee" m={2} p={2}>
             <Text w={100}>Nonce:</Text>
             <Text>{account?.nonce}</Text>
+          </HStack>
+        )}
+        {!isERC20Token && (
+          <HStack m={2} p={2}>
+            <Text w={100}>Tokens:</Text>
+            <Assets assets={assets} />
           </HStack>
         )}
         {isERC20Token && (
