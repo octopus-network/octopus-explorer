@@ -1,8 +1,6 @@
 import {
   Flex,
   Box,
-  Text,
-  Icon,
   Table,
   Thead,
   Tbody,
@@ -12,18 +10,15 @@ import {
   Spinner,
   HStack,
   IconButton,
-  Heading,
-  Tag,
-} from "@chakra-ui/react";
-import dayjs from "dayjs";
-import { useQuery, gql } from "@apollo/client";
-import { TimeIcon, ChevronRightIcon, ChevronLeftIcon } from "@chakra-ui/icons";
-import { useState } from "react";
-import { useEffect } from "react";
-import SearchBox from "../../../components/SearchBox";
-import StyledLink from "components/StyledLink";
-import { briefHex } from "libs/utils";
-import { useParams } from "react-router-dom";
+} from '@chakra-ui/react'
+import { useQuery, gql } from '@apollo/client'
+import { ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons'
+import { useState } from 'react'
+import { useEffect } from 'react'
+import SearchBox from '../../../components/SearchBox'
+import StyledLink from 'components/StyledLink'
+import { briefHex } from 'libs/utils'
+import { useParams } from 'react-router-dom'
 
 const TOKEN_QUERY = gql`
   query QueryTransactions($offset: Int!, $pageSize: Int!) {
@@ -44,37 +39,37 @@ const TOKEN_QUERY = gql`
       totalCount
     }
   }
-`;
+`
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 20
 
 const Erc1155TokenList = () => {
-  const { appchain } = useParams();
-  const [page, setPage] = useState(0);
-  const [isOnTable, setIsOnTable] = useState(false);
-  const [detailedList, setDetailedList] = useState<any>();
+  const { appchain } = useParams()
+  const [page, setPage] = useState(0)
+  const [isOnTable, setIsOnTable] = useState(false)
+  const [detailedList, setDetailedList] = useState<any>()
 
   const { loading, data, stopPolling, startPolling } = useQuery(TOKEN_QUERY, {
     variables: {
       offset: page * PAGE_SIZE,
       pageSize: PAGE_SIZE,
     },
-  });
+  })
 
   useEffect(() => {
-    startPolling(6000);
-    return () => stopPolling();
-  }, [startPolling, stopPolling]);
+    startPolling(6000)
+    return () => stopPolling()
+  }, [startPolling, stopPolling])
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       if (data) {
-        setDetailedList(data.erc1155TokenContracts.nodes);
+        setDetailedList(data.erc1155TokenContracts.nodes)
       } else {
-        setDetailedList(null);
+        setDetailedList(null)
       }
-    })();
-  }, [data]);
+    })()
+  }, [data])
 
   return (
     <div>
@@ -85,7 +80,7 @@ const Erc1155TokenList = () => {
         mt={5}
         boxShadow="sm"
         borderRadius="lg"
-        style={{ overflowX: "scroll" }}
+        style={{ overflowX: 'scroll' }}
       >
         {!detailedList ? (
           <Box
@@ -147,7 +142,7 @@ const Erc1155TokenList = () => {
             onClick={() => setPage(page - 1)}
           />
           <Box>
-            {page + 1} of{" "}
+            {page + 1} of{' '}
             {data
               ? Math.ceil(data?.erc1155TokenContracts.totalCount / PAGE_SIZE)
               : 1}
@@ -164,7 +159,7 @@ const Erc1155TokenList = () => {
         </HStack>
       </Flex>
     </div>
-  );
-};
+  )
+}
 
-export default Erc1155TokenList;
+export default Erc1155TokenList

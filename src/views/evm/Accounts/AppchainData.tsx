@@ -19,55 +19,53 @@ import {
   TabPanels,
   TabPanel,
   Tag,
-} from "@chakra-ui/react";
-import { useState, useEffect } from "react";
-import dayjs from "dayjs";
-import { ChevronLeftIcon, ChevronRightIcon, TimeIcon } from "@chakra-ui/icons";
-import { useQuery, gql } from "@apollo/client";
-import { useParams } from "react-router-dom";
-import { getNativeAmountHuman } from "../../../libs/appchainUtils";
-import CopyButton from "../../../components/CopyButton";
-import SearchBox from "../../../components/SearchBox";
-import StyledLink from "components/StyledLink";
-import { MdApps } from "react-icons/md";
-import { briefHex } from "libs/utils";
+} from '@chakra-ui/react'
+import { useState, useEffect } from 'react'
+import dayjs from 'dayjs'
+import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
+import { useQuery } from '@apollo/client'
+import { getNativeAmountHuman } from '../../../libs/appchainUtils'
+import CopyButton from '../../../components/CopyButton'
+import StyledLink from 'components/StyledLink'
+import { MdApps } from 'react-icons/md'
+import { briefHex } from 'libs/utils'
 import {
   CALLS_QUERY,
   TRANSFERS_OUT_QUERY,
   TRANSFERS_IN_QUERY,
   PAGE_SIZE,
-} from "./queries";
+} from './queries'
 
 const AppchainData = ({ account }) => {
-  const { id } = account;
-  const [detail, setDetail] = useState<any>();
-  const [callsPage, setCallsPage] = useState(0);
-  const [transfersOutPage, setTransfersOutPage] = useState(0);
-  const [transfersInPage, setTransfersInPage] = useState(0);
+  const { id } = account
+  const [detail, setDetail] = useState<any>()
+  const [callsPage, setCallsPage] = useState(0)
+  const [transfersOutPage, setTransfersOutPage] = useState(0)
+  const [transfersInPage, setTransfersInPage] = useState(0)
 
   const callsQuery = useQuery(CALLS_QUERY, {
     variables: { id, offset: callsPage * PAGE_SIZE, pageSize: PAGE_SIZE },
-  });
+  })
   const transfersOutQuery = useQuery(TRANSFERS_OUT_QUERY, {
     variables: { id, offset: callsPage * PAGE_SIZE, pageSize: PAGE_SIZE },
-  });
+  })
   const transfersInQuery = useQuery(TRANSFERS_IN_QUERY, {
     variables: { id, offset: callsPage * PAGE_SIZE, pageSize: PAGE_SIZE },
-  });
+  })
 
   useEffect(() => {
-    callsQuery.startPolling(30 * 1000);
-    transfersOutQuery.startPolling(30 * 1000);
-    transfersInQuery.startPolling(30 * 1000);
+    callsQuery.startPolling(30 * 1000)
+    transfersOutQuery.startPolling(30 * 1000)
+    transfersInQuery.startPolling(30 * 1000)
     return () => {
-      callsQuery.stopPolling();
-      transfersOutQuery.stopPolling();
-      transfersInQuery.stopPolling();
-    };
-  }, []);
+      callsQuery.stopPolling()
+      transfersOutQuery.stopPolling()
+      transfersInQuery.stopPolling()
+    }
+  }, [])
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       if (
         account &&
         callsQuery.data &&
@@ -79,13 +77,13 @@ const AppchainData = ({ account }) => {
           ...callsQuery.data.account,
           ...transfersOutQuery.data.account,
           ...transfersInQuery.data.account,
-        };
-        setDetail(accountDetail);
+        }
+        setDetail(accountDetail)
       } else {
-        setDetail(null);
+        setDetail(null)
       }
-    })();
-  }, [callsQuery, transfersOutQuery, transfersInQuery]);
+    })()
+  }, [callsQuery, transfersOutQuery, transfersInQuery])
 
   return (
     <div>
@@ -169,14 +167,8 @@ const AppchainData = ({ account }) => {
                           </Td>
                           <Td>
                             <HStack spacing={2} mt={1}>
-                              <Icon
-                                as={TimeIcon}
-                                ml={3}
-                                boxSize={3}
-                                color="yellow.600"
-                              />
                               <Text color="grey" fontSize="sm">
-                                {dayjs(timestamp).add(8, "hours").toNow(true)}
+                                {dayjs(timestamp).add(8, 'hours').toNow(true)}
                               </Text>
                             </HStack>
                           </Td>
@@ -196,7 +188,7 @@ const AppchainData = ({ account }) => {
                     onClick={() => setCallsPage(callsPage - 1)}
                   />
                   <Box>
-                    {callsPage + 1} of{" "}
+                    {callsPage + 1} of{' '}
                     {detail
                       ? Math.ceil(detail?.calls.totalCount / PAGE_SIZE)
                       : 1}
@@ -265,14 +257,8 @@ const AppchainData = ({ account }) => {
                           </Td>
                           <Td>
                             <HStack spacing={2} mt={1}>
-                              <Icon
-                                as={TimeIcon}
-                                ml={3}
-                                boxSize={3}
-                                color="yellow.600"
-                              />
                               <Text color="grey" fontSize="sm">
-                                {dayjs(timestamp).add(8, "hours").toNow(true)}
+                                {dayjs(timestamp).add(8, 'hours').toNow(true)}
                               </Text>
                             </HStack>
                           </Td>
@@ -292,7 +278,7 @@ const AppchainData = ({ account }) => {
                     onClick={() => setTransfersOutPage(transfersOutPage - 1)}
                   />
                   <Box>
-                    {transfersOutPage + 1} of{" "}
+                    {transfersOutPage + 1} of{' '}
                     {detail
                       ? Math.ceil(detail?.transferOut.totalCount / PAGE_SIZE)
                       : 1}
@@ -361,14 +347,8 @@ const AppchainData = ({ account }) => {
                           </Td>
                           <Td>
                             <HStack spacing={2} mt={1}>
-                              <Icon
-                                as={TimeIcon}
-                                ml={3}
-                                boxSize={3}
-                                color="yellow.600"
-                              />
                               <Text color="grey" fontSize="sm">
-                                {dayjs(timestamp).add(8, "hours").toNow(true)}
+                                {dayjs(timestamp).add(8, 'hours').toNow(true)}
                               </Text>
                             </HStack>
                           </Td>
@@ -388,7 +368,7 @@ const AppchainData = ({ account }) => {
                     onClick={() => setTransfersInPage(transfersInPage - 1)}
                   />
                   <Box>
-                    {transfersInPage + 1} of{" "}
+                    {transfersInPage + 1} of{' '}
                     {detail
                       ? Math.ceil(detail?.transferIn.totalCount / PAGE_SIZE)
                       : 1}
@@ -409,7 +389,7 @@ const AppchainData = ({ account }) => {
         </Tabs>
       </Box>
     </div>
-  );
-};
+  )
+}
 
-export default AppchainData;
+export default AppchainData

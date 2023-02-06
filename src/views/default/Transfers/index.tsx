@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react'
 import dayjs from 'dayjs'
 import { useQuery, gql } from '@apollo/client'
-import { TimeIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons'
+import { ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons'
 import { useState, useEffect } from 'react'
 import { getNativeAmountHuman } from 'libs/appchainUtils'
 import StyledLink from 'components/StyledLink'
@@ -118,12 +118,6 @@ const Transfers = () => {
                     </Td>
                     <Td>
                       <HStack spacing={2} mt={1}>
-                        <Icon
-                          as={TimeIcon}
-                          ml={3}
-                          boxSize={3}
-                          color="yellow.600"
-                        />
                         <Text color="grey" fontSize="sm">
                           {dayjs(timestamp).add(8, 'hours').toNow(true)}
                         </Text>

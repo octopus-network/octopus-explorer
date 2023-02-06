@@ -1,15 +1,13 @@
-import { DocumentNode, useQuery } from '@apollo/client'
-import { ChevronLeftIcon, ChevronRightIcon, TimeIcon } from '@chakra-ui/icons'
+import { useQuery } from '@apollo/client'
+import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
 import {
   Box,
   Flex,
   HStack,
-  Icon,
   IconButton,
   Progress,
   Spinner,
   Table,
-  Tag,
   Tbody,
   Td,
   Text,

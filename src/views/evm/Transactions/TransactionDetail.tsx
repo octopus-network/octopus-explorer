@@ -1,8 +1,6 @@
 import {
-  IconButton,
   Flex,
   HStack,
-  Icon,
   Heading,
   Box,
   Tab,
@@ -22,7 +20,6 @@ import {
 } from '@chakra-ui/react'
 import { useState, useEffect } from 'react'
 import dayjs from 'dayjs'
-import { TimeIcon, ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
 import { useQuery, gql } from '@apollo/client'
 import { useParams } from 'react-router-dom'
 import { getNativeAmountHuman } from '../../../libs/appchainUtils'
@@ -275,7 +272,6 @@ const TransactionDetail = () => {
                 </Td>
                 <Td>
                   <HStack spacing={2} mt={1}>
-                    <Icon as={TimeIcon} ml={3} boxSize={3} color="yellow.600" />
                     <Text color="grey" fontSize="sm">
                       {dayjs(detail.timestamp).add(8, 'hours').toNow(true)}(
                       {detail.timestamp})

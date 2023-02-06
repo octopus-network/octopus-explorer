@@ -1,10 +1,9 @@
 import { DocumentNode, useQuery } from '@apollo/client'
-import { ChevronLeftIcon, ChevronRightIcon, TimeIcon } from '@chakra-ui/icons'
+import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
 import {
   Box,
   Flex,
   HStack,
-  Icon,
   IconButton,
   Spinner,
   Table,
@@ -109,7 +108,6 @@ export default function CommonTransfers({
                 <Td>{getNativeAmountHuman(value)}</Td>
                 <Td>
                   <HStack spacing={2} mt={1}>
-                    <Icon as={TimeIcon} ml={3} boxSize={3} color="yellow.600" />
                     <Text color="grey" fontSize="sm">
                       {dayjs(timestamp).add(8, 'hours').toNow(true)}
                     </Text>

@@ -7,11 +7,9 @@ import {
   Spinner,
   HStack,
   Tag,
-  Icon,
   Heading,
 } from '@chakra-ui/react'
 import dayjs from 'dayjs'
-import { TimeIcon } from '@chakra-ui/icons'
 import { isMobile } from 'react-device-detect'
 import StyledLink from 'components/StyledLink'
 
@@ -68,7 +66,6 @@ const ExtrinsicsBox = () => {
                     </Heading>
                   </StyledLink>
                   <HStack spacing={2} mt={1}>
-                    <Icon as={TimeIcon} ml={3} boxSize={3} color="yellow.600" />
                     <Text color="grey" fontSize="sm">
                       {dayjs(timestamp).add(8, 'hours').toNow(true)}
                     </Text>

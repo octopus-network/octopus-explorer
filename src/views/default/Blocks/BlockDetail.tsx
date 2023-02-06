@@ -24,12 +24,7 @@ import {
 } from '@chakra-ui/react'
 import { useState, useEffect } from 'react'
 import dayjs from 'dayjs'
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  TimeIcon,
-  CheckIcon,
-} from '@chakra-ui/icons'
+import { ChevronLeftIcon, ChevronRightIcon, CheckIcon } from '@chakra-ui/icons'
 import { useQuery, gql } from '@apollo/client'
 import { useParams, useNavigate } from 'react-router-dom'
 import CopyButton from '../../../components/CopyButton'
@@ -265,7 +260,6 @@ const BlockDetail = () => {
                 </Td>
                 <Td>
                   <HStack spacing={2} mt={1}>
-                    <Icon as={TimeIcon} ml={3} boxSize={3} color="yellow.600" />
                     <Text color="grey" fontSize="sm">
                       {dayjs(detail.timestamp).add(8, 'hours').toNow(true)}
                     </Text>
@@ -320,12 +314,6 @@ const BlockDetail = () => {
                           </Td>
                           <Td>
                             <HStack spacing={2} mt={1}>
-                              <Icon
-                                as={TimeIcon}
-                                ml={3}
-                                boxSize={3}
-                                color="yellow.600"
-                              />
                               <Text color="grey" fontSize="sm">
                                 {dayjs(timestamp).add(8, 'hours').toNow(true)}
                               </Text>

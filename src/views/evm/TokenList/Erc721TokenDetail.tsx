@@ -2,7 +2,6 @@ import {
   IconButton,
   Flex,
   HStack,
-  Icon,
   Heading,
   Box,
   Tab,
@@ -18,27 +17,25 @@ import {
   TabList,
   TabPanels,
   TabPanel,
-  Tag,
   Link,
-} from "@chakra-ui/react";
-import { useState, useEffect } from "react";
-import dayjs from "dayjs";
-import { ChevronLeftIcon, ChevronRightIcon, TimeIcon } from "@chakra-ui/icons";
-import { useQuery, gql } from "@apollo/client";
-import { useParams } from "react-router-dom";
-import { getNativeAmountHuman } from "../../../libs/appchainUtils";
-import CopyButton from "../../../components/CopyButton";
-import SearchBox from "../../../components/SearchBox";
-import StyledLink from "components/StyledLink";
-import { MdApps } from "react-icons/md";
-import { briefHex } from "libs/utils";
-import AccountTag from "components/AccountTag";
-import { PAGE_SIZE } from "../Accounts/queries";
+} from '@chakra-ui/react'
+import { useState, useEffect } from 'react'
+import dayjs from 'dayjs'
+import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
+import { useQuery, gql } from '@apollo/client'
+import { useParams } from 'react-router-dom'
+import CopyButton from '../../../components/CopyButton'
+import SearchBox from '../../../components/SearchBox'
+import StyledLink from 'components/StyledLink'
+import { MdApps } from 'react-icons/md'
+import { briefHex } from 'libs/utils'
+import AccountTag from 'components/AccountTag'
+import { PAGE_SIZE } from '../Accounts/queries'
 
 const Erc721TokenDetail = () => {
-  const { id } = useParams();
-  const [token, setToken] = useState<any>();
-  const [erc721TransfersPage, setErc721TransfersPage] = useState(0);
+  const { id } = useParams()
+  const [token, setToken] = useState<any>()
+  const [erc721TransfersPage, setErc721TransfersPage] = useState(0)
 
   const ERC721_TOKEN_DETAIL_QUERY = gql`
     query erc721Token($id: String!) {
@@ -49,7 +46,7 @@ const Erc721TokenDetail = () => {
         tokenURI
       }
     }
-  `;
+  `
 
   const ERC721_TRANSFERS_QUERY = gql`
     query erc721Transfers($tokenId: String!, $offset: Int!, $pageSize: Int!) {
@@ -82,7 +79,7 @@ const Erc721TokenDetail = () => {
         totalCount
       }
     }
-  `;
+  `
 
   const ERC721_BALANCES_QUERY = gql`
     query erc721Transfers($tokenId: String!, $offset: Int!, $pageSize: Int!) {
@@ -104,11 +101,11 @@ const Erc721TokenDetail = () => {
         totalCount
       }
     }
-  `;
+  `
 
   const tokenQuery = useQuery(ERC721_TOKEN_DETAIL_QUERY, {
     variables: { id: id.toLowerCase() },
-  });
+  })
 
   const erc721TransfersQuery = useQuery(ERC721_TRANSFERS_QUERY, {
     variables: {
@@ -116,7 +113,7 @@ const Erc721TokenDetail = () => {
       offset: erc721TransfersPage * PAGE_SIZE,
       pageSize: PAGE_SIZE,
     },
-  });
+  })
 
   const erc721BalancesQuery = useQuery(ERC721_BALANCES_QUERY, {
     variables: {
@@ -124,30 +121,30 @@ const Erc721TokenDetail = () => {
       offset: erc721TransfersPage * PAGE_SIZE,
       pageSize: PAGE_SIZE,
     },
-  });
+  })
 
   useEffect(() => {
-    tokenQuery.startPolling(30 * 1000);
+    tokenQuery.startPolling(30 * 1000)
     return () => {
-      tokenQuery.stopPolling();
-    };
-  }, []);
+      tokenQuery.stopPolling()
+    }
+  }, [])
 
   useEffect(() => {
     if (
       (tokenQuery.data && erc721TransfersQuery.data, erc721BalancesQuery.data)
     ) {
-      const { erc721Token: token } = tokenQuery.data;
-      console.log("token", token);
+      const { erc721Token: token } = tokenQuery.data
+      console.log('token', token)
       setToken({
         ...token,
         ...erc721TransfersQuery.data,
         ...erc721BalancesQuery.data,
-      });
+      })
     } else {
-      setToken(null);
+      setToken(null)
     }
-  }, [tokenQuery, erc721TransfersQuery, erc721BalancesQuery]);
+  }, [tokenQuery, erc721TransfersQuery, erc721BalancesQuery])
 
   return (
     <div>
@@ -280,14 +277,8 @@ const Erc721TokenDetail = () => {
                           </Td>
                           <Td>
                             <HStack spacing={2} mt={1}>
-                              <Icon
-                                as={TimeIcon}
-                                ml={3}
-                                boxSize={3}
-                                color="yellow.600"
-                              />
                               <Text color="grey" fontSize="sm">
-                                {dayjs(timestamp).add(8, "hours").toNow(true)}
+                                {dayjs(timestamp).add(8, 'hours').toNow(true)}
                               </Text>
                             </HStack>
                           </Td>
@@ -309,7 +300,7 @@ const Erc721TokenDetail = () => {
                     }
                   />
                   <Box>
-                    {erc721TransfersPage + 1} of{" "}
+                    {erc721TransfersPage + 1} of{' '}
                     {token
                       ? Math.ceil(token?.erc721Transfers.totalCount / PAGE_SIZE)
                       : 1}
@@ -371,7 +362,7 @@ const Erc721TokenDetail = () => {
                     }
                   />
                   <Box>
-                    {erc721TransfersPage + 1} of{" "}
+                    {erc721TransfersPage + 1} of{' '}
                     {token
                       ? Math.ceil(token?.erc721Transfers.totalCount / PAGE_SIZE)
                       : 1}
@@ -394,7 +385,7 @@ const Erc721TokenDetail = () => {
         </Tabs>
       </Box>
     </div>
-  );
-};
+  )
+}
 
-export default Erc721TokenDetail;
+export default Erc721TokenDetail

@@ -22,7 +22,7 @@ import {
 } from '@chakra-ui/react'
 import { useState, useEffect } from 'react'
 import dayjs from 'dayjs'
-import { ChevronLeftIcon, ChevronRightIcon, TimeIcon } from '@chakra-ui/icons'
+import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
 import { useQuery, gql } from '@apollo/client'
 import { useParams } from 'react-router-dom'
 import { getNativeAmountHuman } from '../../../libs/appchainUtils'
@@ -37,7 +37,7 @@ export const ACCOUNT_QUERY = gql`
       freeBalance
     }
   }
-`;
+`
 
 const CALLS_QUERY = gql`
   query AccountCalls($id: String!, $offset: Int!, $pageSize: Int!) {
@@ -107,7 +107,7 @@ const AccountDetail = () => {
 
   const accountQuery = useQuery(ACCOUNT_QUERY, {
     variables: { id },
-  });
+  })
   const callsQuery = useQuery(CALLS_QUERY, {
     variables: { id, offset: callsPage * PAGE_SIZE, pageSize: PAGE_SIZE },
   })
@@ -145,7 +145,7 @@ const AccountDetail = () => {
           transferOut: transfersInQuery.data.account.transferOut || {
             nodes: [],
             totalCount: 0,
-          }
+          },
         }
         console.log('account:', account)
         setDetail(account)
@@ -272,12 +272,6 @@ const AccountDetail = () => {
                           </Td>
                           <Td>
                             <HStack spacing={2} mt={1}>
-                              <Icon
-                                as={TimeIcon}
-                                ml={3}
-                                boxSize={3}
-                                color="yellow.600"
-                              />
                               <Text color="grey" fontSize="sm">
                                 {dayjs(timestamp).add(8, 'hours').toNow(true)}
                               </Text>
@@ -368,12 +362,6 @@ const AccountDetail = () => {
                           </Td>
                           <Td>
                             <HStack spacing={2} mt={1}>
-                              <Icon
-                                as={TimeIcon}
-                                ml={3}
-                                boxSize={3}
-                                color="yellow.600"
-                              />
                               <Text color="grey" fontSize="sm">
                                 {dayjs(timestamp).add(8, 'hours').toNow(true)}
                               </Text>
@@ -464,12 +452,6 @@ const AccountDetail = () => {
                           </Td>
                           <Td>
                             <HStack spacing={2} mt={1}>
-                              <Icon
-                                as={TimeIcon}
-                                ml={3}
-                                boxSize={3}
-                                color="yellow.600"
-                              />
                               <Text color="grey" fontSize="sm">
                                 {dayjs(timestamp).add(8, 'hours').toNow(true)}
                               </Text>

@@ -2,10 +2,7 @@ import {
   IconButton,
   Flex,
   HStack,
-  Icon,
-  Heading,
   Box,
-  Tab,
   Text,
   Table,
   Thead,
@@ -14,30 +11,22 @@ import {
   Th,
   Td,
   Spinner,
-  Tabs,
-  TabList,
-  TabPanels,
-  TabPanel,
   Tag,
-} from "@chakra-ui/react";
-import { useState, useEffect } from "react";
-import dayjs from "dayjs";
-import { ChevronLeftIcon, ChevronRightIcon, TimeIcon } from "@chakra-ui/icons";
-import { useQuery, gql } from "@apollo/client";
-import { useParams } from "react-router-dom";
-import { getNativeAmountHuman } from "../../../../libs/appchainUtils";
-import CopyButton from "../../../../components/CopyButton";
-import SearchBox from "../../../../components/SearchBox";
-import StyledLink from "components/StyledLink";
-import { MdApps } from "react-icons/md";
-import { briefHex } from "libs/utils";
-import { PAGE_SIZE, CONTRACT_ERC20_TRANSACTIONS_QUERY } from "../queries";
-import AccountTag from "components/AccountTag";
+} from '@chakra-ui/react'
+import { useState, useEffect } from 'react'
+import dayjs from 'dayjs'
+import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
+import { useQuery } from '@apollo/client'
+import { getNativeAmountHuman } from '../../../../libs/appchainUtils'
+import StyledLink from 'components/StyledLink'
+import { briefHex } from 'libs/utils'
+import { PAGE_SIZE, CONTRACT_ERC20_TRANSACTIONS_QUERY } from '../queries'
+import AccountTag from 'components/AccountTag'
 
 const Erc20Txs = ({ account }) => {
-  const { id } = account;
-  const [detail, setDetail] = useState<any>();
-  const [erc20TransfersPage, setErc20TransfersPage] = useState(0);
+  const { id } = account
+  const [detail, setDetail] = useState<any>()
+  const [erc20TransfersPage, setErc20TransfersPage] = useState(0)
 
   const contracterc20TransfersQuery = useQuery(
     CONTRACT_ERC20_TRANSACTIONS_QUERY,
@@ -48,26 +37,26 @@ const Erc20Txs = ({ account }) => {
         pageSize: PAGE_SIZE,
       },
     }
-  );
+  )
 
   useEffect(() => {
-    contracterc20TransfersQuery.startPolling(30 * 1000);
+    contracterc20TransfersQuery.startPolling(30 * 1000)
     return () => {
-      contracterc20TransfersQuery.stopPolling();
-    };
-  }, []);
+      contracterc20TransfersQuery.stopPolling()
+    }
+  }, [])
 
   useEffect(() => {
     if (account && contracterc20TransfersQuery.data) {
       const accountDetail = {
         ...account,
         ...contracterc20TransfersQuery.data,
-      };
-      setDetail(accountDetail);
+      }
+      setDetail(accountDetail)
     } else {
-      setDetail(null);
+      setDetail(null)
     }
-  }, [contracterc20TransfersQuery]);
+  }, [contracterc20TransfersQuery])
 
   return (
     <div>
@@ -105,10 +94,10 @@ const Erc20Txs = ({ account }) => {
                   <Td>
                     <Tag
                       size="sm"
-                      colorScheme={from.id === account.id ? "green" : "orange"}
+                      colorScheme={from.id === account.id ? 'green' : 'orange'}
                       ml={2}
                     >
-                      {from.id === account.id ? "Out" : "In"}
+                      {from.id === account.id ? 'Out' : 'In'}
                     </Tag>
                   </Td>
                   <Td>
@@ -120,14 +109,8 @@ const Erc20Txs = ({ account }) => {
                   <Td>{getNativeAmountHuman(value)}</Td>
                   <Td>
                     <HStack spacing={2} mt={1}>
-                      <Icon
-                        as={TimeIcon}
-                        ml={3}
-                        boxSize={3}
-                        color="yellow.600"
-                      />
                       <Text color="grey" fontSize="sm">
-                        {dayjs(timestamp).add(8, "hours").toNow(true)}
+                        {dayjs(timestamp).add(8, 'hours').toNow(true)}
                       </Text>
                     </HStack>
                   </Td>
@@ -147,7 +130,7 @@ const Erc20Txs = ({ account }) => {
             onClick={() => setErc20TransfersPage(erc20TransfersPage - 1)}
           />
           <Box>
-            {erc20TransfersPage + 1} of{" "}
+            {erc20TransfersPage + 1} of{' '}
             {detail
               ? Math.ceil(detail?.erc20Transfers.totalCount / PAGE_SIZE)
               : 1}
@@ -164,7 +147,7 @@ const Erc20Txs = ({ account }) => {
         </HStack>
       </Flex>
     </div>
-  );
-};
+  )
+}
 
-export default Erc20Txs;
+export default Erc20Txs
