@@ -5,7 +5,6 @@ import { amountToHuman } from 'libs/utils'
 
 const customComponents = {
   Option: ({ children, ...props }: any) => {
-    console.log(children)
     return (
       <chakraComponents.Option {...props}>
         <Box ml={1} flexDirection="column">
@@ -21,7 +20,6 @@ const customComponents = {
 
     if (props.hasValue) {
       const value: Asset = props.getValue()[0]
-      console.log('props: ', value)
       name = value.tokenContract.name
       balance = value.balance
     }
@@ -40,8 +38,6 @@ const customComponents = {
 }
 
 export default function Assets({ assets }: { assets: Asset[] }) {
-  console.log('assets', assets)
-
   return (
     <Box flex={1}>
       <Select
