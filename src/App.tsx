@@ -56,13 +56,10 @@ function App() {
   useEffect(() => {
     const init = async () => {
       const appchains = await window.getAppchains()
-      console.log('appchains', appchains)
 
       setAppchains(appchains)
 
       try {
-        console.log('appchain', appchain)
-
         if (!appchain) {
           const defaultAppchain = appchains[appchains.length - 1]
           window.location.replace(`/${defaultAppchain.appchain_id}`)

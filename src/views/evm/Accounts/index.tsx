@@ -12,16 +12,16 @@ import {
   IconButton,
   Heading,
   Tag,
-} from "@chakra-ui/react";
-import { useQuery, gql } from "@apollo/client";
-import { ChevronRightIcon, ChevronLeftIcon } from "@chakra-ui/icons";
-import { useState } from "react";
-import { useEffect } from "react";
-import SearchBox from "../../../components/SearchBox";
-import CopyButton from "../../../components/CopyButton";
-import StyledLink from "components/StyledLink";
-import { briefHex } from "libs/utils";
-import { getNativeAmountHuman } from "libs/appchainUtils";
+} from '@chakra-ui/react'
+import { useQuery, gql } from '@apollo/client'
+import { ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons'
+import { useState } from 'react'
+import { useEffect } from 'react'
+import SearchBox from '../../../components/SearchBox'
+import CopyButton from '../../../components/CopyButton'
+import StyledLink from 'components/StyledLink'
+import { briefHex } from 'libs/utils'
+import { getNativeAmountHuman } from 'libs/appchainUtils'
 
 const ACCOUNT_QUERY = gql`
   query QueryAccounts($offset: Int!, $pageSize: Int!) {
@@ -49,33 +49,33 @@ const ACCOUNT_QUERY = gql`
       totalCount
     }
   }
-`;
+`
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 20
 
 const Accounts = () => {
-  const [page, setPage] = useState(0);
-  const [accounts, setAccounts] = useState<any[]>([]);
+  const [page, setPage] = useState(0)
+  const [accounts, setAccounts] = useState<any[]>([])
 
   const { loading, data, stopPolling, startPolling } = useQuery(ACCOUNT_QUERY, {
     variables: {
       offset: page * PAGE_SIZE,
       pageSize: PAGE_SIZE,
     },
-  });
+  })
 
   useEffect(() => {
-    startPolling(15 * 1000);
-    return () => stopPolling();
-  }, [startPolling, stopPolling]);
+    startPolling(15 * 1000)
+    return () => stopPolling()
+  }, [startPolling, stopPolling])
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       if (data) {
-        setAccounts(data.accounts.nodes);
+        setAccounts(data.accounts.nodes)
       }
-    })();
-  }, [data]);
+    })()
+  }, [data])
 
   return (
     <div>
@@ -86,7 +86,7 @@ const Accounts = () => {
         mt={5}
         boxShadow="sm"
         borderRadius="lg"
-        style={{ overflowX: "scroll" }}
+        style={{ overflowX: 'scroll' }}
       >
         {loading ? (
           <Box
@@ -127,10 +127,10 @@ const Accounts = () => {
                         </StyledLink>
                         <Tag
                           size="sm"
-                          colorScheme={isContract ? "primary" : "secondary"}
+                          colorScheme={isContract ? 'primary' : 'secondary'}
                           ml={2}
                         >
-                          {isContract ? "Contract" : "User"}
+                          {isContract ? 'Contract' : 'User'}
                         </Tag>
                         <CopyButton value={id} />
                       </Flex>
@@ -157,7 +157,7 @@ const Accounts = () => {
             onClick={() => setPage(page - 1)}
           />
           <Box>
-            {page + 1} of{" "}
+            {page + 1} of{' '}
             {data ? Math.ceil(data?.accounts.totalCount / PAGE_SIZE) : 1}
           </Box>
           <IconButton
@@ -169,7 +169,7 @@ const Accounts = () => {
         </HStack>
       </Flex>
     </div>
-  );
-};
+  )
+}
 
-export default Accounts;
+export default Accounts
