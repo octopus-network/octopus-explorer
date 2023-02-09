@@ -12,16 +12,15 @@ import {
   Td,
   Spinner,
   CircularProgressLabel,
-} from "@chakra-ui/react";
-import { useState, useEffect } from "react";
-import dayjs from "dayjs";
-import { TimeIcon, CheckIcon } from "@chakra-ui/icons";
-import { useQuery, gql } from "@apollo/client";
-import { useParams } from "react-router-dom";
-import { getNativeAmountHuman } from "../../../libs/polkadotApi";
-import CopyButton from "../../../components/CopyButton";
-import SearchBox from "../../../components/SearchBox";
-import StyledLink from "components/StyledLink";
+} from '@chakra-ui/react'
+import { useState, useEffect } from 'react'
+import dayjs from 'dayjs'
+import { CheckIcon } from '@chakra-ui/icons'
+import { useQuery, gql } from '@apollo/client'
+import { useParams } from 'react-router-dom'
+import { getNativeAmountHuman } from '../../../libs/appchainUtils'
+import CopyButton from '../../../components/CopyButton'
+import StyledLink from 'components/StyledLink'
 
 const BLOCK_DETAIL_QUERY_BY_HASH = gql`
   query TransferDetail($id: String!) {
@@ -40,41 +39,41 @@ const BLOCK_DETAIL_QUERY_BY_HASH = gql`
       }
     }
   }
-`;
+`
 
 const TransferDetail = () => {
-  const { id } = useParams();
-  const [detail, setDetail] = useState<any>();
-  const [isConfirmed, setIsConfirmed] = useState(false);
-  const [secondsPast, setSecondsPast] = useState(0);
+  const { id } = useParams()
+  const [detail, setDetail] = useState<any>()
+  const [isConfirmed, setIsConfirmed] = useState(false)
+  const [secondsPast, setSecondsPast] = useState(0)
 
   const { data, startPolling, stopPolling } = useQuery(
     BLOCK_DETAIL_QUERY_BY_HASH,
     { variables: { id } }
-  );
+  )
 
   useEffect(() => {
-    startPolling(20 * 1000);
-    return () => stopPolling();
-  }, []);
+    startPolling(20 * 1000)
+    return () => stopPolling()
+  }, [])
 
   useEffect(() => {
     if (data) {
-      setDetail(data.systemTokenTransfer);
+      setDetail(data.systemTokenTransfer)
     } else {
-      setDetail(null);
+      setDetail(null)
     }
-  }, [data]);
+  }, [data])
 
   useEffect(() => {
     if (detail) {
       let diffSeconds = dayjs(detail.timestamp)
-        .add(8, "hours")
-        .diff(dayjs(), "seconds");
-      setSecondsPast(diffSeconds);
-      setIsConfirmed(diffSeconds < -12);
+        .add(8, 'hours')
+        .diff(dayjs(), 'seconds')
+      setSecondsPast(diffSeconds)
+      setIsConfirmed(diffSeconds < -12)
     }
-  }, [detail]);
+  }, [detail])
 
   return (
     <div>
@@ -82,7 +81,6 @@ const TransferDetail = () => {
         <Heading as="h6" size="sm">
           Transfer Detail
         </Heading>
-        <SearchBox></SearchBox>
       </Flex>
       <Box mt={5} p={4} background="white" boxShadow="sm" borderRadius="lg">
         {!detail ? (
@@ -132,7 +130,7 @@ const TransferDetail = () => {
                         </CircularProgressLabel>
                       )}
                     </CircularProgress>
-                    <Text>{isConfirmed ? "Confirmed" : "Pending"}</Text>
+                    <Text>{isConfirmed ? 'Confirmed' : 'Pending'}</Text>
                   </HStack>
                 </Td>
               </Tr>
@@ -205,9 +203,8 @@ const TransferDetail = () => {
                 </Td>
                 <Td>
                   <HStack spacing={2} mt={1}>
-                    <Icon as={TimeIcon} ml={3} boxSize={3} color="yellow.600" />
                     <Text color="grey" fontSize="sm">
-                      {dayjs(detail.timestamp).add(8, "hours").toNow(true)}
+                      {dayjs(detail.timestamp).add(8, 'hours').toNow(true)}
                     </Text>
                   </HStack>
                 </Td>
@@ -217,7 +214,7 @@ const TransferDetail = () => {
         )}
       </Box>
     </div>
-  );
-};
+  )
+}
 
-export default TransferDetail;
+export default TransferDetail

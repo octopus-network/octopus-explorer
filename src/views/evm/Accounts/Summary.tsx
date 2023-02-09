@@ -20,19 +20,19 @@ export default function Summary({ account }: { account?: Account }) {
       <Box>
         {isContract && (
           <HStack borderBottom="1px solid #eee" m={2} p={2}>
-            <Text>Contract</Text>
+            <Text w={100}>Contract:</Text>
             <Text>{account.id}</Text>
           </HStack>
         )}
         {isERC20Token && (
           <HStack borderBottom="1px solid #eee" m={2} p={2}>
-            <Text>Decimals</Text>
+            <Text w={100}>Decimals:</Text>
             <Text>{account.erc20TokenContract.decimals}</Text>
           </HStack>
         )}
         {isContract && (
           <HStack m={2} p={2}>
-            <Text>Creator</Text>
+            <Text w={100}>Creator:</Text>
             <StyledLink to={`/accounts/${account.creator.id}`}>
               {account.creator.id}
             </StyledLink>

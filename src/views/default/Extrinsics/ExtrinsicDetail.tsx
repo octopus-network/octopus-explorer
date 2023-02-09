@@ -16,14 +16,13 @@ import {
   TabPanels,
   TabPanel,
   Tag,
-} from "@chakra-ui/react";
-import { useState, useEffect } from "react";
-import dayjs from "dayjs";
-import { getNativeAmountHuman } from "../../../libs/polkadotApi";
-import { useQuery, gql } from "@apollo/client";
-import { useParams } from "react-router-dom";
-import SearchBox from "../../../components/SearchBox";
-import StyledLink from "components/StyledLink";
+} from '@chakra-ui/react'
+import { useState, useEffect } from 'react'
+import dayjs from 'dayjs'
+import { getNativeAmountHuman } from '../../../libs/appchainUtils'
+import { useQuery, gql } from '@apollo/client'
+import { useParams } from 'react-router-dom'
+import StyledLink from 'components/StyledLink'
 
 const EXTRINSIC_DETAIL_QUERY = gql`
   query ExtrinsicDetail($id: String!) {
@@ -52,35 +51,35 @@ const EXTRINSIC_DETAIL_QUERY = gql`
       }
     }
   }
-`;
+`
 
 const ExtrinsicDetail = () => {
-  const { id } = useParams();
-  const [detail, setDetail] = useState<any>();
+  const { id } = useParams()
+  const [detail, setDetail] = useState<any>()
 
   const { loading, data, startPolling, stopPolling } = useQuery(
     EXTRINSIC_DETAIL_QUERY,
     { variables: { id } }
-  );
+  )
 
   useEffect(() => {
-    startPolling(6000);
-    return () => stopPolling();
-  }, []);
+    startPolling(6000)
+    return () => stopPolling()
+  }, [])
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       if (data) {
         const events = data.extrinsic.events.nodes.map((e) => ({
           ...e,
           data: JSON.parse(e.data),
-        }));
+        }))
 
         const transfers = events
           .filter(
             (event) =>
-              event.section.toString() === "balances" &&
-              event.method.toString() === "Transfer"
+              event.section.toString() === 'balances' &&
+              event.method.toString() === 'Transfer'
           )
           .map(({ data }) => {
             return Array.isArray(data)
@@ -89,14 +88,14 @@ const ExtrinsicDetail = () => {
                   to: data[1].toString(),
                   amount: data[2],
                 }
-              : data;
-          });
-        setDetail({ ...data.extrinsic, transfers, events });
+              : data
+          })
+        setDetail({ ...data.extrinsic, transfers, events })
       } else {
-        setDetail(null);
+        setDetail(null)
       }
-    })();
-  }, [data]);
+    })()
+  }, [data])
 
   return (
     <div>
@@ -104,7 +103,6 @@ const ExtrinsicDetail = () => {
         <Heading as="h6" size="sm">
           Extrinsic Detail
         </Heading>
-        <SearchBox></SearchBox>
       </Flex>
       <Box mt={5} p={4} background="white" boxShadow="sm" borderRadius="lg">
         {!detail ? (
@@ -127,8 +125,8 @@ const ExtrinsicDetail = () => {
                 </Td>
                 <Td>
                   {dayjs(detail?.timestamp)
-                    .add(8, "hours")
-                    .format("YYYY-MM-DD HH:mm:ss")}
+                    .add(8, 'hours')
+                    .format('YYYY-MM-DD HH:mm:ss')}
                 </Td>
               </Tr>
               <Tr>
@@ -301,14 +299,14 @@ const ExtrinsicDetail = () => {
                           {Array.isArray(data) ? (
                             data.map((d, idx) => (
                               <div key={`${index}-data-${idx}`}>
-                                {d && typeof d === "object"
+                                {d && typeof d === 'object'
                                   ? JSON.stringify(d)
                                   : d.toString()}
                               </div>
                             ))
                           ) : (
                             <div>
-                              {typeof data === "object"
+                              {typeof data === 'object'
                                 ? JSON.stringify(data)
                                 : data.toString()}
                             </div>
@@ -324,7 +322,7 @@ const ExtrinsicDetail = () => {
         </Tabs>
       </Box>
     </div>
-  );
-};
+  )
+}
 
-export default ExtrinsicDetail;
+export default ExtrinsicDetail

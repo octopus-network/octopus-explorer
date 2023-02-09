@@ -2,11 +2,7 @@ import {
   IconButton,
   Flex,
   HStack,
-  Icon,
-  Heading,
   Box,
-  Tab,
-  Text,
   Table,
   Thead,
   Tbody,
@@ -14,31 +10,18 @@ import {
   Th,
   Td,
   Spinner,
-  Tabs,
-  TabList,
-  TabPanels,
-  TabPanel,
   Link,
-  Tag,
-} from "@chakra-ui/react";
-import { useState, useEffect } from "react";
-import dayjs from "dayjs";
-import { ChevronLeftIcon, ChevronRightIcon, TimeIcon } from "@chakra-ui/icons";
-import { useQuery, gql } from "@apollo/client";
-import { useParams } from "react-router-dom";
-import { getNativeAmountHuman } from "../../../../libs/polkadotApi";
-import CopyButton from "../../../../components/CopyButton";
-import SearchBox from "../../../../components/SearchBox";
-import StyledLink from "components/StyledLink";
-import { MdApps } from "react-icons/md";
-import { briefHex } from "libs/utils";
-import { PAGE_SIZE, CONTRACT_ERC721_TOKENS_QUERY } from "../queries";
-import AccountTag from "components/AccountTag";
+} from '@chakra-ui/react'
+import { useState, useEffect } from 'react'
+import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
+import { useQuery } from '@apollo/client'
+import StyledLink from 'components/StyledLink'
+import { PAGE_SIZE, CONTRACT_ERC721_TOKENS_QUERY } from '../queries'
 
 const Erc721Tokens = ({ account }) => {
-  const { id } = account;
-  const [detail, setDetail] = useState<any>();
-  const [erc721TokensPage, setErc721TokensPage] = useState(0);
+  const { id } = account
+  const [detail, setDetail] = useState<any>()
+  const [erc721TokensPage, setErc721TokensPage] = useState(0)
 
   const contractErc721TokensQuery = useQuery(CONTRACT_ERC721_TOKENS_QUERY, {
     variables: {
@@ -46,26 +29,26 @@ const Erc721Tokens = ({ account }) => {
       offset: erc721TokensPage * PAGE_SIZE,
       pageSize: PAGE_SIZE,
     },
-  });
+  })
 
   useEffect(() => {
-    contractErc721TokensQuery.startPolling(30 * 1000);
+    contractErc721TokensQuery.startPolling(30 * 1000)
     return () => {
-      contractErc721TokensQuery.stopPolling();
-    };
-  }, []);
+      contractErc721TokensQuery.stopPolling()
+    }
+  }, [])
 
   useEffect(() => {
     if (account && contractErc721TokensQuery.data) {
       const accountDetail = {
         ...account,
         ...contractErc721TokensQuery.data,
-      };
-      setDetail(accountDetail);
+      }
+      setDetail(accountDetail)
     } else {
-      setDetail(null);
+      setDetail(null)
     }
-  }, [contractErc721TokensQuery]);
+  }, [contractErc721TokensQuery])
 
   return (
     <div>
@@ -118,7 +101,7 @@ const Erc721Tokens = ({ account }) => {
             onClick={() => setErc721TokensPage(erc721TokensPage - 1)}
           />
           <Box>
-            {erc721TokensPage + 1} of{" "}
+            {erc721TokensPage + 1} of{' '}
             {detail
               ? Math.ceil(detail?.erc721Tokens.totalCount / PAGE_SIZE)
               : 1}
@@ -135,7 +118,7 @@ const Erc721Tokens = ({ account }) => {
         </HStack>
       </Flex>
     </div>
-  );
-};
+  )
+}
 
-export default Erc721Tokens;
+export default Erc721Tokens

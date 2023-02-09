@@ -8,7 +8,7 @@ import {
 import { useState } from 'react'
 import { ChakraProvider, Center, Spinner, extendTheme } from '@chakra-ui/react'
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
-import { initPolkaApi } from './libs/polkadotApi'
+import { initAppchainUtils } from './libs/appchainUtils'
 
 import Root from 'views/Root'
 import Home from 'views/Home/Home'
@@ -30,11 +30,11 @@ import EvmAccountDetail from 'views/evm/Accounts/AccountDetail'
 import Transactions from 'views/evm/Transactions'
 import TransactionDetail from 'views/evm/Transactions/TransactionDetail'
 
-import ERC20TokenList from 'views/evm/Tokens/ERC20TokenList'
-import Erc721TokenList from 'views/evm/Tokens/Erc721TokenList'
-import Erc721TokenDetail from 'views/evm/Tokens/Erc721TokenDetail'
-import Erc1155TokenList from 'views/evm/Tokens/Erc1155TokenList'
-import Erc1155TokenDetail from 'views/evm/Tokens/Erc1155TokenDetail'
+import ERC20TokenList from 'views/evm/TokenList/Erc20'
+import Erc721TokenList from 'views/evm/TokenList/Erc721'
+import Erc721TokenDetail from 'views/evm/TokenList/Erc721TokenDetail'
+import Erc1155TokenList from 'views/evm/TokenList/Erc1155'
+import Erc1155TokenDetail from 'views/evm/TokenList/Erc1155TokenDetail'
 
 import NotFound from 'views/NotFound'
 
@@ -56,6 +56,8 @@ function App() {
   useEffect(() => {
     const init = async () => {
       const appchains = await window.getAppchains()
+      console.log('appchains', appchains)
+
       setAppchains(appchains)
 
       try {
@@ -66,8 +68,8 @@ function App() {
           window.location.replace(`/${defaultAppchain.appchain_id}`)
         }
         const info = await window.getAppchainInfo(appchain)
-        await initPolkaApi(info)
         setAppchainInfo(info)
+        await initAppchainUtils(info)
       } catch (err) {
         console.log(err)
         setAppchainInfo(null)

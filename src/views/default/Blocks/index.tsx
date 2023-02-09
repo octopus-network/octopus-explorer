@@ -2,7 +2,6 @@ import {
   Flex,
   Box,
   Text,
-  Icon,
   Table,
   Thead,
   Tbody,
@@ -13,14 +12,13 @@ import {
   HStack,
   IconButton,
   Heading,
-} from "@chakra-ui/react";
-import dayjs from "dayjs";
-import { useQuery, gql } from "@apollo/client";
-import { TimeIcon, ChevronRightIcon, ChevronLeftIcon } from "@chakra-ui/icons";
-import { useState } from "react";
-import { useEffect } from "react";
-import SearchBox from "../../../components/SearchBox";
-import StyledLink from "components/StyledLink";
+} from '@chakra-ui/react'
+import dayjs from 'dayjs'
+import { useQuery, gql } from '@apollo/client'
+import { ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons'
+import { useState } from 'react'
+import { useEffect } from 'react'
+import StyledLink from 'components/StyledLink'
 
 const BLOCKS_QUERY = gql`
   query QueryBlocks($offset: Int!, $pageSize: Int!) {
@@ -39,35 +37,34 @@ const BLOCKS_QUERY = gql`
       totalCount
     }
   }
-`;
+`
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 20
 
 const Blocks = () => {
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(0)
 
   const { loading, data, stopPolling, startPolling } = useQuery(BLOCKS_QUERY, {
     variables: {
       offset: page * PAGE_SIZE,
       pageSize: PAGE_SIZE,
     },
-  });
+  })
 
   useEffect(() => {
-    startPolling(6000);
-    return () => stopPolling();
-  }, [startPolling, stopPolling]);
+    startPolling(6000)
+    return () => stopPolling()
+  }, [startPolling, stopPolling])
 
   return (
     <div>
-      <SearchBox></SearchBox>
       <Box
         p={5}
         background="white"
         mt={5}
         boxShadow="sm"
         borderRadius="lg"
-        style={{ overflowX: "scroll" }}
+        style={{ overflowX: 'scroll' }}
       >
         {loading ? (
           <Box
@@ -102,14 +99,8 @@ const Blocks = () => {
                     </Td>
                     <Td>
                       <HStack spacing={2} mt={1}>
-                        <Icon
-                          as={TimeIcon}
-                          ml={3}
-                          boxSize={4}
-                          color="yellow.600"
-                        />
                         <Text color="grey" fontSize="md">
-                          {dayjs(timestamp).add(8, "hours").toNow(true)}
+                          {dayjs(timestamp).add(8, 'hours').toNow(true)}
                         </Text>
                       </HStack>
                     </Td>
@@ -137,7 +128,7 @@ const Blocks = () => {
             onClick={() => setPage(page - 1)}
           />
           <Box>
-            {page + 1} of{" "}
+            {page + 1} of{' '}
             {data ? Math.ceil(data?.blocks.totalCount / PAGE_SIZE) : 1}
           </Box>
           <IconButton
@@ -149,7 +140,7 @@ const Blocks = () => {
         </HStack>
       </Flex>
     </div>
-  );
-};
+  )
+}
 
-export default Blocks;
+export default Blocks

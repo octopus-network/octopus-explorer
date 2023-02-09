@@ -5,7 +5,6 @@ import { useParams } from 'react-router-dom'
 import CopyButton from '../../../components/CopyButton'
 import { ACCOUNT_QUERY } from './queries'
 import EvmAcountData from './EvmAccountData'
-import EvmContractData from './Contracts/EvmContractData'
 import AppchainData from './AppchainData'
 import AccountTag from 'components/AccountTag'
 import Overview from './Overview'
@@ -30,7 +29,6 @@ const AccountDetail = () => {
   useEffect(() => {
     if (accountQuery.data) {
       const { account } = accountQuery.data
-      console.log('account:', account)
       if (account) {
         setAccount(account)
       } else {
@@ -47,13 +45,11 @@ const AccountDetail = () => {
   const isERC20Token = account?.erc20TokenContract
   const isContract = account?.isContract
 
-  console.log('AccountDetail', id, account)
-
   return (
     <div>
       {account && (
         <Flex justify="space-between" align="center">
-          <VStack>
+          <VStack align="flex-start">
             <HStack align="flex-end" gap={2}>
               <Heading size="lg">
                 {isContract ? (isERC20Token ? 'Token' : 'Contract') : 'Account'}
@@ -65,19 +61,16 @@ const AccountDetail = () => {
               </Text>
               {!isERC20Token && <CopyButton value={id} />}
             </HStack>
+            <HStack align="flex-start" justify="flex-start" gap={2}>
+              <AccountTag account={account} />
+            </HStack>
           </VStack>
-
-          <HStack align="center" gap={2}>
-            <AccountTag account={account} />
-          </HStack>
         </Flex>
       )}
       <HStack align="flex-start" mt={5} gap={4}>
-        <Overview account={account} />
+        <Overview id={id} account={account} />
         <Summary account={account} />
       </HStack>
-      {account &&
-        (account.isContract ? <EvmContractData account={account} /> : null)}
       {account?.id && <EvmAcountData account={account} />}
       {account?.id && <AppchainData account={account} />}
     </div>

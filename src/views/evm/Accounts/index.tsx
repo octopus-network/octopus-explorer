@@ -18,11 +18,10 @@ import { ChevronRightIcon, ChevronLeftIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 import { useEffect } from "react";
 import SearchBox from "../../../components/SearchBox";
-import { getBalanceOf } from "libs/polkadotApi";
 import CopyButton from "../../../components/CopyButton";
 import StyledLink from "components/StyledLink";
 import { briefHex } from "libs/utils";
-import { getNativeAmountHuman } from "libs/polkadotApi";
+import { getNativeAmountHuman } from "libs/appchainUtils";
 
 const ACCOUNT_QUERY = gql`
   query QueryAccounts($offset: Int!, $pageSize: Int!) {

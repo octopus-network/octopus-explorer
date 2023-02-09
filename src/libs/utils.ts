@@ -19,6 +19,14 @@ export function amountToHuman(
     .toFixed(fixed)
 }
 
+export function percentage(quantity: string, total: string) {
+  return new BigNumber(quantity)
+    .div(new BigNumber(total))
+    .times(100)
+    .toNumber()
+    .toFixed(2)
+}
+
 export function amountFromHuman(origin, decimals: number) {
   return new BigNumber(origin)
     .times(new BigNumber(10 ** decimals))

@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useQuery, gql } from '@apollo/client'
 import { Text, Flex, Box, Spinner, HStack, Heading } from '@chakra-ui/react'
 import dayjs from 'dayjs'
-import { TimeIcon } from '@chakra-ui/icons'
 import StyledLink from 'components/StyledLink'
 
 const NEW_BLOCKS_QUERY = gql`
@@ -69,7 +68,6 @@ const BlocksBox = () => {
                   </HStack>
                 </Box>
                 <Box display="flex" alignItems="center" justifyContent="center">
-                  <TimeIcon mr={3} color="yellow.600" />
                   <Text color="grey" fontSize="sm">
                     {dayjs(timestamp).add(8, 'hours').toNow(true)}
                   </Text>

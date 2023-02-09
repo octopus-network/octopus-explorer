@@ -1,4 +1,4 @@
-import { useQuery, gql } from "@apollo/client";
+import { useQuery, gql } from '@apollo/client'
 
 export const ACCOUNT_QUERY = gql`
   query Accounts($id: String!) {
@@ -45,26 +45,21 @@ export const ACCOUNT_QUERY = gql`
         id
         isContract
       }
-      transactionIn(first:1, orderBy: TIMESTAMP_ASC) {
+      transactionIn(first: 1, orderBy: TIMESTAMP_ASC) {
         nodes {
           id
         }
       }
     }
   }
-`;
+`
 
 export const EVM_TRANSACTIONS_QUERY = gql`
   query AccountTransactions($id: String!, $offset: Int!, $pageSize: Int!) {
     transactions(
-      filter: {
-        or: [
-          {fromId: { equalTo: $id}}
-          {toId: { equalTo: $id}}
-        ]
-      },
-      offset: $offset,
-      first: $pageSize,
+      filter: { or: [{ fromId: { equalTo: $id } }, { toId: { equalTo: $id } }] }
+      offset: $offset
+      first: $pageSize
       orderBy: TIMESTAMP_DESC
     ) {
       nodes {
@@ -90,19 +85,24 @@ export const EVM_TRANSACTIONS_QUERY = gql`
       totalCount
     }
   }
-`;
+`
+export const EVM_TRANSACTIONS_COUNT = gql`
+  query AccountTransactions($id: String!) {
+    transactions(
+      filter: { or: [{ fromId: { equalTo: $id } }, { toId: { equalTo: $id } }] }
+      orderBy: TIMESTAMP_DESC
+    ) {
+      totalCount
+    }
+  }
+`
 
 export const EVM_ERC20_TRANSACTIONS_QUERY = gql`
   query AccountTransactions($id: String!, $offset: Int!, $pageSize: Int!) {
     erc20Transfers(
-      filter: {
-        or: [
-          {fromId: { equalTo: $id}}
-          {toId: { equalTo: $id}}
-        ]
-      },
-      offset: $offset,
-      first: $pageSize,
+      filter: { or: [{ fromId: { equalTo: $id } }, { toId: { equalTo: $id } }] }
+      offset: $offset
+      first: $pageSize
       orderBy: TIMESTAMP_DESC
     ) {
       nodes {
@@ -132,19 +132,14 @@ export const EVM_ERC20_TRANSACTIONS_QUERY = gql`
       totalCount
     }
   }
-`;
+`
 
 export const EVM_ERC721_TRANSACTIONS_QUERY = gql`
   query AccountTransactions($id: String!, $offset: Int!, $pageSize: Int!) {
     erc721Transfers(
-      filter: {
-        or: [
-          {fromId: { equalTo: $id}}
-          {toId: { equalTo: $id}}
-        ]
-      },
-      offset: $offset,
-      first: $pageSize,
+      filter: { or: [{ fromId: { equalTo: $id } }, { toId: { equalTo: $id } }] }
+      offset: $offset
+      first: $pageSize
       orderBy: TIMESTAMP_DESC
     ) {
       nodes {
@@ -174,20 +169,14 @@ export const EVM_ERC721_TRANSACTIONS_QUERY = gql`
       totalCount
     }
   }
-`;
-
+`
 
 export const EVM_ERC1155_TRANSACTIONS_QUERY = gql`
   query AccountTransactions($id: String!, $offset: Int!, $pageSize: Int!) {
     erc1155Transfers(
-      filter: {
-        or: [
-          {fromId: { equalTo: $id}}
-          {toId: { equalTo: $id}}
-        ]
-      },
-      offset: $offset,
-      first: $pageSize,
+      filter: { or: [{ fromId: { equalTo: $id } }, { toId: { equalTo: $id } }] }
+      offset: $offset
+      first: $pageSize
       orderBy: TIMESTAMP_DESC
     ) {
       nodes {
@@ -214,8 +203,7 @@ export const EVM_ERC1155_TRANSACTIONS_QUERY = gql`
       totalCount
     }
   }
-`;
-
+`
 
 export const CALLS_QUERY = gql`
   query AccountCalls($id: String!, $offset: Int!, $pageSize: Int!) {
@@ -236,7 +224,7 @@ export const CALLS_QUERY = gql`
       }
     }
   }
-`;
+`
 
 export const TRANSFERS_OUT_QUERY = gql`
   query AccountTransfersOut($id: String!, $offset: Int!, $pageSize: Int!) {
@@ -254,7 +242,7 @@ export const TRANSFERS_OUT_QUERY = gql`
       }
     }
   }
-`;
+`
 
 export const TRANSFERS_IN_QUERY = gql`
   query AccountTransfersIn($id: String!, $offset: Int!, $pageSize: Int!) {
@@ -272,11 +260,16 @@ export const TRANSFERS_IN_QUERY = gql`
       }
     }
   }
-`;
+`
 
 export const EVM_LOGS_QUERY = gql`
   query evmLogs($contractId: String!, $offset: Int!, $pageSize: Int!) {
-    evmLogs(filter:{contractId: {equalTo: $contractId}}, offset: $offset, first: $pageSize, orderBy: TIMESTAMP_DESC) {
+    evmLogs(
+      filter: { contractId: { equalTo: $contractId } }
+      offset: $offset
+      first: $pageSize
+      orderBy: TIMESTAMP_DESC
+    ) {
       nodes {
         id
         logIndex
@@ -287,11 +280,16 @@ export const EVM_LOGS_QUERY = gql`
       totalCount
     }
   }
-`;
+`
 
 export const CONTRACT_ERC20_TRANSACTIONS_QUERY = gql`
   query erc20Transfers($contractId: String!, $offset: Int!, $pageSize: Int!) {
-    erc20Transfers(filter:{tokenContractId: {equalTo: $contractId}}, offset: $offset, first: $pageSize, orderBy: TIMESTAMP_DESC) {
+    erc20Transfers(
+      filter: { tokenContractId: { equalTo: $contractId } }
+      offset: $offset
+      first: $pageSize
+      orderBy: TIMESTAMP_DESC
+    ) {
       nodes {
         id
         transactionId
@@ -319,11 +317,16 @@ export const CONTRACT_ERC20_TRANSACTIONS_QUERY = gql`
       totalCount
     }
   }
-`;
+`
 
 export const CONTRACT_ERC721_TRANSACTIONS_QUERY = gql`
   query erc721Transfers($contractId: String!, $offset: Int!, $pageSize: Int!) {
-    erc721Transfers(filter:{tokenContractId: {equalTo: $contractId}}, offset: $offset, first: $pageSize, orderBy: TIMESTAMP_DESC) {
+    erc721Transfers(
+      filter: { tokenContractId: { equalTo: $contractId } }
+      offset: $offset
+      first: $pageSize
+      orderBy: TIMESTAMP_DESC
+    ) {
       nodes {
         id
         transactionId
@@ -354,11 +357,16 @@ export const CONTRACT_ERC721_TRANSACTIONS_QUERY = gql`
       totalCount
     }
   }
-`;
+`
 
 export const CONTRACT_ERC1155_TRANSACTIONS_QUERY = gql`
   query erc1155Transfers($contractId: String!, $offset: Int!, $pageSize: Int!) {
-    erc1155Transfers(filter:{tokenContractId: {equalTo: $contractId}}, offset: $offset, first: $pageSize, orderBy: TIMESTAMP_DESC) {
+    erc1155Transfers(
+      filter: { tokenContractId: { equalTo: $contractId } }
+      offset: $offset
+      first: $pageSize
+      orderBy: TIMESTAMP_DESC
+    ) {
       nodes {
         id
         transactionId
@@ -387,12 +395,15 @@ export const CONTRACT_ERC1155_TRANSACTIONS_QUERY = gql`
       totalCount
     }
   }
-`;
-
+`
 
 export const CONTRACT_ERC721_TOKENS_QUERY = gql`
   query erc721Tokens($contractId: String!, $offset: Int!, $pageSize: Int!) {
-    erc721Tokens(filter:{tokenContractId: {equalTo: $contractId}}, offset: $offset, first: $pageSize) {
+    erc721Tokens(
+      filter: { tokenContractId: { equalTo: $contractId } }
+      offset: $offset
+      first: $pageSize
+    ) {
       nodes {
         id
         tokenContractId
@@ -408,11 +419,15 @@ export const CONTRACT_ERC721_TOKENS_QUERY = gql`
       totalCount
     }
   }
-`;
+`
 
 export const CONTRACT_ERC1155_TOKENS_QUERY = gql`
   query erc1155Tokens($contractId: String!, $offset: Int!, $pageSize: Int!) {
-    erc1155Tokens(filter:{tokenContractId: {equalTo: $contractId}}, offset: $offset, first: $pageSize) {
+    erc1155Tokens(
+      filter: { tokenContractId: { equalTo: $contractId } }
+      offset: $offset
+      first: $pageSize
+    ) {
       nodes {
         id
         tokenContractId
@@ -429,6 +444,56 @@ export const CONTRACT_ERC1155_TOKENS_QUERY = gql`
       totalCount
     }
   }
-`;
+`
 
-export const PAGE_SIZE = 20;
+export const ERC20_BALANCES = gql`
+  query erc20Balances($contractId: String!, $offset: Int!, $pageSize: Int!) {
+    erc20Balances(
+      filter: { tokenContractId: { equalTo: $contractId } }
+      offset: $offset
+      first: $pageSize
+      orderBy: VALUE_DESC
+    ) {
+      nodes {
+        id
+        accountId
+        value
+        tokenContract {
+          decimals
+          totalSupply
+        }
+      }
+      totalCount
+    }
+  }
+`
+
+export const ERC20_HODLER_COUNT = gql`
+  query erc20Balances($contractId: String!) {
+    erc20Balances(
+      filter: { tokenContractId: { equalTo: $contractId } }
+      orderBy: VALUE_DESC
+    ) {
+      totalCount
+    }
+  }
+`
+
+export const ERC20_ASSETS = gql`
+  query erc20Balances($accountId: String!) {
+    erc20Balances(first: 100, filter: { accountId: { equalTo: $accountId } }) {
+      nodes {
+        id
+        accountId
+        value
+        tokenContract {
+          symbol
+          name
+          decimals
+        }
+      }
+    }
+  }
+`
+
+export const PAGE_SIZE = 20

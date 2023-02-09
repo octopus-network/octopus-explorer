@@ -2,10 +2,7 @@ import {
   IconButton,
   Flex,
   HStack,
-  Icon,
-  Heading,
   Box,
-  Tab,
   Text,
   Table,
   Thead,
@@ -14,30 +11,21 @@ import {
   Th,
   Td,
   Spinner,
-  Tabs,
-  TabList,
-  TabPanels,
-  TabPanel,
   Tag,
-} from "@chakra-ui/react";
-import { useState, useEffect } from "react";
-import dayjs from "dayjs";
-import { ChevronLeftIcon, ChevronRightIcon, TimeIcon } from "@chakra-ui/icons";
-import { useQuery, gql } from "@apollo/client";
-import { useParams } from "react-router-dom";
-import { getNativeAmountHuman } from "../../../../libs/polkadotApi";
-import CopyButton from "../../../../components/CopyButton";
-import SearchBox from "../../../../components/SearchBox";
-import StyledLink from "components/StyledLink";
-import { MdApps } from "react-icons/md";
-import { briefHex } from "libs/utils";
-import { PAGE_SIZE, CONTRACT_ERC721_TRANSACTIONS_QUERY } from "../queries";
-import AccountTag from "components/AccountTag";
+} from '@chakra-ui/react'
+import { useState, useEffect } from 'react'
+import dayjs from 'dayjs'
+import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
+import { useQuery, gql } from '@apollo/client'
+import StyledLink from 'components/StyledLink'
+import { briefHex } from 'libs/utils'
+import { PAGE_SIZE, CONTRACT_ERC721_TRANSACTIONS_QUERY } from '../queries'
+import AccountTag from 'components/AccountTag'
 
 const Erc721Txs = ({ account }) => {
-  const { id } = account;
-  const [detail, setDetail] = useState<any>();
-  const [erc721TransfersPage, setErc721TransfersPage] = useState(0);
+  const { id } = account
+  const [detail, setDetail] = useState<any>()
+  const [erc721TransfersPage, setErc721TransfersPage] = useState(0)
 
   const contracterc721TransfersQuery = useQuery(
     CONTRACT_ERC721_TRANSACTIONS_QUERY,
@@ -48,26 +36,26 @@ const Erc721Txs = ({ account }) => {
         pageSize: PAGE_SIZE,
       },
     }
-  );
+  )
 
   useEffect(() => {
-    contracterc721TransfersQuery.startPolling(30 * 1000);
+    contracterc721TransfersQuery.startPolling(30 * 1000)
     return () => {
-      contracterc721TransfersQuery.stopPolling();
-    };
-  }, []);
+      contracterc721TransfersQuery.stopPolling()
+    }
+  }, [])
 
   useEffect(() => {
     if (account && contracterc721TransfersQuery.data) {
       const accountDetail = {
         ...account,
         ...contracterc721TransfersQuery.data,
-      };
-      setDetail(accountDetail);
+      }
+      setDetail(accountDetail)
     } else {
-      setDetail(null);
+      setDetail(null)
     }
-  }, [contracterc721TransfersQuery]);
+  }, [contracterc721TransfersQuery])
 
   return (
     <div>
@@ -105,10 +93,10 @@ const Erc721Txs = ({ account }) => {
                   <Td>
                     <Tag
                       size="sm"
-                      colorScheme={from.id === account.id ? "green" : "orange"}
+                      colorScheme={from.id === account.id ? 'green' : 'orange'}
                       ml={2}
                     >
-                      {from.id === account.id ? "Out" : "In"}
+                      {from.id === account.id ? 'Out' : 'In'}
                     </Tag>
                   </Td>
                   <Td>
@@ -124,14 +112,8 @@ const Erc721Txs = ({ account }) => {
                   </Td>
                   <Td>
                     <HStack spacing={2} mt={1}>
-                      <Icon
-                        as={TimeIcon}
-                        ml={3}
-                        boxSize={3}
-                        color="yellow.600"
-                      />
                       <Text color="grey" fontSize="sm">
-                        {dayjs(timestamp).add(8, "hours").toNow(true)}
+                        {dayjs(timestamp).add(8, 'hours').toNow(true)}
                       </Text>
                     </HStack>
                   </Td>
@@ -151,7 +133,7 @@ const Erc721Txs = ({ account }) => {
             onClick={() => setErc721TransfersPage(erc721TransfersPage - 1)}
           />
           <Box>
-            {erc721TransfersPage + 1} of{" "}
+            {erc721TransfersPage + 1} of{' '}
             {detail
               ? Math.ceil(detail?.erc721Transfers.totalCount / PAGE_SIZE)
               : 1}
@@ -168,7 +150,7 @@ const Erc721Txs = ({ account }) => {
         </HStack>
       </Flex>
     </div>
-  );
-};
+  )
+}
 
-export default Erc721Txs;
+export default Erc721Txs
