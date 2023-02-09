@@ -125,7 +125,7 @@ const Header = ({
                 <MenuList border="none">
                   {navs.map((nav) => (
                     <Link
-                      href={`${appchainInfo.appchain_id}/${nav.link}`}
+                      href={`/${appchainInfo.appchain_id}/${nav.link}`}
                       key={nav.title}
                       _hover={{ textDecoration: 'none' }}
                     >
@@ -137,7 +137,11 @@ const Header = ({
                 </MenuList>
               </Menu>
               {window.isEvm && (
-                <NavLink key="Tokens" title="Tokens" to="/tokens" />
+                <NavLink
+                  key="Tokens"
+                  title="Tokens"
+                  to={`/${appchainInfo.appchain_id}/tokens`}
+                />
               )}
               <Menu>
                 <MenuButton
